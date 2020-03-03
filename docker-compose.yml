@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  spring-boot-rest-api-app:
+  rheinjug1:
     image: nginx:alpine
     ports:
       - 8080:8080
