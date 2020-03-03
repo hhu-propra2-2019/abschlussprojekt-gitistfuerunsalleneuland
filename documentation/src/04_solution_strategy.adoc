@@ -1,16 +1,30 @@
 [[section-solution-strategy]]
 == Lösungsstrategie
 
-[role="arc42help"]
 ****
 .Inhalt
 Kurzer Überblick über die grundlegenden Entscheidungen und Lösungsansätze, die Entwurf und Implementierung des Systems prägen.
 Hierzu gehören:
 
 * Technologieentscheidungen
-* Entscheidungen über die Top-Level-Zerlegung des Systems, beispielsweise die Verwendung gesamthaft prägender Entwurfs- oder Architekturmuster,
-* Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen sowie
+ -Set-Up von Docker-Compose und Gradle nach Angaben der Vorlesung(Spring Boot Actuator, SpotBugs, PMD)
+
+* Entscheidungen über die Top-Level-Zerlegung des Systems, beispielsweise die Verwendung gesamthaft prägender Entwurfs- oder Architekturmuster
+- Entscheidung für Onion/Orthogonal-Architektur
+
+* Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen technologisch
+- Verwendung von kryptographsicher Signatur für Quittungen, welche alle relevanten Informationen in sich trägt(Bibliothek JDK Security, tutorials.jenkov.com/java-cryptography).
+- permanente Speicherungen von Zusammenfassungen/Abgaben über MiniIO
+- Formatierungsvorlagen für Abgaben in Markdown oder Asciidoc
+- neue Organisatorrolle erfolgt über Keycloak(nicht durch unsere Gruppe, müssen wir nur anfragen)
+- extrem schmale Anforderungen an Datenbank(evtl. postgres), zwei Spalten: id einer Quittung und ob eingelöst oder nicht
+
+* Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen logisch
+- Möglichkeit der Zustimmung zur Veröffentlichung(namentlich oder anonym) von Abgaben
+- Frist für Quittungen 1 Woche mit Möglichkeit der unkomplizierten Nachreichung durch Organisatoren
+
 * relevante organisatorische Entscheidungen, beispielsweise für bestimmte Entwicklungsprozesse oder Delegation bestimmter Aufgaben an andere Stakeholder.
+- Absprache wegen Krypto-Quittung mit benachbarter Gruppe(Klausurzulassungen)
 
 .Motivation
 Diese wichtigen Entscheidungen bilden wesentliche „Eckpfeiler“ der Architektur.
