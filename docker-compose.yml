@@ -2,11 +2,13 @@ version: '3.7'
 
 services:
   rheinjug1:
-    image: nginx:alpine
+    image: gradle:latest
+    command: gradle bootRun
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
-      - /data/spring-boot-app
+      - .:/home/gradle
+      
   database:
     image: mysql:5.7
     ports:
@@ -14,3 +16,4 @@ services:
     environment:
       - "MYSQL_ROOT_PASSWORD=geheim"
       - "MYSQL_DATABASE=rheinjug1"
+
