@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis;
+package mops;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
