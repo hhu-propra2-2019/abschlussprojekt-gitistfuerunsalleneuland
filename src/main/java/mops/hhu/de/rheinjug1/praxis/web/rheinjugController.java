@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.controller;
+package mops.hhu.de.rheinjug1.praxis.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
