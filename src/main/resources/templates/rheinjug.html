@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{mopslayout :: html(name='Name des Subsystems', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
+      th:replace="~{mopslayout :: html(name='Java in der Praxis', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
 <head>
   <meta charset="utf-8">
   <title>Java in der Praxis</title>
@@ -15,7 +15,28 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
-  <!-- Restlichen Inhalt hier einfügen! -->
+
+
+  <h2>Vorträge</h2>
+   <table>
+    <thead>
+    <th>Produkt</th>
+    <th>Anzahl</th>
+    <th>Preis</th>
+    <th>Summe</th>
+    </thead>
+    <tbody> 
+      <tr> 
+        <td>Bier</td>
+        <td>3</td>
+        <td>1,20 Euro</td>
+        <td>3,60 Euro</td>
+       </tr>
+
+    </tbody>
+  </table>
+
+
 </main>
 </body>
 </html>
