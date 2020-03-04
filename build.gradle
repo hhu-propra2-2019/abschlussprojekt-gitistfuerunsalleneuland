@@ -55,6 +55,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'mysql:mysql-connector-java'
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
+    compile 'io.minio:minio:6.0.13'
 }
 
 test {
