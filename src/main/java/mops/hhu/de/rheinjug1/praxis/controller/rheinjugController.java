@@ -10,17 +10,17 @@ public class rheinjugController {
 	
 	@GetMapping("/")
 	public String home() {
-		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+		return "rheinjug";
 	}
 	
-	@GetMapping("/statistiken")
-	public String statistiken() {
-		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+	@GetMapping("/statistics")
+	public String statistics() {
+		return "statistics";
 	}
 	
-	@GetMapping("/vortrag")
-	public String vortrag() {
-		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+	@GetMapping("/talk")
+	public String talk() {
+		return "talk";
 	}
 
 }
