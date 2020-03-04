@@ -2,8 +2,9 @@ version: '3.7'
 
 services:
   rheinjug1:
-    image: nginx:alpine
+    image: gradle:latest
+    command: gradle bootRun
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
-      - /data/spring-boot-app
+      - .:/home/gradle
