@@ -66,6 +66,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
     implementation "mops:styleguide:2.0.0"
+    implementation 'org.keycloak:keycloak-spring-boot-starter:9.0.0'
+    implementation 'org.keycloak.bom:keycloak-adapter-bom:3.3.0.Final'
 }
 
 test {

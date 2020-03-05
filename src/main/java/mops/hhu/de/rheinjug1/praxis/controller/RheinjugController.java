@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.controller;
+package mops.hhu.de.rheinjug1.praxis.auth;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -8,19 +8,28 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class RheinjugController {
+public class AuthdemoController {
 
     private final Counter authenticatedAccess;
     private final Counter publicAccess;
 
-    public RheinjugController(MeterRegistry registry) {
+    public AuthdemoController(MeterRegistry registry) {
         authenticatedAccess = registry.counter("access.authenticated");
         publicAccess = registry.counter("access.public");
     }
+
+    /**
+     * Nimmt das Authentifizierungstoken von Keycloak und erzeugt ein AccountDTO für die Views.
+     *
+     * @param token
+     * @return neuen Account der im Template verwendet wird
+     */
+
 
     private Account createAccountFromPrincipal(KeycloakAuthenticationToken token) {
         KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
@@ -32,7 +41,7 @@ public class RheinjugController {
     }
 
     @GetMapping("/")
-    public String rheinjug(KeycloakAuthenticationToken token, Model model) {
+    public String rheimjug(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
             model.addAttribute("account", createAccountFromPrincipal(token));
         }
@@ -45,14 +54,4 @@ public class RheinjugController {
         request.logout();
         return "redirect:/";
     }
-    
-	@GetMapping("/statistics")
-	public String statistics() {
-		return "statistics";
-	}
-	
-	@GetMapping("/talk")
-	public String talk() {
-		return "talk";
-	}
 }
