@@ -1,3 +1,20 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/" // only for githook  and spotless plugin
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "gradle.plugin.com.star-zero.gradle:githook:1.2.0"
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:3.27.0"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.2.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
@@ -6,20 +23,41 @@ plugins {
     id "com.github.spotbugs" version "4.0.0"
 }
 
+apply plugin: 'com.star-zero.gradle.githook'
+apply plugin: "com.diffplug.gradle.spotless"
 
 
+repositories {
+    mavenCentral()
+    maven {
+        url="https://s3.cs.hhu.de/public/mops/"
+        metadataSources {
+            artifact()
+        }
+    }
+}
 
-pmd {
-    ruleSets = [
-            "category/java/errorprone.xml",
-            "category/java/bestpractices.xml",
-            "category/java/codestyle.xml",
-            "category/java/design.xml",
-            "category/java/documentation.xml",
-            "category/java/multithreading.xml",
-            "category/java/performance.xml",
-            "category/java/security.xml"
-    ]
+pmdMain {
+    ruleSetFiles = files("config/pmd/pmdRules.xml")
+    ruleSets = []
+}
+pmdTest {
+    ruleSetFiles = files("config/pmd/pmdTestRules.xml")
+    ruleSets = []
+}
+
+githook {
+    failOnMissingHooksDir = false
+    createHooksDirIfNotExist = true
+    hooks {
+        "pre-commit" {
+            task = "spotlessCheck pmdMain pmdTest"
+        }
+
+        "pre-push" {
+            task = "check"
+        }
+    }
 }
 
 group = 'mops.hhu.de.rheinjug1'
@@ -36,17 +74,10 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        url="https://s3.cs.hhu.de/public/mops/"
-        metadataSources {
-            artifact()
-        }
-    }
-}
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -68,4 +99,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+    }
 }
