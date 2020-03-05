@@ -63,6 +63,7 @@ dependencies {
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
     compile 'io.minio:minio:6.0.13'
     implementation "mops:styleguide:2.0.0"
+    implementation 'com.jlefebure:spring-boot-starter-minio:1.1'
 }
 
 test {
