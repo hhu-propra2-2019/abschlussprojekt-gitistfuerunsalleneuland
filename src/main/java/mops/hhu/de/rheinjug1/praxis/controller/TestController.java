@@ -1,3 +1,4 @@
+package mops.hhu.de.rheinjug1.praxis.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
@@ -20,7 +21,7 @@ import com.jlefebure.spring.boot.minio.MinioService;
 
 import io.minio.messages.Item;
 
-
+@SuppressWarnings("PMD")
 @RestController
 @RequestMapping("/files")
 public class TestController {
@@ -31,7 +32,9 @@ public class TestController {
 
     @GetMapping("/")
     public List<Item> testMinio() throws MinioException {
+    	 System.out.println("test");
         return minioService.list();
+ 
     }
 
     @GetMapping("/{object}")
@@ -46,5 +49,6 @@ public class TestController {
         // Copy the stream to the response's output stream.
         IOUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
+        System.out.println("Hello World.");
     }
 }
