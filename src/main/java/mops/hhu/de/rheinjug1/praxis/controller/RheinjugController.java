@@ -6,21 +6,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/rheinjug1")
-public class rheinjugController {
-	
-	@GetMapping("/")
-	public String home() {
-		return "rheinjug";
-	}
-	
-	@GetMapping("/statistics")
-	public String statistics() {
-		return "statistics";
-	}
-	
-	@GetMapping("/talk")
-	public String talk() {
-		return "talk";
-	}
+public class RheinjugController {
 
+  @GetMapping("/")
+  public String home() {
+    return "rheinjug";
+  }
+
+  @GetMapping("/statistics")
+  public String statistics() {
+    return "statistics";
+  }
+
+  @GetMapping("/talk")
+  public String talk() {
+    return "talk";
+  }
 }
