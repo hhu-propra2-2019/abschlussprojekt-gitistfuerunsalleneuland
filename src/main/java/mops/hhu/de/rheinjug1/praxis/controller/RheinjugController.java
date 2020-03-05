@@ -2,6 +2,8 @@ package mops.hhu.de.rheinjug1.praxis.controller;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class RheinjugController {
 
+    @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final Counter authenticatedAccess;
     private final Counter publicAccess;
 
@@ -50,8 +53,7 @@ public class RheinjugController {
 	@Secured("ROLE_orga")
 	public String statistics(KeycloakAuthenticationToken token, Model model) {
 		model.addAttribute("account", createAccountFromPrincipal(token));
-       // authenticatedAccess.increment();
-		return "statistics";
+        return "statistics";
 	}
 	
 	@GetMapping("/talk")
