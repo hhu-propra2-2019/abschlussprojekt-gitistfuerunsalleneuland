@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.entities;
+package mops.hhu.de.rheinjug1.praxis.database.entities;
 
 import lombok.Getter;
 import lombok.Setter;

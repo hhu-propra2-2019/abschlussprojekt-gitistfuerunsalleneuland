@@ -1,6 +1,6 @@
-package mops.hhu.de.rheinjug1.praxis.repositories;
+package mops.hhu.de.rheinjug1.praxis.database.repositories;
 
-import mops.hhu.de.rheinjug1.praxis.entities.Receipt;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Receipt;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
