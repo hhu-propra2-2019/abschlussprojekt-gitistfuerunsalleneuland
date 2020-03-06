@@ -1,13 +1,11 @@
-package mops.hhu.de.rheinjug1.praxis.clients.entities;
+package mops.hhu.de.rheinjug1.praxis.clients.dto;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-@Getter
 @Setter
-public class Fee {
+public class FeeResponseDTO {
   private String accepts;
   private double amount;
   private String currency;

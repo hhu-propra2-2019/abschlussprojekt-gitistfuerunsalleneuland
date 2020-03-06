@@ -1,14 +1,13 @@
-package mops.hhu.de.rheinjug1.praxis.clients.entities;
+package mops.hhu.de.rheinjug1.praxis.clients.dto;
 
-import lombok.Getter;
+import java.time.ZoneId;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
 @NoArgsConstructor
-@Getter
 @Setter
-public class Group {
+public class GroupResponseDTO {
   private long created;
   private String name;
   private long id;
@@ -22,4 +21,8 @@ public class Group {
   private String country;
   private String region;
   private String timezone;
+
+  public ZoneId getZoneId() {
+    return ZoneId.of(this.timezone);
+  }
 }

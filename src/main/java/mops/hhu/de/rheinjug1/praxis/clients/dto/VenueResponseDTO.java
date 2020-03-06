@@ -1,14 +1,13 @@
-package mops.hhu.de.rheinjug1.praxis.clients.entities;
+package mops.hhu.de.rheinjug1.praxis.clients.dto;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Venue;
 
 @SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
-@Getter
 @Setter
 @NoArgsConstructor
-public class Venue {
+public class VenueResponseDTO {
   private int id;
   private String name;
   private double lat;
@@ -18,4 +17,8 @@ public class Venue {
   private String city;
   private String country;
   private String localized_country_name;
+
+  public Venue toVenue() {
+    return new Venue(this.name, this.address_1, this.city);
+  };
 }
