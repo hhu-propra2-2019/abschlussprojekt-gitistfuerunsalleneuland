@@ -1,5 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.clients.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
+@Getter
+@Setter
+@NoArgsConstructor
 public class Venue {
   private int id;
   private String name;
