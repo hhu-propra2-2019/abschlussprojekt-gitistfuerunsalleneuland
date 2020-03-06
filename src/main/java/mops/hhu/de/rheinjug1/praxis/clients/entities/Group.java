@@ -1,9 +1,17 @@
 package mops.hhu.de.rheinjug1.praxis.clients.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
+@NoArgsConstructor
+@Getter
+@Setter
 public class Group {
-  private int created;
+  private long created;
   private String name;
-  private int id;
+  private long id;
   private String join_mode;
   private double lat;
   private double lon;
