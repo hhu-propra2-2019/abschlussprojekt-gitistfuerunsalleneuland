@@ -2,7 +2,8 @@ package mops.hhu.de.rheinjug1.praxis.clients;
 
 import java.util.Arrays;
 import java.util.List;
-import mops.hhu.de.rheinjug1.praxis.clients.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.clients.dto.EventResponseDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -10,11 +11,15 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class MeetupClient {
 
-  public List<Event> getUpcomingEvents() {
+  @Value("${meetup.api.url}")
+  private String meetupApiUrl;
+
+  public List<EventResponseDTO> getUpcomingEvents() {
     final RestTemplate restTemplate = new RestTemplate();
-    final String meetupResourceUrl = "https://api.meetup.com/rheinjug/events?status=upcoming,past";
-    final ResponseEntity<Event[]> response =
-        restTemplate.getForEntity(meetupResourceUrl, Event[].class);
+    final ResponseEntity<EventResponseDTO[]> response =
+        restTemplate.getForEntity(
+            meetupApiUrl + "/events?status=upcoming", EventResponseDTO[].class);
+
     return Arrays.asList(response.getBody());
   }
 }
