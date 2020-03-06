@@ -33,6 +33,6 @@ public class PraxisApplication implements ApplicationRunner {
 		System.out.println(minioService);
 		
 		minioService.upload(Path.of("test.txt"), fileStream, ContentType.TEXT_PLAIN);
-		System.out.println("huhu");
+		System.out.println("Hello World!");
 	}
 }
