@@ -12,9 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@SuppressWarnings({
+  "PMD.UnusedPrivateField",
+  "PMD.SingularField",
+  "PMD.UnusedImports",
+  "PMD.AvoidDuplicateLiterals"
+})
 public class RheinjugController {
 
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField", "PMD.UnusedImports"})
   private final Counter authenticatedAccess;
 
   private final Counter publicAccess;
@@ -39,7 +44,7 @@ public class RheinjugController {
       model.addAttribute("account", createAccountFromPrincipal(token));
     }
     publicAccess.increment();
-    return "rheinjug";
+    return "uebersicht";
   }
 
   @GetMapping("/logout")
@@ -55,8 +60,19 @@ public class RheinjugController {
     return "statistics";
   }
 
+  @GetMapping("/profil")
+  public String profil(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) {
+      model.addAttribute("account", createAccountFromPrincipal(token));
+    }
+    return "profil";
+  }
+
   @GetMapping("/talk")
-  public String talk() {
+  public String talk(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) {
+      model.addAttribute("account", createAccountFromPrincipal(token));
+    }
     return "talk";
   }
 }
