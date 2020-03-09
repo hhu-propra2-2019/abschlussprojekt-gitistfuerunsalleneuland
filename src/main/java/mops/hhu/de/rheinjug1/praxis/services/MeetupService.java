@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnusedPrivateMethod"})
 @EnableScheduling
 public class MeetupService {
 
-  @Autowired private MeetupClient meetupClient;
+  @Autowired
+  private MeetupClient meetupClient;
 
   @Scheduled(fixedRate = 300_000) // Todo:Zeitintervall?
   private List<Event> update() {
     return meetupClient.getAllEvents();
   }
 }
+
