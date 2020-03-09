@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Receipt {
+public class ReceiptHash {
   @Id private Long id;
   private String hash;
   private int used;
