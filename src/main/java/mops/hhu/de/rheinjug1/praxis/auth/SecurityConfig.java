@@ -64,6 +64,6 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
    * {@link javax.annotation.security.RolesAllowed} annotation for Role-based authorization
    */
   @Configuration
-  @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+  @EnableGlobalMethodSecurity(prePostEnabled = false, securedEnabled = true, jsr250Enabled = false)
   public static class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {}
 }

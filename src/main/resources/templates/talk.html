@@ -5,17 +5,26 @@
   <meta charset="utf-8">
   <title>Name des Subsystems</title>
   <th:block th:fragment="headcontent">
+    <script src="./path/to/dropzone.js"></script>
+    
     <!-- Links, Skripts, Styles hier einfügen! -->
   </th:block>
 </head>
 <body>
-<header>
-  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-    <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
-  </nav>
-</header>
-<main th:fragment="bodycontent">
-  <h2>talk</h2>
-</main>
+  <header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+      <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
+    </nav>
+  </header>
+  <main th:fragment="bodycontent">
+    <h2>talk</h2>
+    <div id="drop-area">
+      <form class="my-form">
+        <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
+        <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+      </form>
+    </div>
+  </main>
 </body>
 </html>
+
