@@ -16,9 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@SuppressWarnings({
+  "PMD.UnusedPrivateField",
+  "PMD.SingularField",
+  "PMD.UnusedImports",
+  "PMD.AvoidDuplicateLiterals"
+})
 public class RheinjugController {
 
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField", "PMD.UnusedImports"})
   private final Counter authenticatedAccess;
 
   private final Counter publicAccess;
@@ -42,8 +47,7 @@ public class RheinjugController {
     if (token != null) {
       model.addAttribute("account", createAccountFromPrincipal(token));}
     publicAccess.increment();
-    model.addAttribute("summaryForm", new Summary());   
-    return "rheinjug";
+    return "uebersicht";
   }
   
   @PostMapping("/statistics")
@@ -67,8 +71,19 @@ public class RheinjugController {
     return "statistics";
   }
 
+  @GetMapping("/profil")
+  public String profil(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) {
+      model.addAttribute("account", createAccountFromPrincipal(token));
+    }
+    return "profil";
+  }
+
   @GetMapping("/talk")
-  public String talk() {
+  public String talk(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) {
+      model.addAttribute("account", createAccountFromPrincipal(token));
+    }
     return "talk";
   }
 }
