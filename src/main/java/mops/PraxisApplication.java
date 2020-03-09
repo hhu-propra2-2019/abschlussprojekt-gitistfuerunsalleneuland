@@ -17,7 +17,7 @@ public class PraxisApplication {
   @Bean
   ApplicationRunner init(final MeetupClient meetupClient) {
     return args -> {
-      meetupClient.getUpcomingEvents();
+      meetupClient.getAllEvents();
     };
   };
 }
