@@ -12,7 +12,7 @@
 </head>
 <body>
 <header>
- <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
     <ul class="navbar-nav">
       <li class="nav-item"><a class="nav-link text-dark" href="/">Übersicht<span class="sr-only">(current)</span></a></li>
@@ -27,20 +27,6 @@
 <main th:fragment="bodycontent">
   <h2>statistics</h2>
   <!-- Restlichen Inhalt hier einfügen! -->
-  <h1>File Upload Drop Zone</h1>
-
-  <div class = container>
-    <blockquote class="blockquote mb-0">
-      <form enctype="multipart/form-data" method="post" th:object="${summaryForm}">
-        <div style="border-style: dotted; width: 100%; margin-bottom: 10px">
-          <input name="summary" th:field="*{summary}" type="file" style="width: 100%; opacity: 0.5;" ><br>
-        </div>
-        <div>
-          <button type="submit">submit</button>
-        </div>
-      </form>
-    </blockquote>
-  </div>
 </main>
 </body>
 </html>
