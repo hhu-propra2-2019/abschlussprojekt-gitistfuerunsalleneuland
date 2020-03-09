@@ -21,7 +21,10 @@ public class PraxisApplication {
   ApplicationRunner init(final MeetupClient meetupClient, ReceiptRepository r) {
     return args -> {
       List<Event> all = meetupClient.getAllEvents();
-      all.stream().filter(i->i.getId()==269005066).map(i->i.getDuration().toMinutes()).forEach(i-> System.out.println(i));
+      all.stream()
+          .filter(i -> i.getId() == 269005066)
+          .map(i -> i.getDuration().toMinutes())
+          .forEach(i -> System.out.println(i));
     };
   };
 }
