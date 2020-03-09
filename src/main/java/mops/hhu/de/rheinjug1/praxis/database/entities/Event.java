@@ -4,12 +4,14 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 
 @ToString
 @Getter
 public class Event {
+
+  @Id private final long id;
   private final Duration duration;
-  private final long id;
   private final String name;
   private final String status;
   private final ZonedDateTime zonedDateTime;
