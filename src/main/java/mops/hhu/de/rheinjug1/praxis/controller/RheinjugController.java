@@ -2,6 +2,9 @@ package mops.hhu.de.rheinjug1.praxis.controller;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+
+import java.io.File;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;
@@ -10,6 +13,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class RheinjugController {
@@ -36,10 +40,17 @@ public class RheinjugController {
   @GetMapping("/")
   public String rheinjug(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      model.addAttribute("account", createAccountFromPrincipal(token));
-    }
+      model.addAttribute("account", createAccountFromPrincipal(token));}
     publicAccess.increment();
+    model.addAttribute("summaryForm", new Summary());   
     return "rheinjug";
+  }
+  
+  @PostMapping("/statistics")
+  @Secured("ROLE_orga")
+  public String uploadSummary(final KeycloakAuthenticationToken token, final Model model, Summary summaryForm) {
+	  System.out.println(summaryForm.toString());
+      return "redirect:/";
   }
 
   @GetMapping("/logout")
@@ -52,6 +63,7 @@ public class RheinjugController {
   @Secured("ROLE_orga")
   public String statistics(final KeycloakAuthenticationToken token, final Model model) {
     model.addAttribute("account", createAccountFromPrincipal(token));
+    model.addAttribute("summaryForm", new Summary()); 
     return "statistics";
   }
 

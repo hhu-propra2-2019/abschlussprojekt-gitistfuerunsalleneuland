@@ -17,6 +17,20 @@
 <main th:fragment="bodycontent">
   <h2>statistics</h2>
   <!-- Restlichen Inhalt hier einfügen! -->
+  <h1>File Upload Drop Zone</h1>
+
+  <div class = container>
+    <blockquote class="blockquote mb-0">
+      <form enctype="multipart/form-data" method="post" th:object="${summaryForm}">
+        <div style="border-style: dotted; width: 100%; margin-bottom: 10px">
+          <input name="summary" th:field="*{summary}" type="file" style="width: 100%; opacity: 0.5;" ><br>
+        </div>
+        <div>
+          <button type="submit">submit</button>
+        </div>
+      </form>
+    </blockquote>
+  </div>
 </main>
 </body>
 </html>
