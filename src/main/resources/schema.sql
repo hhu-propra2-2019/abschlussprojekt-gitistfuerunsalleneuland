@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS rheinjug1.receipt;
-CREATE TABLE `rheinjug1`.`receipt` (
+CREATE TABLE `rheinjug1`.`receipt_hash` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `used` TINYINT NOT NULL,
   `hash` CHAR(64) NOT NULL,
