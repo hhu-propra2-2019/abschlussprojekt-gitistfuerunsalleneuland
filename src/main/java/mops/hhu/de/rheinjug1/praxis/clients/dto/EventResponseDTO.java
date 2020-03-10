@@ -33,6 +33,7 @@ public class EventResponseDTO {
   private String visibility;
   private boolean member_pay_fee;
 
+
   public Event toEvent() {
     final Duration duration = Duration.ofMillis(this.duration);
     final long id = Long.parseLong(this.id);
@@ -40,7 +41,6 @@ public class EventResponseDTO {
     final LocalDateTime dateTime =
         LocalDateTime.ofEpochSecond(timeAsDuration.toSeconds(), 0, ZoneOffset.UTC);
     final ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, this.group.getZoneId());
-
-    return new Event(duration, id, name, status, zonedDateTime, venue.toVenue(), link, description);
+    return new Event(duration, id, name, status, zonedDateTime, link, description);
   };
 }

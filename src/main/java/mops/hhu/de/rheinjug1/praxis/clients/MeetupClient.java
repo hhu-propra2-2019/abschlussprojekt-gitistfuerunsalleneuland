@@ -20,10 +20,8 @@ public class MeetupClient {
 
   public List<Event> getAllEvents() {
     final ResponseEntity<EventResponseDTO[]> response =
-        restTemplate.getForEntity(
-            meetupApiUrl + "/events?status=upcoming,past", EventResponseDTO[].class);
-    return Arrays.stream(response.getBody())
-        .map(eventDto -> eventDto.toEvent())
-        .collect(Collectors.toList());
+        restTemplate.getForEntity(meetupApiUrl + "/events?status=upcoming,past", EventResponseDTO[].class);
+    List<EventResponseDTO> AllEvents = Arrays.stream(response.getBody()).collect(Collectors.toList());
+    return AllEvents.stream().map(i->i.toEvent()).collect(Collectors.toList());
   }
 }

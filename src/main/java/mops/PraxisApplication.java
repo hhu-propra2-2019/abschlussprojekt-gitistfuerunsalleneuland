@@ -1,16 +1,16 @@
 package mops;
 
-import java.util.List;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
-import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.ReceiptRepository;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SuppressWarnings("PMD")
 @SpringBootApplication
+@EnableScheduling
 public class PraxisApplication {
 
   public static void main(String[] args) {
@@ -18,9 +18,7 @@ public class PraxisApplication {
   }
 
   @Bean
-  ApplicationRunner init(final MeetupClient meetupClient, ReceiptRepository r) {
-    return args -> {
-      meetupClient.getAllEvents();
-    };
+  ApplicationRunner init() {
+    return args -> {};
   };
 }
