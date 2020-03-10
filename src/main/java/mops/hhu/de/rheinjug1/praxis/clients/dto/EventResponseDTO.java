@@ -39,7 +39,7 @@ public class EventResponseDTO {
     final Duration timeAsDuration = Duration.ofMillis(this.time);
     final LocalDateTime dateTime =
         LocalDateTime.ofEpochSecond(timeAsDuration.toSeconds(), 0, ZoneOffset.UTC);
-    final ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, this.group.getZoneId());
+    final ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("UTC"));
     return new Event(duration, id, name, status, zonedDateTime, link, description);
   };
 }
