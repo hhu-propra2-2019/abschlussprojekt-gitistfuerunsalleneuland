@@ -1,5 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -16,6 +18,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.jlefebure.spring.boot.minio.MinioException;
+import mops.hhu.de.rheinjug1.praxis.services.RheinjugMinIOService;
 
 @Controller
 @SuppressWarnings({
@@ -29,6 +37,8 @@ public class RheinjugController {
   private final Counter authenticatedAccess;
 
   private final Counter publicAccess;
+  
+  private RheinjugMinIOService minIOService;
 
   public RheinjugController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
@@ -52,18 +62,6 @@ public class RheinjugController {
     return "uebersicht";
   }
   
-  @PostMapping("/talk")
-  @Secured({"ROLE_student", "ROLE_orga"})
-  public String uploadSummary(@RequestParam("summary") MultipartFile multiPartFile) {
-      return "redirect:/talk";
-  }
-
-  @GetMapping("/logout") 
-  public String logout(final HttpServletRequest request) throws ServletException {
-    request.logout();
-    return "redirect:/";
-  }
-
   @GetMapping("/talk")
   @Secured("ROLE_orga")
   public String statistics(final KeycloakAuthenticationToken token, final Model model) {
@@ -71,6 +69,36 @@ public class RheinjugController {
 	  model.addAttribute("summaryForm", new Summary()); 
       return "talk";
   }
+  
+  
+  @PostMapping("/talk")
+  @Secured({"ROLE_student", "ROLE_orga"})
+	public String handleFileUpload(@RequestParam("summary") MultipartFile file) {
+	  minIOService.upload(file);
+	  return "redirect:/talk/";
+
+  }
+  
+  @GetMapping("/talk/{object}")
+  public void downloadFile(@PathVariable("object") String object, RheinjugMinIOService rheinjugMinIOService, HttpServletResponse response) {
+	  try {
+		rheinjugMinIOService.getObject(object, response);
+	} catch (MinioException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+    }	  
+  }
+  
+  @GetMapping("/logout") 
+  public String logout(final HttpServletRequest request) throws ServletException {
+    request.logout();
+    return "redirect:/";
+  }
+
+  
 
   @GetMapping("/profil")
   public String profil(final KeycloakAuthenticationToken token, final Model model) {
@@ -83,4 +111,8 @@ public class RheinjugController {
     if (token != null) model.addAttribute("account", createAccountFromPrincipal(token));
     return "statistics";
   }
+
+  
+
+		
 }
