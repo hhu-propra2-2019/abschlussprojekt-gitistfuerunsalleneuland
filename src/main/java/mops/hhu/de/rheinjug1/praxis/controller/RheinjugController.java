@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @SuppressWarnings({
@@ -43,47 +45,42 @@ public class RheinjugController {
   }
 
   @GetMapping("/")
-  public String rheinjug(final KeycloakAuthenticationToken token, final Model model) {
+  public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute("account", createAccountFromPrincipal(token));}
     publicAccess.increment();
     return "uebersicht";
   }
   
-  @PostMapping("/statistics")
-  @Secured("ROLE_orga")
-  public String uploadSummary(final KeycloakAuthenticationToken token, final Model model, Summary summaryForm) {
-	  System.out.println(summaryForm.toString());
-      return "redirect:/";
+  @PostMapping("/talk")
+  @Secured({"ROLE_student", "ROLE_orga"})
+  public String uploadSummary(@RequestParam("summary") MultipartFile multiPartFile) {
+      return "redirect:/talk";
   }
 
-  @GetMapping("/logout")
+  @GetMapping("/logout") 
   public String logout(final HttpServletRequest request) throws ServletException {
     request.logout();
     return "redirect:/";
   }
 
-  @GetMapping("/statistics")
+  @GetMapping("/talk")
   @Secured("ROLE_orga")
   public String statistics(final KeycloakAuthenticationToken token, final Model model) {
-    model.addAttribute("account", createAccountFromPrincipal(token));
-    model.addAttribute("summaryForm", new Summary()); 
-    return "statistics";
+	  if (token != null) model.addAttribute("account", createAccountFromPrincipal(token));
+	  model.addAttribute("summaryForm", new Summary()); 
+      return "talk";
   }
 
   @GetMapping("/profil")
   public String profil(final KeycloakAuthenticationToken token, final Model model) {
-    if (token != null) {
-      model.addAttribute("account", createAccountFromPrincipal(token));
-    }
-    return "profil";
+	  if (token != null) model.addAttribute("account", createAccountFromPrincipal(token));
+	   return "profil";
   }
 
-  @GetMapping("/talk")
+  @GetMapping("/statistics")
   public String talk(final KeycloakAuthenticationToken token, final Model model) {
-    if (token != null) {
-      model.addAttribute("account", createAccountFromPrincipal(token));
-    }
-    return "talk";
+    if (token != null) model.addAttribute("account", createAccountFromPrincipal(token));
+    return "statistics";
   }
 }

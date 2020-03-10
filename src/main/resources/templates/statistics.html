@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{mopslayout :: html(name='Name des Subsystems', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
+      th:replace="~{mopslayout :: html(name='Java in der Praxis', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
 <head>
   <meta charset="utf-8">
-  <title>Name des Subsystems</title>
+  <title>Java in der Praxis</title>
   <th:block th:fragment="headcontent">
     <!-- Links, Skripts, Styles hier einfügen! -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+     
   </th:block>
 </head>
 <body>
@@ -27,20 +26,7 @@
 <main th:fragment="bodycontent">
   <h2>statistics</h2>
   <!-- Restlichen Inhalt hier einfügen! -->
-  <h1>File Upload Drop Zone</h1>
-
-  <div class = container>
-    <blockquote class="blockquote mb-0">
-      <form enctype="multipart/form-data" method="post" th:object="${summaryForm}">
-        <div style="border-style: dotted; width: 100%; margin-bottom: 10px">
-          <input name="summary" th:field="*{summary}" type="file" style="width: 100%; opacity: 0.5;" ><br>
-        </div>
-        <div>
-          <button type="submit">submit</button>
-        </div>
-      </form>
-    </blockquote>
-  </div>
+  
 </main>
 </body>
 </html>
