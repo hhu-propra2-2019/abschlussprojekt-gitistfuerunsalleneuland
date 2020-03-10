@@ -18,7 +18,7 @@ import com.jlefebure.spring.boot.minio.MinioService;
 @SpringBootApplication
 public class PraxisApplication implements ApplicationRunner {
 
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     SpringApplication.run(PraxisApplication.class, args);
   }
   
