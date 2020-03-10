@@ -8,14 +8,27 @@ import org.springframework.data.annotation.Id;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReceiptHash {
+public class ReceiptSignature {
   @Id private Long id;
-  private String hash;
+  private String signature;
   private int used;
+
+  public ReceiptSignature(final String signature) {
+    this.signature = signature;
+    this.used = 0;
+  }
 
   @Override
   public String toString() {
-    return "Receipt{" + "id=" + id + ", hash='" + hash + '\'' + ", used=" + used + '}';
+    return "ReceiptSignature{"
+        + "id="
+        + id
+        + ", signature='"
+        + signature
+        + '\''
+        + ", used="
+        + used
+        + '}';
   }
 
   public boolean isUsed() {

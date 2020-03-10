@@ -10,4 +10,9 @@ public class AcceptedSubmission {
   private Long meetupId;
   private Long keycloakId;
   private String minIoLink;
+
+  public AcceptedSubmission(final Long meetupId, final Long keycloakId) {
+    this.meetupId = meetupId;
+    this.keycloakId = keycloakId;
+  }
 }
