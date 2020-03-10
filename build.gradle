@@ -10,7 +10,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "gradle.plugin.com.star-zero.gradle:githook:1.2.0"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:3.27.0"
     }
 }
@@ -23,7 +22,6 @@ plugins {
     id "com.github.spotbugs" version "4.0.0"
 }
 
-apply plugin: 'com.star-zero.gradle.githook'
 apply plugin: "com.diffplug.gradle.spotless"
 
 
@@ -46,20 +44,6 @@ pmdTest {
     ruleSets = []
 }
 
-githook {
-    failOnMissingHooksDir = false
-    createHooksDirIfNotExist = true
-    hooks {
-        "pre-commit" {
-            task = "spotlessCheck pmdMain pmdTest"
-        }
-
-        "pre-push" {
-            task = "check"
-        }
-    }
-}
-
 group = 'mops.hhu.de.rheinjug1'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -79,7 +63,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    //implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
@@ -88,7 +72,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    //testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testCompile 'com.tngtech.archunit:archunit:0.13.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'mysql:mysql-connector-java'
@@ -96,6 +80,8 @@ dependencies {
     compile 'io.minio:minio:6.0.13'
     implementation "mops:styleguide:2.0.0"
     implementation 'com.jlefebure:spring-boot-starter-minio:1.1'
+    implementation 'org.keycloak:keycloak-spring-boot-starter:9.0.0'
+    implementation 'org.keycloak.bom:keycloak-adapter-bom:3.3.0.Final'
 }
 
 test {
