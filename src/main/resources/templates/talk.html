@@ -5,9 +5,16 @@
   <meta charset="utf-8">
   <title>Name des Subsystems</title>
   <th:block th:fragment="headcontent">
-    <script src="./path/to/dropzone.js"></script>
-    
-    <!-- Links, Skripts, Styles hier einfügen! -->
+    <style>
+#drop_zone {
+    background-color: #EEE; 
+    border: #999 5px dashed;
+    width: 290px; 
+    height: 200px;
+    padding: 8px;
+    font-size: 18px;
+}
+</style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </th:block>
@@ -20,12 +27,20 @@
   </header>
   <main th:fragment="bodycontent">
     <h2>talk</h2>
-    <div id="drop-area">
-      <form class="my-form">
-        <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
-        <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+    
+    
+    
+    <div class = container>
+      <form enctype="multipart/form-data" method="post" th:object="${summaryForm}">
+        <div ><!-- style="border-style: dotted; width: 100%; margin-bottom: 10px" -->
+          <input name="summary" th:field="*{summary}" id="drop_zone"  type="file" ><!--style="width: 100%; opacity: 0.5;" > <br>-->
+        </div>
+        <div>
+          <button type="submit">hochladen</button>
+        </div>
       </form>
-    </div>
+  </div>
+  
   </main>
 </body>
 </html>
