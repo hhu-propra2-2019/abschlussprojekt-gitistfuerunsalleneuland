@@ -30,26 +30,20 @@ public class Event {
     this.id = id;
     this.name = name;
     this.status = status;
-    this.zonedDateTime = zonedDateTimetoString(zonedDateTime);
+    this.zonedDateTime = toString(zonedDateTime);
     this.link = link;
     this.description = description;
+    toString(zonedDateTime);
   }
 
   private String format(final Duration duration) {
     return "" + duration.toHoursPart() + ":" + duration.toMinutesPart();
   }
 
-  private String zonedDateTimetoString(final ZonedDateTime zonedDateTime) {
-    final Long offsetHours = offsetToHours(zonedDateTime.getOffset());
-    final ZonedDateTime offsetDateTime = zonedDateTime.plusHours(offsetHours);
+  private String toString(final ZonedDateTime zonedDateTime) {
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
-    return offsetDateTime.format(formatter);
-  }
-
-  private Long offsetToHours(final ZoneOffset offset) {
-    final String offsetString = offset.toString();
-    final int index = offsetString.lastIndexOf(":");
-    final String converted = offsetString.substring(0, index);
-    return Long.parseLong(converted);
+    final ZonedDateTime withOffset =
+        zonedDateTime.toOffsetDateTime().atZoneSameInstant(ZoneId.of("Europe/Berlin"));
+    return withOffset.format(formatter);
   }
 }
