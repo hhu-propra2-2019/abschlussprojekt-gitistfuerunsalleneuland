@@ -5,28 +5,16 @@ CREATE TABLE `rheinjug1`.`receipt` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 
-
 DROP TABLE IF EXISTS rheinjug1.event;
-DROP TABLE IF exists rheinjug1.venue;
-CREATE TABLE `rheinjug1`.`venue` (
-  `id` INT NOT NULL,
-  `name` VARCHAR(45) ,
-  `adresse` VARCHAR(45),
-  `city` VARCHAR(45),
-   PRIMARY KEY (`id`));
-
 
 CREATE TABLE `rheinjug1`.`event` (
-  `id` INT NOT NULL,
-  `duration` TIME NULL,
-  `name` VARCHAR(45) NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `duration` VARCHAR(10) NULL,
+  `name` VARCHAR(100) NULL,
   `status` VARCHAR(10) NULL,
-  `zonedDateTime` DATETIME NULL,
-  `venue_id` INT NOT NULL,
+  `zoned_date_time` VARCHAR(30) NULL,
   `link` VARCHAR(100) NULL,
   `description` TEXT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (venue_id) REFERENCES rheinjug1.venue (id)
-  ON UPDATE CASCADE ON DELETE CASCADE
+  PRIMARY KEY (`id`)
   );
 
