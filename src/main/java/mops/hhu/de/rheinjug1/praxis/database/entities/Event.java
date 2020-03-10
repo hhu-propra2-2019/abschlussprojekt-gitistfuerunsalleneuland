@@ -2,22 +2,15 @@ package mops.hhu.de.rheinjug1.praxis.database.entities;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalField;
-import java.util.Date;
-
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.domain.Persistable;
 
 @ToString
 @Getter
-@Setter
 public class Event {
 
-  @Id
-  private long id;
+  @Id private long id;
   private final String duration;
   private final String name;
   private final String status;
@@ -37,33 +30,26 @@ public class Event {
     this.id = id;
     this.name = name;
     this.status = status;
-    this.zonedDateTime = ZonedDateTimetoString(zonedDateTime);
+    this.zonedDateTime = zonedDateTimetoString(zonedDateTime);
     this.link = link;
     this.description = description;
   }
 
-  public void setId(long id){
-    this.id=id;
+  private String format(final Duration duration) {
+    return "" + duration.toHoursPart() + ":" + duration.toMinutesPart();
   }
 
-  private String format(Duration duration){
-    String durationString = "" + duration.toHoursPart() + ":" + duration.toMinutesPart();
-    return durationString;
+  private String zonedDateTimetoString(final ZonedDateTime zonedDateTime) {
+    final Long offsetHours = offsetToHours(zonedDateTime.getOffset());
+    final ZonedDateTime offsetDateTime = zonedDateTime.plusHours(offsetHours);
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
+    return offsetDateTime.format(formatter);
   }
 
-
-
-  private String ZonedDateTimetoString(ZonedDateTime zonedDateTime){
-    Long OffsetHours = OffsetToHours(zonedDateTime.getOffset());
-    zonedDateTime = zonedDateTime.plusHours(OffsetHours);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
-    return zonedDateTime.format(formatter);
-  }
-
-  private Long OffsetToHours(ZoneOffset Offset){
-    String OffsetString = Offset.toString();
-    int index = OffsetString.lastIndexOf(":");
-    String converted = OffsetString.substring(0,index);
+  private Long offsetToHours(final ZoneOffset offset) {
+    final String offsetString = offset.toString();
+    final int index = offsetString.lastIndexOf(":");
+    final String converted = offsetString.substring(0, index);
     return Long.parseLong(converted);
   }
 }
