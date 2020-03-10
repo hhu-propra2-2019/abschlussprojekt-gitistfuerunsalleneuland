@@ -33,7 +33,6 @@ public class EventResponseDTO {
   private String visibility;
   private boolean member_pay_fee;
 
-
   public Event toEvent() {
     final Duration duration = Duration.ofMillis(this.duration);
     final long id = Long.parseLong(this.id);
