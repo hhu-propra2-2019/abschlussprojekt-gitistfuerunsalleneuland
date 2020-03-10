@@ -7,7 +7,6 @@ import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
-import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,15 +23,17 @@ public class MeetupService {
 
   @Scheduled(fixedRate = 3000) // Todo:Zeitintervall?
   private void update() {
-    final List<Event> all = meetupClient.getAllEvents();
-    all.stream().forEach(i -> save(i));
+    final List<Event> meetupEvents = meetupClient.getAllEvents();
+    final List<Event> allEvents = repo.findAll();
+    updateExistingEvents(meetupEvents, allEvents);
+    insertNonExistingEvents(meetupEvents, allEvents);
   }
 
-  private void save(final Event e) {
-    try {
-      template.insert(e);
-    } catch (DbActionExecutionException ex) {
-      repo.save(e);
-    }
+  private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
+    meetupEvents.stream().filter(i -> allEvents.contains(i)).forEach(i -> repo.save(i));
+  }
+
+  private void insertNonExistingEvents(final List<Event> meetupEvents,final List<Event> allEvents) {
+    meetupEvents.stream().filter(i -> !allEvents.contains(i)).forEach(i -> template.insert(i));
   }
 }
