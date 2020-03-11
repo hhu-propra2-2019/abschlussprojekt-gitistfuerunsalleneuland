@@ -1,7 +1,12 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+
+import java.io.File;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;
@@ -10,15 +15,30 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.jlefebure.spring.boot.minio.MinioException;
+import mops.hhu.de.rheinjug1.praxis.services.RheinjugMinIOService;
 
-@SuppressWarnings("PMD")
 @Controller
+@SuppressWarnings({
+  "PMD.UnusedPrivateField",
+  "PMD.SingularField",
+  "PMD.UnusedImports",
+  "PMD.AvoidDuplicateLiterals"
+})
 public class RheinjugController {
 
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField", "PMD.UnusedImports"})
   private final Counter authenticatedAccess;
 
   private final Counter publicAccess;
+  
+  private RheinjugMinIOService minIOService;
 
   public RheinjugController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
@@ -35,29 +55,64 @@ public class RheinjugController {
   }
 
   @GetMapping("/")
-  public String rheinjug(final KeycloakAuthenticationToken token, final Model model) {
+  public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      model.addAttribute("account", createAccountFromPrincipal(token));
-    }
+      model.addAttribute("account", createAccountFromPrincipal(token));}
     publicAccess.increment();
-    return "rheinjug";
+    return "uebersicht";
   }
+  
+  @GetMapping("/talk")
+  @Secured("ROLE_orga")
+  public String statistics(final KeycloakAuthenticationToken token, final Model model) {
+	  if (token != null) model.addAttribute("account", createAccountFromPrincipal(token));
+	  model.addAttribute("summaryForm", new Summary()); 
+      return "talk";
+  }
+  
+  
+  @PostMapping("/talk")
+  @Secured({"ROLE_student", "ROLE_orga"})
+	public String handleFileUpload(@RequestParam("summary") MultipartFile file) {
+	  minIOService.upload(file);
+	  return "redirect:/talk/";
 
-  @GetMapping("/logout")
+  }
+  
+  @GetMapping("/talk/{object}")
+  public void downloadFile(@PathVariable("object") String object, RheinjugMinIOService rheinjugMinIOService, HttpServletResponse response) {
+	  try {
+		rheinjugMinIOService.getObject(object, response);
+	} catch (MinioException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+    }	  
+  }
+  
+  @GetMapping("/logout") 
   public String logout(final HttpServletRequest request) throws ServletException {
     request.logout();
     return "redirect:/";
   }
 
+  
+
+  @GetMapping("/profil")
+  public String profil(final KeycloakAuthenticationToken token, final Model model) {
+	  if (token != null) model.addAttribute("account", createAccountFromPrincipal(token));
+	   return "profil";
+  }
+
   @GetMapping("/statistics")
-  @Secured("ROLE_orga")
-  public String statistics(final KeycloakAuthenticationToken token, final Model model) {
-    model.addAttribute("account", createAccountFromPrincipal(token));
+  public String talk(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) model.addAttribute("account", createAccountFromPrincipal(token));
     return "statistics";
   }
 
-  @GetMapping("/talk")
-  public String talk() {
-    return "talk";
-  }
+  
+
+		
 }
