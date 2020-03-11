@@ -33,7 +33,8 @@ public class MeetupService {
     meetupEvents.stream().filter(i -> allEvents.contains(i)).forEach(i -> repo.save(i));
   }
 
-  private void insertNonExistingEvents(final List<Event> meetupEvents,final List<Event> allEvents) {
+  private void insertNonExistingEvents(
+      final List<Event> meetupEvents, final List<Event> allEvents) {
     meetupEvents.stream().filter(i -> !allEvents.contains(i)).forEach(i -> template.insert(i));
   }
 }

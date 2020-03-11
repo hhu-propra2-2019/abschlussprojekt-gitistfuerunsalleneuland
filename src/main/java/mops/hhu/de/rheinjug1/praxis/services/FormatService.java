@@ -12,7 +12,7 @@ public class FormatService {
   public String format(final Duration duration) {
     return "" + duration.toHoursPart() + ":" + duration.toMinutesPart();
   }
-  
+
   private ZonedDateTime toBerlinEuropeZone(final ZonedDateTime utcTime) {
     return utcTime.toOffsetDateTime().atZoneSameInstant(ZoneId.of("Europe/Berlin"));
   }
