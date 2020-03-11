@@ -9,7 +9,7 @@ public enum MeetupType {
 
   private final String label;
 
-  private MeetupType(final String label) {
+  MeetupType(final String label) {
     this.label = label;
   };
 }
