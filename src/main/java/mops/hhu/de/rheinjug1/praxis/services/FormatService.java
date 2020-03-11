@@ -13,12 +13,12 @@ public class FormatService {
     return "" + duration.toHoursPart() + ":" + duration.toMinutesPart();
   }
 
-  private ZonedDateTime toBerlinEuropeZone(final ZonedDateTime utcTime) {
-    return utcTime.toOffsetDateTime().atZoneSameInstant(ZoneId.of("Europe/Berlin"));
+  private ZonedDateTime toLocalEventTime(final ZonedDateTime utcTime, final ZoneId zoneId) {
+    return utcTime.toOffsetDateTime().atZoneSameInstant(zoneId);
   }
 
-  public String toGermanTimeString(final ZonedDateTime utcTime) {
+  public String toLocalEventTimeString(final ZonedDateTime utcTime, final ZoneId zoneId) {
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
-    return toBerlinEuropeZone(utcTime).format(formatter);
+    return toLocalEventTime(utcTime, zoneId).format(formatter);
   }
 }

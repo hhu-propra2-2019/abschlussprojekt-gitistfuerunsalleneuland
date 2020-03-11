@@ -44,7 +44,8 @@ public class EventResponseDTO {
         LocalDateTime.ofEpochSecond(timeAsDuration.toSeconds(), 0, ZoneOffset.UTC);
     final ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("UTC"));
     final String formattedDuration = formatter.format(duration);
-    final String formattedZonedDateTime = formatter.toGermanTimeString(zonedDateTime);
+    final String formattedZonedDateTime =
+        formatter.toLocalEventTimeString(zonedDateTime, group.getZoneId());
     return new Event(
         formattedDuration, id, name, status, formattedZonedDateTime, link, description);
   }
