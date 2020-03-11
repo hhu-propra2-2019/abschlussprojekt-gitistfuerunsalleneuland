@@ -14,7 +14,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -23,7 +22,7 @@ public class RheinjugMinIOService {
 	@Autowired
 	MinioService minioService;
 	
-	public void upload(MultipartFile file) {
+	public void upload(final MultipartFile file) {
 		InputStream inputStream = null;
 		
 		try {
@@ -40,8 +39,8 @@ public class RheinjugMinIOService {
 		}
 	}
 	
-	public void getObject(String object, HttpServletResponse response) throws MinioException, IOException {
-        InputStream inputStream = minioService.get(Path.of(object));
+	public void downloadFile(final String object, final HttpServletResponse response) throws MinioException, IOException {
+        final InputStream inputStream = minioService.get(Path.of(object));
 
         // Set the content type and attachment header.
         response.addHeader("Content-disposition", "attachment;filename=" + object);
@@ -50,6 +49,7 @@ public class RheinjugMinIOService {
         // Copy the stream to the response's output stream.
         IOUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
+        inputStream.close();
     }
 
 }

@@ -5,8 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
-import java.io.File;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;
@@ -19,9 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jlefebure.spring.boot.minio.MinioException;
 import mops.hhu.de.rheinjug1.praxis.services.RheinjugMinIOService;
 
@@ -73,16 +68,16 @@ public class RheinjugController {
   
   @PostMapping("/talk")
   @Secured({"ROLE_student", "ROLE_orga"})
-	public String handleFileUpload(@RequestParam("summary") MultipartFile file) {
+	public String handleFileUpload(@RequestParam("summary") final MultipartFile file) {
 	  minIOService.upload(file);
 	  return "redirect:/talk/";
 
   }
   
   @GetMapping("/talk/{object}")
-  public void downloadFile(@PathVariable("object") String object, RheinjugMinIOService rheinjugMinIOService, HttpServletResponse response) {
+  public void downloadFile(@PathVariable("object") final String object, final RheinjugMinIOService rheinjugMinIOService, final HttpServletResponse response) {
 	  try {
-		rheinjugMinIOService.getObject(object, response);
+		rheinjugMinIOService.downloadFile(object, response);
 	} catch (MinioException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
