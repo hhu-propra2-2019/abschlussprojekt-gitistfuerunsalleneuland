@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
+import java.io.File;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;
@@ -17,8 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.jlefebure.spring.boot.minio.MinioException;
-import mops.hhu.de.rheinjug1.praxis.services.RheinjugMinIOService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @SuppressWarnings({
@@ -32,8 +34,6 @@ public class RheinjugController {
   private final Counter authenticatedAccess;
 
   private final Counter publicAccess;
-  
-  private RheinjugMinIOService minIOService;
 
   public RheinjugController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
@@ -68,23 +68,9 @@ public class RheinjugController {
   
   @PostMapping("/talk")
   @Secured({"ROLE_student", "ROLE_orga"})
-	public String handleFileUpload(@RequestParam("summary") final MultipartFile file) {
-	  minIOService.upload(file);
+	public String handleFileUpload(@RequestParam("summary") MultipartFile file) {
 	  return "redirect:/talk/";
 
-  }
-  
-  @GetMapping("/talk/{object}")
-  public void downloadFile(@PathVariable("object") final String object, final RheinjugMinIOService rheinjugMinIOService, final HttpServletResponse response) {
-	  try {
-		rheinjugMinIOService.downloadFile(object, response);
-	} catch (MinioException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-    }	  
   }
   
   @GetMapping("/logout") 
