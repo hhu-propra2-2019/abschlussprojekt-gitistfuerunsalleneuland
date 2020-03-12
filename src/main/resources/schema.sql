@@ -8,7 +8,7 @@ CREATE TABLE `rheinjug1`.`receipt` (
 DROP TABLE IF EXISTS rheinjug1.event;
 
 CREATE TABLE `rheinjug1`.`event` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL,
   `duration` VARCHAR(10) NULL,
   `name` VARCHAR(100) NULL,
   `status` VARCHAR(10) NULL,
