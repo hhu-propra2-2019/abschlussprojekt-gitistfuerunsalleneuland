@@ -50,7 +50,7 @@
   	</div>
   </div>
     
-    </div class="container mt-5">
+    <div class="container mt-5">
     <h4>Kommende Veranstaltungen</h4>
     <table>
     	<thead>
@@ -60,7 +60,7 @@
    		</thead>
     <tbody> 
       <tr th:each="event : ${events}"> 
-        <td th:text="${event.name}">Bier</td>
+        <td><a th:href="@{${event.link}}"><span th:text="${event.name}">test</span></a></td>
         <td th:text="${event.zonedDateTime}">3</td>
         <td th:text="${event.duration}">3</td>
        </tr>
