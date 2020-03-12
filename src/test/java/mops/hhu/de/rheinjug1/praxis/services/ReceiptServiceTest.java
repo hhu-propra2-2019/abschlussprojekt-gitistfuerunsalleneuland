@@ -1,6 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -11,15 +11,12 @@ import mops.hhu.de.rheinjug1.praxis.entities.AcceptedSubmission;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.repositories.ReceiptSignatureRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
 public class ReceiptServiceTest {
 
   @Autowired private ReceiptService receiptService;
@@ -34,24 +31,23 @@ public class ReceiptServiceTest {
   public void receiptService_returns_correct_receipt()
       throws CertificateException, InvalidKeyException, NoSuchAlgorithmException, IOException,
           KeyStoreException, SignatureException, UnrecoverableEntryException {
-    final Long MEETUP_ID = 12345L;
-    final Long KEYCLOAK_ID = 54321L;
-    final String NAME = "testName";
-    final String MEETUP_TITLE = "testMeetupTitle";
-    final String SIGNATURE = "testSignature";
-    final MeetupType MEETUP_TYPE = MeetupType.ENTWICKELBAR;
+    final Long meetupId = 12_345L;
+    final Long keycloakId = 54_321L;
+    final String name = "testName";
+    final String meetupTitle = "testMeetupTitle";
+    final String signature = "testSignature";
+    final MeetupType meetupType = MeetupType.ENTWICKELBAR;
 
-    when(meetupService.getType(MEETUP_ID)).thenReturn(MeetupType.ENTWICKELBAR);
-    when(meetupService.getTitle(MEETUP_ID)).thenReturn(MEETUP_TITLE);
-    when(encryptionService.sign(MEETUP_TYPE, MEETUP_ID, KEYCLOAK_ID)).thenReturn(SIGNATURE);
+    when(meetupService.getType(meetupId)).thenReturn(MeetupType.ENTWICKELBAR);
+    when(meetupService.getTitle(meetupId)).thenReturn(meetupTitle);
+    when(encryptionService.sign(meetupType, meetupId, keycloakId)).thenReturn(signature);
     when(receiptSignatureRepository.save(any())).thenReturn(null);
 
-    final AcceptedSubmission submission = new AcceptedSubmission(MEETUP_ID, KEYCLOAK_ID);
+    final AcceptedSubmission submission = new AcceptedSubmission(meetupId, keycloakId);
     final Receipt receipt =
-        receiptService.createReceiptAndSaveSignatureInDatabase(submission, NAME);
+        receiptService.createReceiptAndSaveSignatureInDatabase(submission, name);
 
-    final Receipt EXPECTED_RECEIPT =
-        new Receipt(NAME, MEETUP_ID, MEETUP_TITLE, MEETUP_TYPE, SIGNATURE);
-    assertEquals(EXPECTED_RECEIPT, receipt);
+    final Receipt expectedReceipt = new Receipt(name, meetupId, meetupTitle, meetupType, signature);
+    assertThat(expectedReceipt).isEqualTo(receipt);
   }
 }

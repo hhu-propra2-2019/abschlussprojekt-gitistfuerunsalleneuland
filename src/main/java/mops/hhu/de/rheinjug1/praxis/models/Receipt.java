@@ -1,8 +1,8 @@
 package mops.hhu.de.rheinjug1.praxis.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 

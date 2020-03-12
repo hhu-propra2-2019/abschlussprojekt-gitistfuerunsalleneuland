@@ -28,20 +28,20 @@ class ReceiptPrintServiceTest {
 
   @Test
   void receiptGetsPrintedToFileInResources() throws IOException {
-    ReceiptPrintService receiptPrintService = new ReceiptPrintService();
-    Receipt receipt =
-        new Receipt("Name", 123456789L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
+    final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
+    final Receipt receipt =
+        new Receipt("Name", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
 
     receiptPrintService.printReceipt(receipt);
 
-    List<String> expected =
+    final List<String> expected =
         Arrays.asList(
             "Name: Name",
-            "Veranstaltungs-ID: 123456789",
+            "Veranstaltungs-ID: 1",
             "Titel: Titel",
             "Typ: entwickelbar",
             "OEUIc5654eut");
-    List<String> actual = Files.readAllLines(path);
+    final List<String> actual = Files.readAllLines(path);
 
     assertThat(actual).isEqualTo(expected);
   }

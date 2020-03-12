@@ -33,9 +33,9 @@ public class KeyService {
 
     final KeyStore keyStore = KeyStore.getInstance("JCEKS");
 
-    final FileInputStream keyFile = new FileInputStream(keyStorePath);
-    keyStore.load(keyFile, keyStorePassword.toCharArray());
-    keyFile.close();
+    try (FileInputStream keyFile = new FileInputStream(keyStorePath)) {
+      keyStore.load(keyFile, keyStorePassword.toCharArray());
+    }
 
     final PasswordProtection keyPassword = new PasswordProtection(this.keyPassword.toCharArray());
 
