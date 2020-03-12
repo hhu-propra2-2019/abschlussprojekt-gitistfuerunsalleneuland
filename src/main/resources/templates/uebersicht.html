@@ -49,27 +49,28 @@
   	  </div>
   	</div>
   </div>
-  
-  <div class="container mt-5">
+    
+    </div class="container mt-5">
     <h4>Kommende Veranstaltungen</h4>
-    <div class="container mt-4">
-      <!-- template noch nicht immplementiert -->
-      <ul class="list-group">
-        <li class="list-group-item">Test Element</li>
-        <li class="list-group-item">Test Element</li>
-        <li class="list-group-item">Test Element</li>
-        <li class="list-group-item">Test Element</li>
-        <!-- th:each="bestellung : ${kunde.bestellungen}" / <a>th:href="@{/bestellung}" href=""</a>-->
-      </ul>
-    </div>
-  
+    <table>
+    	<thead>
+    		<th>Name</th>
+    		<th>Datum/Uhrzeit</th>
+    		<th>Dauer</th>
+   		</thead>
+    <tbody> 
+      <tr th:each="event : ${events}"> 
+        <td th:text="${event.name}">Bier</td>
+        <td th:text="${event.zonedDateTime}">3</td>
+        <td th:text="${event.duration}">3</td>
+       </tr>
+    </tbody>
+</table>
   </div>
   <div class="mx-5">
     <p></p>
   </div>
  
-
-
 </main>
 </body>
 </html>
