@@ -13,28 +13,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.jlefebure.spring.boot.minio.MinioService;
-
 @SuppressWarnings("PMD")
 @SpringBootApplication
 @EnableScheduling
-public class PraxisApplication implements ApplicationRunner {
+public class PraxisApplication {
 
   public static void main(final String[] args) {
     SpringApplication.run(PraxisApplication.class, args);
   }
   
-   @Autowired
-	MinioService minioService;
-	
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		File newFile = new File("src/test/resources/test.txt");
-		InputStream fileStream = new FileInputStream(newFile);
-		
-		System.out.println(minioService);
-		
-		minioService.upload(Path.of("test.txt"), fileStream, ContentType.TEXT_PLAIN);
-		System.out.println("Hello World!");
-	}
 }

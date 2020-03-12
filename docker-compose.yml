@@ -1,6 +1,7 @@
 version: '3.3'
 
 services:
+
   database:
     image: mysql:5.7
     ports:
