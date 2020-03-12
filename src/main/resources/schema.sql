@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS rheinjug1.receipt_signature;
 CREATE TABLE `rheinjug1`.`receipt_signature` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `used` TINYINT NOT NULL,
+  `meetup_id` INT NOT NULL,
   `signature` VARCHAR(2000) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
