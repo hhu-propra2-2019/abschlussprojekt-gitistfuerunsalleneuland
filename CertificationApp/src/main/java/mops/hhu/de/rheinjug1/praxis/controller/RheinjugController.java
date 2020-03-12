@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import mops.hhu.de.rheinjug1.praxis.entities.ReceiptEntity;
 import java.io.File;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.jlefebure.spring.boot.minio.MinioException;
 
 @Controller
 @SuppressWarnings({
@@ -53,6 +53,7 @@ public class RheinjugController {
   public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute("account", createAccountFromPrincipal(token));}
+    model.addAttribute("ReceiptEntity", new ReceiptEntity());
     publicAccess.increment();
     return "uebersicht";
   }
