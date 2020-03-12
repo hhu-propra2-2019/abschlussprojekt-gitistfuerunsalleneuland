@@ -1,6 +1,5 @@
 package mops;
 
-import mops.hhu.de.rheinjug1.praxis.entities.AcceptedSubmission;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
@@ -20,9 +19,6 @@ public class PraxisApplication {
 
   @Bean
   ApplicationRunner init() {
-    return args -> {
-      final AcceptedSubmission submission = new AcceptedSubmission(0L, 0L);
-      receiptService.createReceiptAndSaveSignatureInDatabase(submission, "testReceipt");
-    };
+    return args -> {};
   }
 }

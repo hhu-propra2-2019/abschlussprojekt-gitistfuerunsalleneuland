@@ -33,6 +33,7 @@ public class KeyService {
 
     final KeyStore keyStore = KeyStore.getInstance("JCEKS");
 
+    //noinspection LocalCanBeFinal
     try (FileInputStream keyFile = new FileInputStream(keyStorePath)) {
       keyStore.load(keyFile, keyStorePassword.toCharArray());
     }
