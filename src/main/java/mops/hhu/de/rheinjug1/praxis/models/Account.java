@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.controller;
+package mops.hhu.de.rheinjug1.praxis.models;
 
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-class Account {
+public class Account {
   private final String name;
   private final String email;
   private final String image;
