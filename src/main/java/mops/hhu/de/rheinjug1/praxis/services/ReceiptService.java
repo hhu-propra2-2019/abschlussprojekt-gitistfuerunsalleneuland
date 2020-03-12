@@ -30,9 +30,9 @@ public class ReceiptService {
     final String meetUpTitle = meetupService.getTitle(meetupId);
 
     final String signature =
-        encryptionService.sign(meetupType, submission.getKeycloakId(), meetupId);
+        encryptionService.sign(meetupType, meetupId, submission.getKeycloakId());
 
-    final ReceiptSignature receiptSignature = new ReceiptSignature(signature);
+    final ReceiptSignature receiptSignature = new ReceiptSignature(signature, meetupId);
     receiptSignatureRepository.save(receiptSignature);
     return new Receipt(name, meetupId, meetUpTitle, meetupType, signature);
   };
