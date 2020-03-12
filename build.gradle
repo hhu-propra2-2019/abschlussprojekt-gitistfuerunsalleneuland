@@ -80,6 +80,7 @@ dependencies {
     implementation "mops:styleguide:2.1.0"
     implementation 'org.keycloak:keycloak-spring-boot-starter:9.0.0'
     implementation 'org.keycloak.bom:keycloak-adapter-bom:3.3.0.Final'
+    compile "io.vavr:vavr:0.9.3"
 }
 
 test {
