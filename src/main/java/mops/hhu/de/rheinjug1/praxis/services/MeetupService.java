@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
@@ -36,5 +37,13 @@ public class MeetupService {
   private void insertNonExistingEvents(
       final List<Event> meetupEvents, final List<Event> allEvents) {
     meetupEvents.stream().filter(i -> !allEvents.contains(i)).forEach(i -> template.insert(i));
+  }
+
+  public List<Event> getUpcomingEvents(){
+    return repo.findAll().stream().filter(i->i.getStatus().equals("upcoming")).collect(Collectors.toList());
+  }
+
+  public List<Event> getAll(){
+    return repo.findAll();
   }
 }
