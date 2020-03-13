@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum MeetupType {
-  RHEINJUG("rheinjug"),
-  ENTWICKELBAR("entwickelbar");
+  RHEINJUG("Rheinjug"),
+  ENTWICKELBAR("Entwickelbar");
 
   private final String label;
 
