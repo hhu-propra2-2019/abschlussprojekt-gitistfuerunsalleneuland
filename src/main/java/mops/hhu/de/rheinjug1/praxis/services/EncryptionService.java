@@ -14,7 +14,12 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 public class EncryptionService {
 
-  @Autowired private KeyService keyService;
+  private KeyService keyService;
+
+  @Autowired
+  public EncryptionService(final KeyService keyService) {
+    this.keyService = keyService;
+  }
 
   private String createHashValue(
       final MeetupType meetupType, final long meetupId, final String name, final String email) {

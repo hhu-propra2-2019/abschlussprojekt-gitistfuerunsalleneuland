@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 
-@AllArgsConstructor
 @ToString
 @Getter
 @EqualsAndHashCode
+@AllArgsConstructor
 public class Receipt {
 
   private final String name;

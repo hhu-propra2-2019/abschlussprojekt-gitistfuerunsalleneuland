@@ -8,8 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
+import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +25,13 @@ public class RheinjugController {
 
   private final Counter publicAccess;
 
-  public RheinjugController(final MeterRegistry registry) {
+  private final MeetupService meetupService;
+
+  @Autowired
+  public RheinjugController(final MeterRegistry registry, final MeetupService meetupService) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
+    this.meetupService = meetupService;
   }
 
   private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
@@ -42,6 +48,7 @@ public class RheinjugController {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
+    model.addAttribute("events", meetupService.getUpcomingEvents());
     publicAccess.increment();
     return "uebersicht";
   }

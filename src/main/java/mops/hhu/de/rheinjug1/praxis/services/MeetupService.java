@@ -16,9 +16,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class MeetupService {
 
-  @Autowired private MeetupClient meetupClient;
-  @Autowired private EventRepository eventRepository;
-  @Autowired JdbcAggregateTemplate jdbcAggregateTemplate;
+  private final MeetupClient meetupClient;
+  private final EventRepository eventRepository;
+  final JdbcAggregateTemplate jdbcAggregateTemplate;
+
+  @Autowired
+  public MeetupService(
+      final MeetupClient meetupClient,
+      final EventRepository eventRepository,
+      final JdbcAggregateTemplate jdbcAggregateTemplate) {
+    this.meetupClient = meetupClient;
+    this.eventRepository = eventRepository;
+    this.jdbcAggregateTemplate = jdbcAggregateTemplate;
+  }
 
   @Scheduled(fixedRate = 3000) // Todo:Zeitintervall?
   private void update() {
