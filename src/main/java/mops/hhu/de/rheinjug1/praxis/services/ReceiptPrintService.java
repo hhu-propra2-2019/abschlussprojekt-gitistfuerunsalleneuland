@@ -4,13 +4,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReceiptPrintService {
 
-  public void printReceipt(final Receipt receipt) {
+  public String printReceipt(final Receipt receipt) {
+    final String path = "src/main/resources/" + receipt.getMeetupTitle() + "-Quittung.txt";
 
-    try (FileWriter fileWriter =
-            new FileWriter("src/main/resources/" + receipt.getMeetupTitle() + "-Quittung.txt");
+    try (FileWriter fileWriter = new FileWriter(path);
         PrintWriter printWriter = new PrintWriter(fileWriter)) {
 
       printWriter.println("Name: " + receipt.getName());
@@ -23,5 +25,6 @@ public class ReceiptPrintService {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    return path;
   }
 }
