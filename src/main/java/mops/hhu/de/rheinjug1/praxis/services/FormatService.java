@@ -4,13 +4,17 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class FormatService {
 
   public String format(final Duration duration) {
-    return "" + duration.toHoursPart() + ":" + duration.toMinutesPart();
+	  Calendar cal = Calendar.getInstance();
+	  cal.set(0, 0, 0, duration.toHoursPart(), duration.toMinutesPart());
+	  return String.format("%tH:%tM", cal, cal);
   }
 
   private ZonedDateTime toLocalEventTime(final ZonedDateTime utcTime, final ZoneId zoneId) {
