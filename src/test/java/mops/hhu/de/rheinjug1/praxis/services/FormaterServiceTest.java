@@ -18,13 +18,13 @@ public class FormaterServiceTest {
 
     assertThat(formater.format(testDuration)).isEqualTo(wantedFormatting);
   }
-  
+
   @Test
   void formatTimeMinutes() {
-	  final Duration testDuration = Duration.ofMinutes(25);
-	  final String wantedFormatting = "00:25";
+    final Duration testDuration = Duration.ofMinutes(25);
+    final String wantedFormatting = "00:25";
 
-	  assertThat(formater.format(testDuration)).isEqualTo(wantedFormatting);
+    assertThat(formater.format(testDuration)).isEqualTo(wantedFormatting);
   }
 
   @Test
