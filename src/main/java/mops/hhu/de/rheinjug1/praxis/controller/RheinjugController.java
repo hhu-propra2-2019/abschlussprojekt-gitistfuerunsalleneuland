@@ -1,9 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
+
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -12,9 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 public class RheinjugController {
 
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField", "PMD.UnusedImports"})
   private final Counter authenticatedAccess;
 
   private final Counter publicAccess;
@@ -34,12 +38,22 @@ public class RheinjugController {
   }
 
   @GetMapping("/")
-  public String rheinjug(final KeycloakAuthenticationToken token, final Model model) {
+  public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      model.addAttribute("account", createAccountFromPrincipal(token));
+      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
     publicAccess.increment();
-    return "rheinjug";
+    return "uebersicht";
+  }
+
+  @GetMapping("/talk")
+  @Secured("ROLE_orga")
+  public String statistics(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) {
+      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
+    }
+    model.addAttribute("summaryForm", new Summary());
+    return "talk";
   }
 
   @GetMapping("/logout")
@@ -48,15 +62,19 @@ public class RheinjugController {
     return "redirect:/";
   }
 
-  @GetMapping("/statistics")
-  @Secured("ROLE_orga")
-  public String statistics(final KeycloakAuthenticationToken token, final Model model) {
-    model.addAttribute("account", createAccountFromPrincipal(token));
-    return "statistics";
+  @GetMapping("/profil")
+  public String profil(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) {
+      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
+    }
+    return "profil";
   }
 
-  @GetMapping("/talk")
-  public String talk() {
-    return "talk";
+  @GetMapping("/statistics")
+  public String talk(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) {
+      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
+    }
+    return "statistics";
   }
 }
