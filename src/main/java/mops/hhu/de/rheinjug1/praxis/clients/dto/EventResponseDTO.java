@@ -1,10 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.clients.dto;
 
+import static mops.hhu.de.rheinjug1.praxis.enums.MeetupType.*;
+
 import java.time.*;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.services.FormatService;
 
 @SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
@@ -46,7 +49,10 @@ public class EventResponseDTO {
     final String formattedDuration = formatter.format(duration);
     final String formattedZonedDateTime =
         formatter.toLocalEventTimeString(zonedDateTime, group.getZoneId());
+
+    final MeetupType meetupType = name.contains("Entwickelbar") ? ENTWICKELBAR : RHEINJUG;
+
     return new Event(
-        formattedDuration, id, name, status, formattedZonedDateTime, link, description);
+        formattedDuration, id, name, status, formattedZonedDateTime, link, description, meetupType);
   }
 }
