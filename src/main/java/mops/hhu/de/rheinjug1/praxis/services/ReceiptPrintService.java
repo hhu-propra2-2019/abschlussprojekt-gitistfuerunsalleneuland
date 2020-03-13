@@ -14,6 +14,7 @@ public class ReceiptPrintService {
         PrintWriter printWriter = new PrintWriter(fileWriter)) {
 
       printWriter.println("Name: " + receipt.getName());
+      printWriter.println("Email: " + receipt.getEmail());
       printWriter.println("Veranstaltungs-ID: " + receipt.getMeetupId());
       printWriter.println("Titel: " + receipt.getMeetupTitle());
       printWriter.println("Typ: " + receipt.getMeetupType().getLabel());
