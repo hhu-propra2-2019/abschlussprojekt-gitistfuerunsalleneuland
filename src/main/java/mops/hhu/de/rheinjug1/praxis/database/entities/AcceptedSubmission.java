@@ -12,7 +12,7 @@ public class AcceptedSubmission {
   private String name;
   private String minIoLink;
 
-  public AcceptedSubmission(final Long meetupId, final String email, final String name) {
+  public AcceptedSubmission(final Long meetupId, final String name, final String email) {
     this.meetupId = meetupId;
     this.email = email;
     this.name = name;

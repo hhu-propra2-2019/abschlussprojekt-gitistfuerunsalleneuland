@@ -63,6 +63,6 @@ class ReceiptServiceTest {
 
     final Receipt expectedReceipt =
         new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
-    assertThat(expectedReceipt).isEqualTo(receipt);
+    assertThat(receipt).isEqualTo(expectedReceipt);
   }
 }
