@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
+import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
-import mops.hhu.de.rheinjug1.praxis.entities.AcceptedSubmission;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.ReceiptSignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
-import mops.hhu.de.rheinjug1.praxis.repositories.ReceiptSignatureRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,21 +48,21 @@ class ReceiptServiceTest {
           KeyStoreException, SignatureException, UnrecoverableEntryException,
           EventNotFoundException {
     final Long meetupId = 12_345L;
-    final Long keycloakId = 54_321L;
     final String name = "testName";
+    final String email = "testEmail";
     final String meetupTitle = "testMeetupTitle";
     final String signature = "testSignature";
     final MeetupType meetupType = MeetupType.ENTWICKELBAR;
 
     when(eventRepository.findById(meetupId)).thenReturn(Optional.of(TEST_EVENT));
-    when(encryptionService.sign(meetupType, meetupId, keycloakId)).thenReturn(signature);
+    when(encryptionService.sign(meetupType, meetupId, name, email)).thenReturn(signature);
     when(receiptSignatureRepository.save(any())).thenReturn(null);
 
-    final AcceptedSubmission submission = new AcceptedSubmission(meetupId, keycloakId);
-    final Receipt receipt =
-        receiptService.createReceiptAndSaveSignatureInDatabase(submission, name);
+    final AcceptedSubmission submission = new AcceptedSubmission(meetupId, name, email);
+    final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
 
-    final Receipt expectedReceipt = new Receipt(name, meetupId, meetupTitle, meetupType, signature);
+    final Receipt expectedReceipt =
+        new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
     assertThat(expectedReceipt).isEqualTo(receipt);
   }
 }

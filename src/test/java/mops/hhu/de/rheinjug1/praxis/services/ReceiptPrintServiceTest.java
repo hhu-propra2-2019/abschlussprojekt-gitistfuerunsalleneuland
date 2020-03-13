@@ -30,13 +30,14 @@ class ReceiptPrintServiceTest {
   void receiptGetsPrintedToFileInResources() throws IOException {
     final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
     final Receipt receipt =
-        new Receipt("Name", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
+        new Receipt("testName", "testEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
 
     receiptPrintService.printReceipt(receipt);
 
     final List<String> expected =
         Arrays.asList(
-            "Name: Name",
+            "Name: testName",
+            "Email: testEmail",
             "Veranstaltungs-ID: 1",
             "Titel: Titel",
             "Typ: Entwickelbar",
