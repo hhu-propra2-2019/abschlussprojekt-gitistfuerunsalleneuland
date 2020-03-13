@@ -39,7 +39,7 @@ class ReceiptPrintServiceTest {
             "Name: Name",
             "Veranstaltungs-ID: 1",
             "Titel: Titel",
-            "Typ: entwickelbar",
+            "Typ: Entwickelbar",
             "OEUIc5654eut");
     final List<String> actual = Files.readAllLines(path);
 

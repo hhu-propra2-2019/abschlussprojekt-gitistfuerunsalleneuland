@@ -7,8 +7,12 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.util.Optional;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.entities.AcceptedSubmission;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.repositories.ReceiptSignatureRepository;
 import org.junit.jupiter.api.Test;
@@ -17,20 +21,32 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
-public class ReceiptServiceTest {
+class ReceiptServiceTest {
 
   @Autowired private ReceiptService receiptService;
-
-  @MockBean private MeetupService meetupService;
 
   @MockBean private EncryptionService encryptionService;
 
   @MockBean private ReceiptSignatureRepository receiptSignatureRepository;
 
+  @MockBean private EventRepository eventRepository;
+
+  private static final Event TEST_EVENT =
+      new Event(
+          "testDuration",
+          0L,
+          "testMeetupTitle",
+          "testStatus",
+          "testZonedDateTime",
+          "testLink",
+          "testDescription",
+          MeetupType.ENTWICKELBAR);
+
   @Test
-  public void receiptService_returns_correct_receipt()
+  void receiptService_returns_correct_receipt()
       throws CertificateException, InvalidKeyException, NoSuchAlgorithmException, IOException,
-          KeyStoreException, SignatureException, UnrecoverableEntryException {
+          KeyStoreException, SignatureException, UnrecoverableEntryException,
+          EventNotFoundException {
     final Long meetupId = 12_345L;
     final Long keycloakId = 54_321L;
     final String name = "testName";
@@ -38,8 +54,7 @@ public class ReceiptServiceTest {
     final String signature = "testSignature";
     final MeetupType meetupType = MeetupType.ENTWICKELBAR;
 
-    when(meetupService.getType(meetupId)).thenReturn(MeetupType.ENTWICKELBAR);
-    when(meetupService.getTitle(meetupId)).thenReturn(meetupTitle);
+    when(eventRepository.findById(meetupId)).thenReturn(Optional.of(TEST_EVENT));
     when(encryptionService.sign(meetupType, meetupId, keycloakId)).thenReturn(signature);
     when(receiptSignatureRepository.save(any())).thenReturn(null);
 
