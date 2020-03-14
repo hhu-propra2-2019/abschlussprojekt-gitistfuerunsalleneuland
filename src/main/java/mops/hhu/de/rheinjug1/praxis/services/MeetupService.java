@@ -48,4 +48,18 @@ public class MeetupService {
   public List<Event> getAll() {
     return eventRepository.findAll();
   }
+
+  public List<Event> getLastXEvents(final int x) {
+    final long totalEvents =
+        eventRepository.findAll().stream().filter(y -> y.getStatus().contentEquals("past")).count();
+    if (totalEvents < x) {
+      return eventRepository.findAll().stream()
+          .filter(y -> y.getStatus().contentEquals("past"))
+          .collect(Collectors.toList());
+    }
+    return eventRepository.findAll().stream()
+        .filter(y -> y.getStatus().contentEquals("past"))
+        .skip(totalEvents - x)
+        .collect(Collectors.toList());
+  }
 }

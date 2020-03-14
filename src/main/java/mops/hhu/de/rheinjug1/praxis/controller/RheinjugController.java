@@ -8,8 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
+import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +22,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RheinjugController {
 
   private final Counter authenticatedAccess;
-
   private final Counter publicAccess;
+  @Autowired private final ChartService chartService;
 
   public RheinjugController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
+    chartService = new ChartService();
   }
 
   private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
@@ -75,6 +78,7 @@ public class RheinjugController {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
+    model.addAttribute("chart", chartService.getXEventsChart(6));
     return "statistics";
   }
 }
