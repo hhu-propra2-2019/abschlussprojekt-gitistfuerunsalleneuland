@@ -1,65 +1,69 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Scanner;
+import static java.util.stream.Collectors.toList;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.*;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.*;
+import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 
 @Service
+@SuppressWarnings({"PMD.AvoidReassigningLoopVariables", "PMD.FieldNamingConventions"})
 public class ReceiptService {
-	
-	public ArrayList<Receipt> readAll(ArrayList<MultipartFile> receiptFiles) throws IOException {
-		ArrayList<Receipt> receipts = new ArrayList<Receipt>();
-		for (MultipartFile receiptFile : receiptFiles) receipts.add(read(receiptFile));
-		return receipts;
-	}
 
-	public Receipt read(MultipartFile receiptFile) throws IOException{
-		InputStream input = receiptFile.getInputStream();
-		String[] lines = getLines(input);
-		if (lines.length != 3) throw new IOException();
-		lines = cut(lines);
-		return new Receipt((Long) null,Long.parseLong(lines[0]),lines[1],lines[2]);
-	}
+  private static final String format =
+      "Name: \\w+\r\nVeranstaltungs-ID: \\d+\r\nTitel: \\w+\r\nTyp: \\w+\r\n.+\r\n";
+  private static final String meetUpPrefix = "Veranstaltungs-ID: ";
+  private static final String typePrefix = "Typ: ";
 
-	private String[] cut(String[] lines) {
-		lines[0] = lines[0].substring(lines[0].indexOf(':') + 2);
-		lines[1] = lines[1].substring(lines[1].indexOf(':') + 2);
-		return lines;
-	}
+  public Receipt read(final MultipartFile receiptFile) throws IOException {
+    if (receiptFile == null) {
+      throw new IOException();
+    }
+    String receiptString = "";
+    try (InputStream input = receiptFile.getInputStream();
+        Scanner scanner = new Scanner(input).useDelimiter("\\A"); ) {
+      receiptString = scanner.hasNext() ? scanner.next() : "";
+      if (isCorrectFormat(receiptString)) {
+        return stringToReceipt(receiptString);
+      } else {
+        throw new IOException();
+      }
+    }
+  }
 
-	private String[] getLines(InputStream input) throws IOException {
-		Scanner scanner = new Scanner(input).useDelimiter("\\A");
-		String receiptString = scanner.hasNext() ? scanner.next() : "";
-		receiptString = receiptString.substring(0, receiptString.lastIndexOf('\n') -1);
-		System.out.println(receiptString);
-		if (receiptString.matches(
-		"Name: \\\\w+\\\r\n" + 
-		"Veranstaltungs-ID: \\\\d+\\\r\n" + 
-		"Titel: \\\\w+\\\r\n" + 
-		"Typ: \\\\w+\\\r\n" + 
-		"\\.+\\\r\n")) {		
-		    String[] lines = (String[]) receiptString.lines().filter(line -> isNecessary(line)).toArray();
-		    return lines;
-		} else throw new IOException();
-	}
-	
-	private boolean isNecessary(String line) {		
-		if (line.contains("Veranstaltungs-ID: ") 
-				|| line.contains("Typ: ")	
-				||!line.contains(":")) {
-			return true;
-		} else return false;
-	}
+  private Receipt stringToReceipt(final String receiptString) {
+    final Receipt receipt = new Receipt();
+    final List<String> lines = receiptString.lines().collect(toList());
+    for (String line : lines) {
+      if (line.contains(meetUpPrefix)) {
+        line = line.substring(line.indexOf(meetUpPrefix) + meetUpPrefix.length());
+        receipt.setMeetupId(Long.parseLong(line));
+      } else if (line.contains(typePrefix)) {
+        line = line.substring(line.indexOf(typePrefix) + typePrefix.length());
+        receipt.setType(line);
+      } else if (!line.contains(":") && "".equals(line)) {
+        receipt.setSignature(line);
+      }
+    }
+    return receipt;
+  }
 
-	public void verify(ArrayList<Receipt> receipts) {
-		// TODO Auto-generated method stub
-		
-	}
+  private boolean isCorrectFormat(final String receiptString) throws IOException {
+    final Pattern format = Pattern.compile(this.format);
+    final Matcher matcher = format.matcher(receiptString);
+    if (matcher.matches()) {
+      return true;
+    } else {
+      throw new IOException();
+    }
+  }
 
+  public boolean verify(final Receipt receipts) {
+    // TODO Auto-generated method stub
+    return true;
+  }
 }
