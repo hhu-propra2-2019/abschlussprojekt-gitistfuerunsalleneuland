@@ -14,7 +14,7 @@ public class Receipt {
 
   private final String name;
   private final String email;
-  private final long meetupId;
+  private final Long meetupId;
   private final String meetupTitle;
   private final MeetupType meetupType;
   private final String signature;
