@@ -8,9 +8,12 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
+import javax.mail.MessagingException;
 import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.models.Receipt;
+import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
 import mops.hhu.de.rheinjug1.praxis.services.SubmissionService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -30,11 +33,16 @@ public class SubmissionController {
 
   private final ReceiptService receiptService;
 
+  private final ReceiptSendService receiptSendService;
+
   @Autowired
   public SubmissionController(
-      final SubmissionService submissionService, final ReceiptService receiptService) {
+      final SubmissionService submissionService,
+      final ReceiptService receiptService,
+      final ReceiptSendService receiptSendService) {
     this.submissionService = submissionService;
     this.receiptService = receiptService;
+    this.receiptSendService = receiptSendService;
   }
 
   @GetMapping
@@ -66,7 +74,9 @@ public class SubmissionController {
 
     final AcceptedSubmission acceptedSubmission = acceptedSubmissionOptional.get();
     try {
-      receiptService.createReceiptAndSaveSignatureInDatabase(acceptedSubmission);
+      final Receipt receipt =
+          receiptService.createReceiptAndSaveSignatureInDatabase(acceptedSubmission);
+      receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException
         | IOException
@@ -75,7 +85,9 @@ public class SubmissionController {
         | InvalidKeyException
         | EventNotFoundException
         | CertificateException e) {
-      return "error";
+      return "internalServerError";
+    } catch (final MessagingException e) {
+      return "messageCantBeSentError";
     }
 
     return "receiptCreated";

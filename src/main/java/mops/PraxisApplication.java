@@ -24,7 +24,7 @@ public class PraxisApplication {
   ApplicationRunner init() {
     return args -> {
       final AcceptedSubmission acceptedSubmission =
-          new AcceptedSubmission(256264912L, "studentin@student.in", "studentin", "");
+          new AcceptedSubmission(256264912L, "ottolin@outlook.de", "otlin100", "");
       acceptedSubmissionRepository.save(acceptedSubmission);
     };
   }
