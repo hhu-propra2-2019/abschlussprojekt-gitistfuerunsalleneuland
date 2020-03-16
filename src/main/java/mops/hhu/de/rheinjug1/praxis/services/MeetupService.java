@@ -2,9 +2,7 @@ package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.annotation.PostConstruct;
-
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
@@ -22,10 +20,10 @@ public class MeetupService {
   @Autowired private MeetupClient meetupClient;
   @Autowired private EventRepository eventRepository;
   @Autowired JdbcAggregateTemplate jdbcAggregateTemplate;
-  
+
   @PostConstruct
   private void initDatabase() {
-	  update();
+    update();
   }
 
   @Scheduled(cron = "0 0 8 * * ?") // Todo:Zeitintervall?
