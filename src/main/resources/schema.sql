@@ -26,6 +26,8 @@ CREATE TABLE `rheinjug1`.`event` (
   `link` VARCHAR(100) NULL,
   `description` TEXT NULL,
   `meetup_type` ENUM('ENTWICKELBAR', 'RHEINJUG') NOT NULL,
-  PRIMARY KEY (`id`)
+   PRIMARY KEY (`id`),
+   participants INT DEFAULT 0
   );
+
 
