@@ -20,7 +20,7 @@ public class MeetupService {
   @Autowired private EventRepository eventRepository;
   @Autowired JdbcAggregateTemplate jdbcAggregateTemplate;
 
-  @Scheduled(fixedRate = 3000) // Todo:Zeitintervall?
+  @Scheduled(cron = "0 0 8 * * ?") // Todo:Zeitintervall?
   private void update() {
     final List<Event> meetupEvents = meetupClient.getAllEvents();
     final List<Event> allEvents = eventRepository.findAll();

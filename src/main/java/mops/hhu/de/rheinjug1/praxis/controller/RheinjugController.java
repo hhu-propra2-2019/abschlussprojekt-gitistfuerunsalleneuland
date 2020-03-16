@@ -50,14 +50,15 @@ public class RheinjugController {
     return "uebersicht";
   }
 
-  @GetMapping("/talk")
+  @GetMapping("/statistics")
   @Secured("ROLE_orga")
   public String statistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
-    model.addAttribute("summaryForm", new Summary());
-    return "talk";
+
+    model.addAttribute("chart", chartService.getXEventsChart(6));
+    return "statistics";
   }
 
   @GetMapping("/logout")
@@ -74,13 +75,12 @@ public class RheinjugController {
     return "profil";
   }
 
-  @GetMapping("/statistics")
-  // @Secured("ROLE_orga")
+  @GetMapping("/talk")
   public String talk(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
-    model.addAttribute("chart", chartService.getXEventsChart(6));
-    return "statistics";
+    model.addAttribute("summaryForm", new Summary());
+    return "talk";
   }
 }

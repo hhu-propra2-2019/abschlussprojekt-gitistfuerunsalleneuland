@@ -1,7 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -15,34 +14,21 @@ import org.mockito.Mockito;
 public class ChartServiceTest {
 
   private final List<Event> sampleData = new LinkedList<>();
-  private MeetupService spyMeetupService;
-  private ChartService chartService;
 
   @BeforeEach
   void init() {
     final String time = "12:30 - 12.03.2020";
     sampleData.add(new Event("", 0, "", "", time, "", "", null, 0));
     sampleData.add(new Event("", 0, "", "", time, "", "", null, 0));
-
-    spyMeetupService = Mockito.spy(new MeetupService());
-    spyMeetupService = mock(MeetupService.class);
-    doReturn(sampleData).when(spyMeetupService).getLastXEvents(Mockito.anyInt());
-    chartService = new ChartService(spyMeetupService);
   }
 
   @Test
   void testNumberOfDataPoints() {
-    when(spyMeetupService.getLastXEvents(Mockito.anyInt())).thenReturn(sampleData);
+    final MeetupService meetupServiceMock = mock(MeetupService.class);
+    final ChartService chartService = new ChartService(meetupServiceMock);
+    when(meetupServiceMock.getLastXEvents(Mockito.anyInt())).thenReturn(sampleData);
     final int numberOfTalks = chartService.getXEventsChart(2).getTalksLength();
 
     assertThat(numberOfTalks).isEqualTo(sampleData.size());
   }
-
-  //  @Test
-  //  void testDataOfChartObject() {
-  //	  when(spyMeetupService.getLastXEvents(Mockito.anyInt())).thenReturn(sampleData);
-  //	  Chart test = chartService.getXEventsChart(2);
-  //
-  //	  assertThat(test.getData()).isEqualTo("[]");
-  //  }
 }
