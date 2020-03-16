@@ -14,14 +14,20 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 public class EncryptionService {
 
-  @Autowired private KeyService keyService;
+  private KeyService keyService;
 
-  private String createHashValue(
-      final MeetupType meetupType, final long meetupId, final long keycloakId) {
-    return meetupType.getLabel() + meetupId + keycloakId;
+  @Autowired
+  public EncryptionService(final KeyService keyService) {
+    this.keyService = keyService;
   }
 
-  public String sign(final MeetupType meetupType, final long meetupId, final long keycloakId)
+  private String createHashValue(
+      final MeetupType meetupType, final long meetupId, final String name, final String email) {
+    return meetupType.getLabel() + meetupId + name + email;
+  }
+
+  public String sign(
+      final MeetupType meetupType, final long meetupId, final String name, final String email)
       throws NoSuchAlgorithmException, IOException, InvalidKeyException, SignatureException,
           KeyStoreException, UnrecoverableEntryException, CertificateException {
 
@@ -31,7 +37,7 @@ public class EncryptionService {
     final Signature sign = Signature.getInstance("SHA256withRSA");
     sign.initSign(privateKey);
 
-    final String hashValue = createHashValue(meetupType, meetupId, keycloakId);
+    final String hashValue = createHashValue(meetupType, meetupId, name, email);
     sign.update(hashValue.getBytes(StandardCharsets.UTF_8));
 
     return Base64.toBase64String(sign.sign());

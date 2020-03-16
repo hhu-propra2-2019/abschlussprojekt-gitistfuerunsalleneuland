@@ -1,6 +1,6 @@
-package mops.hhu.de.rheinjug1.praxis.repositories;
+package mops.hhu.de.rheinjug1.praxis.database.repositories;
 
-import mops.hhu.de.rheinjug1.praxis.entities.AcceptedSubmission;
+import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
