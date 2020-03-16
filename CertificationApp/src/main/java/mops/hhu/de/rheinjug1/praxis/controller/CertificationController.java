@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -63,6 +64,13 @@ public class CertificationController {
     publicAccess.increment();
     return "uebersicht";
   }
+
+  @PutMapping("/")
+  public String revertInput(final KeycloakAuthenticationToken token, final Model model) {
+      receiptList.getReceiptList().remove(0);
+      System.out.println("wird ausgeführt.");
+      return "redirect://";
+  }
   
   @PostMapping("/")
   @Secured({"ROLE_student","ROLE_orga"})
@@ -71,14 +79,12 @@ public class CertificationController {
 	        model.addAttribute("account", createAccountFromPrincipal(token));}
 
 
-	    System.out.println(receiptFiles);
-	    receiptList.addNewReceipt(receiptFiles.getNewReceipt());
-        System.out.println(receiptFiles);
-        System.out.println(receiptList);
+	    if(!receiptFiles.getNewReceipt().getOriginalFilename().equals(""))
+	        receiptList.addNewReceipt(receiptFiles.getNewReceipt());
+
 	    model.addAttribute("receipts", receiptFiles);
 	    model.addAttribute("receiptList", receiptList);
 	    ArrayList<Receipt> receipts;
-
 		try {
 			receipts = receiptService.readAll(receiptList.getReceiptList());
 		} catch (IOException e) {

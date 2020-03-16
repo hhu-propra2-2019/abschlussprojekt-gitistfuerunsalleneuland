@@ -11,5 +11,11 @@ public class ReceiptForm {
 	private String matrikelNummer;
 	private MultipartFile newReceipt;
 
-
+	@Override
+	public String toString() {
+		return "ReceiptForm{" +
+				"matrikelNummer='" + matrikelNummer + '\'' +
+				", newReceipt=" + newReceipt.getOriginalFilename() +
+				'}';
+	}
 }
