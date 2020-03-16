@@ -27,6 +27,6 @@ public class ChartService {
     final DateTimeFormatter formatter =
         DateTimeFormatter.ofPattern(FormatService.getDateTimePattern());
     final LocalDateTime time = LocalDateTime.parse(event.getZonedDateTime(), formatter);
-    return new Talk(time, (int) (Math.random() * 20)); // actual Data naccesary
+    return new Talk(time, event.getParticipants());
   }
 }
