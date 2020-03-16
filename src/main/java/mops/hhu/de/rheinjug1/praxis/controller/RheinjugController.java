@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
+import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ public class RheinjugController {
 
   private final Counter authenticatedAccess;
   private final Counter publicAccess;
-  @Autowired private final ChartService chartService;
+  @Autowired private ChartService chartService;
+  @Autowired private MeetupService meetUpService;
 
   public RheinjugController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
-    chartService = new ChartService();
   }
 
   private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {

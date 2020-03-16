@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FormatService {
 
+  public static String dateTimeFormat = "HH:mm - dd.MM.yyyy";
+
   public String format(final Duration duration) {
     return "" + duration.toHoursPart() + ":" + duration.toMinutesPart();
   }
@@ -18,7 +20,11 @@ public class FormatService {
   }
 
   public String toLocalEventTimeString(final ZonedDateTime utcTime, final ZoneId zoneId) {
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd.MM.yyyy");
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeFormat);
     return toLocalEventTime(utcTime, zoneId).format(formatter);
+  }
+
+  public static String getDateTimePattern() {
+    return dateTimeFormat;
   }
 }

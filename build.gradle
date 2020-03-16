@@ -74,6 +74,7 @@ dependencies {
     }
     testImplementation 'org.springframework.security:spring-security-test'
     testCompile 'com.tngtech.archunit:archunit:0.13.0'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'mysql:mysql-connector-java'
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
