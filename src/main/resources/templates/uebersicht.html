@@ -63,12 +63,12 @@
             <tbody th:each="event : ${events}">
             <tr>
                 <div class="card">
-                    <h5 class="card-header">
+                    <span class="card-header">
                         <a th:text="${event.name}" class="collapsed d-block" data-toggle="collapse" th:attr="data-target='#demo' + ${event.id}" aria-expanded="true" aria-controls="collapse-collapsed" id="heading-collapsed">
                             <i th:class="fa fa-chevron-down pull-right"></i>
                             Collapsible Group Item #1
                         </a>
-                    </h5>
+                    </span>
                     <div th:id="'demo' + ${event.id}" class="collapse" aria-labelledby="heading-collapsed">
                         <div class="card-body"><h5>Wann?</h5><div th:text="${event.zonedDateTime}">1</div></div>
                         <div class="card-body"><h5>Wie lang?:</h5><div th:text="${event.duration} + 'h'">2</div></div>
