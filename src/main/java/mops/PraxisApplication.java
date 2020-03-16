@@ -1,5 +1,6 @@
 package mops;
 
+import mops.hhu.de.rheinjug1.praxis.services.UploadService;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +17,9 @@ public class PraxisApplication {
   }
 
   @Bean
-  ApplicationRunner init() {
-    return args -> {};
+  ApplicationRunner init(UploadService uploadService) {
+    return args -> {
+      uploadService.uploadFile("testfile.adoc", "README.adoc");
+    };
   }
 }
