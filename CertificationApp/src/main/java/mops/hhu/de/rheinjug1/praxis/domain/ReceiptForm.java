@@ -9,11 +9,7 @@ import lombok.Data;
 public class ReceiptForm {
 	
 	private String matrikelNummer;
-	private ArrayList<MultipartFile> receiptList = new ArrayList<MultipartFile>();
 	private MultipartFile newReceipt;
-	
-	public void addReceipt() {
-		if (newReceipt != null) receiptList.add(newReceipt);
-	}
+
 
 }

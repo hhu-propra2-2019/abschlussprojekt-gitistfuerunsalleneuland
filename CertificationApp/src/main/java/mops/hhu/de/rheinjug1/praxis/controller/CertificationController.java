@@ -4,6 +4,7 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.ReceiptForm;
+import mops.hhu.de.rheinjug1.praxis.domain.ReceiptList;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
 
 import java.io.File;
@@ -34,6 +35,8 @@ public class CertificationController {
   private final Counter authenticatedAccess;
   private final ReceiptService receiptService = new ReceiptService();
   private final Counter publicAccess;
+
+  private final ReceiptList receiptList = new ReceiptList();
   
   public CertificationController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
@@ -52,28 +55,38 @@ public class CertificationController {
   @GetMapping("/")
   public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      model.addAttribute("account", createAccountFromPrincipal(token));}
+      model.addAttribute("account", createAccountFromPrincipal(token));
+    }
+
     model.addAttribute("receipts", new ReceiptForm());
+    model.addAttribute("receiptList", receiptList);
     publicAccess.increment();
     return "uebersicht";
   }
   
   @PostMapping("/")
   @Secured({"ROLE_student","ROLE_orga"})
-  public String submitReceipt( final KeycloakAuthenticationToken token, final Model model, ReceiptForm receiptFiles) {
+  public String submitReceipt(final KeycloakAuthenticationToken token, final Model model, final ReceiptForm receiptFiles) {
 	    if (token != null) {
-	      model.addAttribute("account", createAccountFromPrincipal(token));}
-	    receiptFiles.addReceipt();
+	        model.addAttribute("account", createAccountFromPrincipal(token));}
+
+
+	    System.out.println(receiptFiles);
+	    receiptList.addNewReceipt(receiptFiles.getNewReceipt());
+        System.out.println(receiptFiles);
+        System.out.println(receiptList);
 	    model.addAttribute("receipts", receiptFiles);
+	    model.addAttribute("receiptList", receiptList);
 	    ArrayList<Receipt> receipts;
+
 		try {
-			receipts = receiptService.readAll(receiptFiles.getReceiptList());
+			receipts = receiptService.readAll(receiptList.getReceiptList());
 		} catch (IOException e) {
 			System.out.println("File has wrong a Format");
 		}
 	    //receiptService.verify(receipts);
 	    return "uebersicht";
-	  }
+  }
 
   @GetMapping("/logout") 
   public String logout(final HttpServletRequest request) throws ServletException {

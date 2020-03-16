@@ -29,6 +29,14 @@
 </header>
 <main th:fragment="bodycontent">
 
+    <div class = "container" th:object="${receiptList}">
+        <ul th:each="receipt : ${receiptList.receiptList}" >
+            <li>
+                <span th:text="${receipt?.getOriginalFilename()}"></span>
+            </li>
+        </ul>
+    </div>
+
   <div class = "container">
 	<form method="post" th:object="${receipts}" enctype="multipart/form-data">
 	    
@@ -36,13 +44,7 @@
 	      <input th:field="*{matrikelNummer}" type="number" placeholder="Matrikel-Nummer">
 	    </div>
 	    
-	    <div class = "container">
-          <ul th:each="receipt : ${receipts.receiptList}" >
-            <li>
-              <span th:text="${receipt?.getOriginalFilename()}"></span>
-   	       </li>
-         </ul>
-       </div>
+
        
         <div class="form-group"><!-- style="border-style: dotted; width: 100%; margin-bottom: 10px" -->
           <label>neue Quittung hochladen</label>
