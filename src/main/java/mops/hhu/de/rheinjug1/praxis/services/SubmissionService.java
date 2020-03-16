@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
@@ -18,7 +19,11 @@ public class SubmissionService {
     this.acceptedSubmissionRepository = acceptedSubmissionRepository;
   }
 
-  public Optional<AcceptedSubmission> validateSubmission(
+  public List<AcceptedSubmission> getAllAcceptedSubmissions(final Account account) {
+    return acceptedSubmissionRepository.findAll(account.getEmail());
+  }
+
+  public Optional<AcceptedSubmission> getAcceptedSubmissionIfAuthorized(
       final Long submissionId, final Account account) {
     final Optional<AcceptedSubmission> acceptedSubmissionOptional =
         acceptedSubmissionRepository.findById(submissionId);
