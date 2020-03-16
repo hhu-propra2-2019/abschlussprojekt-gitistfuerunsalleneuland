@@ -4,12 +4,16 @@ import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.A
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
+import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RheinjugController {
 
   private final Counter authenticatedAccess;
-
+  @Autowired private MeetupService meetupService;
   private final Counter publicAccess;
 
   public RheinjugController(final MeterRegistry registry) {
@@ -42,6 +46,8 @@ public class RheinjugController {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
+    final List<Event> upcoming = meetupService.getUpcomingEvents();
+    model.addAttribute("events", upcoming);
     publicAccess.increment();
     return "uebersicht";
   }
