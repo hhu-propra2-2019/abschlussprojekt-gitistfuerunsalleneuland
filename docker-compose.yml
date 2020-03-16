@@ -9,3 +9,11 @@ services:
     environment:
       - "MYSQL_ROOT_PASSWORD=geheim"
       - "MYSQL_DATABASE=rheinjug1"
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    environment:
+      - "MINIO_ACCESS_KEY=minio"
+      - "MINIO_SECRET_KEY=minio123"
+    command: "server /data/"
