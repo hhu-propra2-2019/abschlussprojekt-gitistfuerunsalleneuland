@@ -75,6 +75,7 @@ public class RheinjugController {
   }
 
   @GetMapping("/statistics")
+  // @Secured("ROLE_orga")
   public String talk(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));

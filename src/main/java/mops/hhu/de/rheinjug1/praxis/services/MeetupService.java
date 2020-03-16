@@ -29,7 +29,9 @@ public class MeetupService {
   }
 
   private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
-    meetupEvents.stream().filter(allEvents::contains).forEach(eventRepository::save);
+    meetupEvents.stream()
+        .filter(allEvents::contains)
+        .forEach(this::updateWithoutParticipantsCounter);
   }
 
   private void insertNonExistingEvents(
@@ -43,6 +45,17 @@ public class MeetupService {
     return eventRepository.findAll().stream()
         .filter(i -> i.getStatus().equals("upcoming"))
         .collect(Collectors.toList());
+  }
+
+  private void updateWithoutParticipantsCounter(final Event e) {
+    eventRepository.updateWithoutParticipantsCounter(
+        e.getId(),
+        e.getDuration(),
+        e.getName(),
+        e.getStatus(),
+        e.getZonedDateTime(),
+        e.getLink(),
+        e.getDescription());
   }
 
   public List<Event> getAll() {
