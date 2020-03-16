@@ -31,7 +31,7 @@ class ReceiptSendServiceTest {
   @Test
   void receiptSendTest() {
     final Receipt receipt =
-        new Receipt("Name", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
+        new Receipt("TestName", "TestEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
     receiptSendService.sendReceipt(receipt, "rheinjughhu@gmail.com");
   }
 
