@@ -1,13 +1,8 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import io.minio.MinioClient;
-import io.minio.errors.*;
 import org.springframework.stereotype.Service;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import io.minio.MinioClient;
 
 @Service
 public class UploadService {
