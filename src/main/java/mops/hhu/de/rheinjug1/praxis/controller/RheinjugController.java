@@ -87,12 +87,10 @@ public class RheinjugController {
     model.addAttribute("summaryForm", new Summary());
     return "talk";
   }
-  
+
   @GetMapping({"/update/{page}", "/update"})
-  public String update(@PathVariable(required = false) String page) {
-	  meetupService.update();
-	  final String redirect = page == null ? "redirect:/" : "redirect:/" + page;
-	  return redirect;
+  public String update(@PathVariable(required = false) final String page) {
+    meetupService.update();
+    return page == null ? "redirect:/" : "redirect:/" + page;
   }
-  
 }
