@@ -58,7 +58,8 @@ class ReceiptServiceTest {
     when(encryptionService.sign(meetupType, meetupId, name, email)).thenReturn(signature);
     when(signatureRepository.save(any())).thenReturn(null);
 
-    final Submission submission = new Submission(meetupId, name, email);
+    final Submission submission =
+        Submission.builder().email(email).meetupId(meetupId).name(name).build();
     final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
 
     final Receipt expectedReceipt =
