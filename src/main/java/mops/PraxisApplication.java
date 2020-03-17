@@ -22,5 +22,6 @@ public class PraxisApplication {
 
   @Bean
   ApplicationRunner init() {
+    return args -> {};
   }
 }
