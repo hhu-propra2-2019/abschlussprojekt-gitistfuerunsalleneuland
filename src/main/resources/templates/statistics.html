@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <title>Java in der Praxis</title>
   <th:block th:fragment="headcontent">
-    <!-- Links, Skripts, Styles hier einfügen! -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
      
   </th:block>
 </head>
@@ -24,8 +25,62 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
-  <h2>statistics</h2>
-  <!-- Restlichen Inhalt hier einfügen! -->
+
+  <div class="container mb-4">
+    <h2>Statistiken</h2>
+    <p> skjhdfaksdhfsflsaj alfjj s dsf sdf asf asf sf as fdas fa f asf assdfdasfsa dfsfas fasfas fasfasfasdf safasf sfasfas fasfasf asfasddfa fasfas </p>
+    
+    <div class="row my-5">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Insgesamt vergebene Creditpoints</h5>
+            <h4>1746</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Prozentuelle Beteiligung</h5>
+            <h4>5,8%</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container my-4">
+    <h4>Besucherzahlen</h4>
+    <canvas id="myChart"></canvas>
+  </div>
+  <script th:inline="javascript">
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: [(${chart.dates})],
+          datasets: [{
+              label: 'Anzahl Besucher',
+              data: [(${chart.data})],
+              borderColor: "#3e95cd",
+              backgroundColor: 'rgba(62, 150, 205, 0.3)',
+              
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          }
+      }
+  });
+  </script>
   
 </main>
 </body>

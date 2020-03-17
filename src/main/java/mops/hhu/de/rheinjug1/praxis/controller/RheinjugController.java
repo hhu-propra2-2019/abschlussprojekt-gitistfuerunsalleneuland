@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
+<<<<<<< HEAD
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
+=======
+import mops.hhu.de.rheinjug1.praxis.services.ChartService;
+>>>>>>> feat/chart
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ public class RheinjugController {
   private final Counter authenticatedAccess;
   @Autowired private MeetupService meetupService;
   private final Counter publicAccess;
+  @Autowired private ChartService chartService;
 
   public RheinjugController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
@@ -46,20 +51,21 @@ public class RheinjugController {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
-    final List<Event> upcoming = meetupService.getUpcomingEvents();
+    final List<Event> upcoming = meetupService.getEventsByStatus("upcoming");
     model.addAttribute("events", upcoming);
     publicAccess.increment();
     return "uebersicht";
   }
 
-  @GetMapping("/talk")
+  @GetMapping("/statistics")
   @Secured("ROLE_orga")
   public String statistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
-    model.addAttribute("summaryForm", new Summary());
-    return "talk";
+
+    model.addAttribute("chart", chartService.getXEventsChart(6));
+    return "statistics";
   }
 
   @GetMapping("/logout")
@@ -76,11 +82,12 @@ public class RheinjugController {
     return "profil";
   }
 
-  @GetMapping("/statistics")
+  @GetMapping("/talk")
   public String talk(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
-    return "statistics";
+    model.addAttribute("summaryForm", new Summary());
+    return "talk";
   }
 }

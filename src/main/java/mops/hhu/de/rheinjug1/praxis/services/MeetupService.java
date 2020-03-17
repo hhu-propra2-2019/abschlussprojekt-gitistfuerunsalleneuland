@@ -1,7 +1,9 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
@@ -18,9 +20,14 @@ public class MeetupService {
 
   @Autowired private MeetupClient meetupClient;
   @Autowired private EventRepository eventRepository;
-  @Autowired JdbcAggregateTemplate jdbcAggregateTemplate;
+  @Autowired private JdbcAggregateTemplate jdbcAggregateTemplate;
 
-  @Scheduled(fixedRate = 3000) // Todo:Zeitintervall?
+  @PostConstruct
+  private void initDatabase() {
+    update();
+  }
+
+  @Scheduled(cron = "0 0 8 * * ?") // Todo:Zeitintervall?
   private void update() {
     final List<Event> meetupEvents = meetupClient.getAllEvents();
     final List<Event> allEvents = eventRepository.findAll();
@@ -29,7 +36,9 @@ public class MeetupService {
   }
 
   private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
-    meetupEvents.stream().filter(allEvents::contains).forEach(eventRepository::save);
+    meetupEvents.stream()
+        .filter(allEvents::contains)
+        .forEach(jdbcAggregateTemplate::update); // .forEach(this::update);
   }
 
   private void insertNonExistingEvents(
@@ -39,13 +48,42 @@ public class MeetupService {
         .forEach(jdbcAggregateTemplate::insert);
   }
 
-  public List<Event> getUpcomingEvents() {
+  public List<Event> getEventsByStatus(final String status) {
+    switch (status) {
+      case "upcoming":
+        return filterEventsByStatus("upcoming");
+      case "past":
+        return filterEventsByStatus("past");
+      case "all":
+        return eventRepository.findAll();
+      default:
+        return new ArrayList<>();
+    }
+  }
+
+  private List<Event> filterEventsByStatus(final String status) {
     return eventRepository.findAll().stream()
-        .filter(i -> i.getStatus().equals("upcoming"))
+        .filter(i -> i.getStatus().equals(status))
         .collect(Collectors.toList());
   }
 
-  public List<Event> getAll() {
-    return eventRepository.findAll();
+  private void updateWithoutParticipantsCounter(final Event e) {
+    eventRepository.updateWithoutParticipantsCounter(
+        e.getId(),
+        e.getDuration(),
+        e.getName(),
+        e.getStatus(),
+        e.getZonedDateTime(),
+        e.getLink(),
+        e.getDescription());
+  }
+
+  public List<Event> getLastXEvents(final int x) {
+    final List<Event> pastEvents = getEventsByStatus("past");
+    final int n = pastEvents.size();
+    if (n < x) {
+      return pastEvents;
+    }
+    return pastEvents.subList(n - x, n);
   }
 }

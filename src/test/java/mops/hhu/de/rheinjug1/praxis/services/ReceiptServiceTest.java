@@ -40,7 +40,8 @@ class ReceiptServiceTest {
           "testZonedDateTime",
           "testLink",
           "testDescription",
-          MeetupType.ENTWICKELBAR);
+          MeetupType.ENTWICKELBAR,
+          0);
 
   @Test
   void receiptService_returns_correct_receipt()
