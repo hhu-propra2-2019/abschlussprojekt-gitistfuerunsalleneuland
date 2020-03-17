@@ -9,6 +9,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
 import javax.mail.MessagingException;
+import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
@@ -17,7 +18,6 @@ import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
 import mops.hhu.de.rheinjug1.praxis.services.SubmissionService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/submissions")
 public class SubmissionController {
 
@@ -34,16 +35,6 @@ public class SubmissionController {
   private final ReceiptService receiptService;
 
   private final ReceiptSendService receiptSendService;
-
-  @Autowired
-  public SubmissionController(
-      final SubmissionService submissionService,
-      final ReceiptService receiptService,
-      final ReceiptSendService receiptSendService) {
-    this.submissionService = submissionService;
-    this.receiptService = receiptService;
-    this.receiptSendService = receiptSendService;
-  }
 
   @GetMapping
   @Secured("ROLE_studentin")
