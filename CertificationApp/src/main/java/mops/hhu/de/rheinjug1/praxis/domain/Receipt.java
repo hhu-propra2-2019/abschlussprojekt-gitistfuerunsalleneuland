@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Receipt {
 
+  private String name;
   private long keycloakId;
   private long meetupId;
   private String type;

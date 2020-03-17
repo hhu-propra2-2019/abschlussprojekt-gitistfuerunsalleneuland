@@ -21,6 +21,7 @@ public class ReceiptService {
 
   public Receipt read(final MultipartFile receiptFile) throws IOException {
     if (receiptFile == null) {
+    	System.out.println("null");
       throw new IOException();
     }
     String receiptString = "";
@@ -30,6 +31,7 @@ public class ReceiptService {
       if (isCorrectFormat(receiptString)) {
         return stringToReceipt(receiptString);
       } else {
+    	  System.out.println("bad Format");
         throw new IOException();
       }
     }
@@ -45,7 +47,7 @@ public class ReceiptService {
       } else if (line.contains(typePrefix)) {
         line = line.substring(line.indexOf(typePrefix) + typePrefix.length());
         receipt.setType(line);
-      } else if (!line.contains(":") && "".equals(line)) {
+      } else if (!line.contains(":") && !"".equals(line)) {
         receipt.setSignature(line);
       }
     }
