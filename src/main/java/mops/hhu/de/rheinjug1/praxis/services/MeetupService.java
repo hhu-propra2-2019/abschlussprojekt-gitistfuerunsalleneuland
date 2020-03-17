@@ -30,7 +30,7 @@ public class MeetupService {
     this.jdbcAggregateTemplate = jdbcAggregateTemplate;
   }
 
-  @Scheduled(fixedRate = 3000) // Todo:Zeitintervall?
+  @Scheduled(fixedDelay = 3_600_000) // Todo:Zeitintervall?
   private void update() {
     final List<Event> meetupEvents = meetupClient.getAllEvents();
     final List<Event> allEvents = eventRepository.findAll();

@@ -1,7 +1,7 @@
 package mops;
 
-import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.AcceptedSubmissionRepository;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class PraxisApplication {
 
-  @Autowired AcceptedSubmissionRepository acceptedSubmissionRepository;
+  @Autowired SubmissionRepository submissionRepository;
 
   public static void main(final String[] args) {
     SpringApplication.run(PraxisApplication.class, args);
@@ -23,9 +23,13 @@ public class PraxisApplication {
   @Bean
   ApplicationRunner init() {
     return args -> {
-      final AcceptedSubmission acceptedSubmission =
-          new AcceptedSubmission(256264912L, "ottolin@outlook.de", "otlin100", "");
-      acceptedSubmissionRepository.save(acceptedSubmission);
+      final Submission submission =
+          new Submission(256264912L, "ottolin@outlook.de", "otlin100", "");
+      final Submission acceptedSubmission =
+          new Submission(247416797L, "ottolin@outlook.de", "otlin100", "", true);
+      Thread.sleep(5000);
+      submissionRepository.save(submission);
+      submissionRepository.save(acceptedSubmission);
     };
   }
 }

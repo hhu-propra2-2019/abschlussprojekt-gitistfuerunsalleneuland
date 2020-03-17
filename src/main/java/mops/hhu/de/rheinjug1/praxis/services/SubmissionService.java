@@ -3,8 +3,8 @@ package mops.hhu.de.rheinjug1.praxis.services;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.AcceptedSubmissionRepository;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,28 +12,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubmissionService {
 
-  private final AcceptedSubmissionRepository acceptedSubmissionRepository;
+  private final SubmissionRepository submissionRepository;
 
   @Autowired
-  public SubmissionService(final AcceptedSubmissionRepository acceptedSubmissionRepository) {
-    this.acceptedSubmissionRepository = acceptedSubmissionRepository;
+  public SubmissionService(final SubmissionRepository submissionRepository) {
+    this.submissionRepository = submissionRepository;
   }
 
-  public List<AcceptedSubmission> getAllAcceptedSubmissions(final Account account) {
-    return acceptedSubmissionRepository.findAll(account.getEmail());
+  public List<Submission> getAllSubmissionsByUser(final Account account) {
+    return submissionRepository.findAllByEmail(account.getEmail());
   }
 
-  public Optional<AcceptedSubmission> getAcceptedSubmissionIfAuthorized(
+  public Optional<Submission> getAcceptedSubmissionIfAuthorized(
       final Long submissionId, final Account account) {
-    final Optional<AcceptedSubmission> acceptedSubmissionOptional =
-        acceptedSubmissionRepository.findById(submissionId);
+    final Optional<Submission> acceptedSubmissionOptional =
+        submissionRepository.findById(submissionId);
     if (acceptedSubmissionOptional.isEmpty()) {
       return acceptedSubmissionOptional;
     }
 
-    final AcceptedSubmission acceptedSubmission = acceptedSubmissionOptional.get();
-    if (Objects.equals(acceptedSubmission.getName(), account.getName())
-        && Objects.equals(acceptedSubmission.getEmail(), account.getEmail())) {
+    final Submission submission = acceptedSubmissionOptional.get();
+    if (Objects.equals(submission.getName(), account.getName())
+        && Objects.equals(submission.getEmail(), account.getEmail())) {
       return acceptedSubmissionOptional;
     }
 
