@@ -3,6 +3,7 @@ package mops.hhu.de.rheinjug1.praxis.services;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.mail.MessagingException;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import org.junit.jupiter.api.AfterEach;
@@ -29,7 +30,7 @@ class ReceiptSendServiceTest {
   }
 
   @Test
-  void receiptSendTest() {
+  void receiptSendTest() throws MessagingException {
     final Receipt receipt =
         new Receipt("TestName", "TestEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
     receiptSendService.sendReceipt(receipt, "rheinjughhu@gmail.com");

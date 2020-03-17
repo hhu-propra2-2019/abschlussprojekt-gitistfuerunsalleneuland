@@ -1,15 +1,14 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
+import static mops.hhu.de.rheinjug1.praxis.models.Account.createAccountFromPrincipal;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
-import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -34,23 +33,14 @@ public class RheinjugController {
     this.meetupService = meetupService;
   }
 
-  private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
-    final KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-    return new Account(
-        principal.getName(),
-        principal.getKeycloakSecurityContext().getIdToken().getEmail(),
-        null,
-        token.getAccount().getRoles());
-  }
-
   @GetMapping("/")
-  public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
+  public String home(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
     model.addAttribute("events", meetupService.getUpcomingEvents());
     publicAccess.increment();
-    return "uebersicht";
+    return "home";
   }
 
   @GetMapping("/talk")
