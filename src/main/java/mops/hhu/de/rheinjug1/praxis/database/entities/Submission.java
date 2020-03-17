@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.database.entities;
 
+import java.util.Optional;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
@@ -23,7 +24,7 @@ public class Submission {
     this.meetupId = meetupId;
     this.email = email;
     this.name = name;
-    this.minIoLink = minIoLink;
+    this.minIoLink = Optional.ofNullable(minIoLink).orElse("");
     this.accepted = accepted;
   }
 }
