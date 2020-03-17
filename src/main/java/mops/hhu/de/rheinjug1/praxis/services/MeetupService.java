@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
@@ -18,7 +19,7 @@ public class MeetupService {
 
   @Autowired private MeetupClient meetupClient;
   @Autowired private EventRepository eventRepository;
-  @Autowired JdbcAggregateTemplate jdbcAggregateTemplate;
+  @Autowired private JdbcAggregateTemplate jdbcAggregateTemplate;
 
   @Scheduled(fixedRate = 3000) // Todo:Zeitintervall?
   private void update() {
@@ -31,7 +32,7 @@ public class MeetupService {
   private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
     meetupEvents.stream()
         .filter(allEvents::contains)
-        .forEach(this::updateWithoutParticipantsCounter);
+        .forEach(jdbcAggregateTemplate::update); // .forEach(this::update);
   }
 
   private void insertNonExistingEvents(
@@ -41,9 +42,22 @@ public class MeetupService {
         .forEach(jdbcAggregateTemplate::insert);
   }
 
-  public List<Event> getUpcomingEvents() {
+  public List<Event> getEventsByStatus(final String status) {
+    switch (status) {
+      case "upcoming":
+        return filterEventsByStatus("upcoming");
+      case "past":
+        return filterEventsByStatus("past");
+      case "all":
+        return eventRepository.findAll();
+      default:
+        return new ArrayList<>();
+    }
+  }
+
+  private List<Event> filterEventsByStatus(final String status) {
     return eventRepository.findAll().stream()
-        .filter(i -> i.getStatus().equals("upcoming"))
+        .filter(i -> i.getStatus().equals(status))
         .collect(Collectors.toList());
   }
 
@@ -58,21 +72,12 @@ public class MeetupService {
         e.getDescription());
   }
 
-  public List<Event> getAll() {
-    return eventRepository.findAll();
-  }
-
   public List<Event> getLastXEvents(final int x) {
-    final long totalEvents =
-        eventRepository.findAll().stream().filter(y -> y.getStatus().contentEquals("past")).count();
-    if (totalEvents < x) {
-      return eventRepository.findAll().stream()
-          .filter(y -> y.getStatus().contentEquals("past"))
-          .collect(Collectors.toList());
+    final List<Event> pastEvents = getEventsByStatus("past");
+    final int n = pastEvents.size();
+    if (n < x) {
+      return pastEvents;
     }
-    return eventRepository.findAll().stream()
-        .filter(y -> y.getStatus().contentEquals("past"))
-        .skip(totalEvents - x)
-        .collect(Collectors.toList());
+    return pastEvents.subList(n - x, n);
   }
 }
