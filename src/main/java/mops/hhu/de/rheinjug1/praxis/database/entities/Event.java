@@ -17,7 +17,6 @@ public class Event {
   private final String link;
   private final String description;
   private final MeetupType meetupType;
-  private final int participants;
 
   public Event(
       final String duration,
@@ -27,8 +26,7 @@ public class Event {
       final String zonedDateTime,
       final String link,
       final String description,
-      final MeetupType meetupType,
-      final int participants) {
+      final MeetupType meetupType) {
     this.duration = duration;
     this.id = id;
     this.name = name;
@@ -37,6 +35,5 @@ public class Event {
     this.link = link;
     this.description = description;
     this.meetupType = meetupType;
-    this.participants = participants;
   }
 }

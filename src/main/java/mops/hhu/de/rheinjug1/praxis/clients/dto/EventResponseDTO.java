@@ -51,17 +51,8 @@ public class EventResponseDTO {
         formatter.toLocalEventTimeString(zonedDateTime, group.getZoneId());
 
     final MeetupType meetupType = name.contains("Entwickelbar") ? ENTWICKELBAR : RHEINJUG;
-    final int participantsInitializer = 0;
 
     return new Event(
-        formattedDuration,
-        id,
-        name,
-        status,
-        formattedZonedDateTime,
-        link,
-        description,
-        meetupType,
-        participantsInitializer);
+        formattedDuration, id, name, status, formattedZonedDateTime, link, description, meetupType);
   }
 }

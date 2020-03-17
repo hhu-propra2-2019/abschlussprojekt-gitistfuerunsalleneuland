@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
-import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
+import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,6 @@ public class RheinjugController {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
-
     model.addAttribute("chart", chartService.getXEventsChart(6));
     return "statistics";
   }

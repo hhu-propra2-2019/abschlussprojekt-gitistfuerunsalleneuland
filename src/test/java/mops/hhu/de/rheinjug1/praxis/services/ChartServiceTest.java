@@ -18,8 +18,8 @@ public class ChartServiceTest {
   @BeforeEach
   void init() {
     final String time = "12:30 - 12.03.2020";
-    sampleData.add(new Event("", 0, "", "", time, "", "", null, 0));
-    sampleData.add(new Event("", 0, "", "", time, "", "", null, 0));
+    sampleData.add(new Event("", 0, "", "", time, "", "", null));
+    sampleData.add(new Event("", 0, "", "", time, "", "", null));
   }
 
   @Test

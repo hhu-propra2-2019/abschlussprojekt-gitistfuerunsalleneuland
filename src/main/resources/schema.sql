@@ -1,20 +1,5 @@
-DROP TABLE IF EXISTS rheinjug1.receipt_signature;
-CREATE TABLE `rheinjug1`.`receipt_signature` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `meetup_id` INT NOT NULL,
-  `signature` VARCHAR(2000) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
-
-DROP TABLE IF EXISTS rheinjug1.accepted_submission;
-CREATE TABLE `rheinjug1`.`accepted_submission` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `meetup_id` INT NOT NULL,
-  `keycloak_id` INT NOT NULL,
-  `min_io_link` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
-
+DROP TABLE IF EXISTS rheinjug1.signature_record;
+DROP TABLE IF EXISTS rheinjug1.submission;
 DROP TABLE IF EXISTS rheinjug1.event;
 
 CREATE TABLE `rheinjug1`.`event` (
@@ -26,8 +11,32 @@ CREATE TABLE `rheinjug1`.`event` (
   `link` VARCHAR(100) NULL,
   `description` TEXT NULL,
   `meetup_type` ENUM('ENTWICKELBAR', 'RHEINJUG') NOT NULL,
-   PRIMARY KEY (`id`),
-   participants INT DEFAULT 0
+  PRIMARY KEY (`id`)
   );
+
+CREATE TABLE `rheinjug1`.`signature_record` (
+  `meetup_id` INT NOT NULL,
+  `signature` VARCHAR(2000) NOT NULL,
+  PRIMARY KEY (`signature`)
+  );
+
+alter table signature_record
+	add constraint signature_record__event__meetup_id_fk
+		foreign key (meetup_id) references event (id);
+
+CREATE TABLE `rheinjug1`.`submission` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `meetup_id` INT NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `min_io_link` VARCHAR(255) NOT NULL,
+  `accepted` CHAR(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `meetup_id__email__UNIQUE` (`meetup_id`,`email`)
+  );
+
+alter table submission
+	add constraint submission_event_id_fk
+		foreign key (meetup_id) references event (id);
 
 

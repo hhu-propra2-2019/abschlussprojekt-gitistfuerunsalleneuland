@@ -27,7 +27,7 @@ public class MeetupService {
     update();
   }
 
-  @Scheduled(cron = "0 0 8 * * ?") // Todo:Zeitintervall?
+  @Scheduled(cron = "0 0 8 * * ?")
   private void update() {
     final List<Event> meetupEvents = meetupClient.getAllEvents();
     final List<Event> allEvents = eventRepository.findAll();
@@ -39,6 +39,10 @@ public class MeetupService {
     meetupEvents.stream()
         .filter(allEvents::contains)
         .forEach(jdbcAggregateTemplate::update); // .forEach(this::update);
+  }
+
+  public int getSubmissionCount(final Event event) {
+    return eventRepository.submissionCountByMeetupId(event.getId());
   }
 
   private void insertNonExistingEvents(
@@ -65,17 +69,6 @@ public class MeetupService {
     return eventRepository.findAll().stream()
         .filter(i -> i.getStatus().equals(status))
         .collect(Collectors.toList());
-  }
-
-  private void updateWithoutParticipantsCounter(final Event e) {
-    eventRepository.updateWithoutParticipantsCounter(
-        e.getId(),
-        e.getDuration(),
-        e.getName(),
-        e.getStatus(),
-        e.getZonedDateTime(),
-        e.getLink(),
-        e.getDescription());
   }
 
   public List<Event> getLastXEvents(final int x) {
