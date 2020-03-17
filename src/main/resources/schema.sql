@@ -39,4 +39,3 @@ alter table submission
 	add constraint submission_event_id_fk
 		foreign key (meetup_id) references event (id);
 
-

@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.entities;
+package mops.hhu.de.rheinjug1.praxis.database.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +10,11 @@ import org.springframework.data.annotation.Id;
 @Setter
 @ToString
 @NoArgsConstructor
-public class ReceiptSignature {
-  @Id private Long id;
-  private String signature;
+public class SignatureRecord {
+  @Id private String signature;
   private Long meetupId;
 
-  public ReceiptSignature(final String signature, final Long meetupId) {
+  public SignatureRecord(final String signature, final Long meetupId) {
     this.signature = signature;
     this.meetupId = meetupId;
   }

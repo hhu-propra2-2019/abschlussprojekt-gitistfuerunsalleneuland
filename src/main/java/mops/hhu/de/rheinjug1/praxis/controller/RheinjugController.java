@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
+import static mops.hhu.de.rheinjug1.praxis.models.Account.createAccountFromPrincipal;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 
 import io.micrometer.core.instrument.Counter;
@@ -8,11 +9,9 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
-import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
-import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -25,22 +24,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RheinjugController {
 
   private final Counter authenticatedAccess;
-  @Autowired private MeetupService meetupService;
+  private final MeetupService meetupService;
   private final Counter publicAccess;
   @Autowired private ChartService chartService;
 
-  public RheinjugController(final MeterRegistry registry) {
+  @Autowired
+  public RheinjugController(final MeterRegistry registry, final MeetupService meetupService) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
-  }
-
-  private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
-    final KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-    return new Account(
-        principal.getName(),
-        principal.getKeycloakSecurityContext().getIdToken().getEmail(),
-        null,
-        token.getAccount().getRoles());
+    this.meetupService = meetupService;
   }
 
   @GetMapping("/")
