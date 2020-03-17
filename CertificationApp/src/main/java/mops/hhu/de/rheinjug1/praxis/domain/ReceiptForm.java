@@ -13,9 +13,13 @@ public class ReceiptForm {
 
 	@Override
 	public String toString() {
-		return "ReceiptForm{" +
-				"matrikelNummer='" + matrikelNummer + '\'' +
-				", newReceipt=" + newReceipt.getOriginalFilename() +
-				'}';
+		if(matrikelNummer != null && newReceipt != null){
+			return "ReceiptForm{" +
+					"matrikelNummer='" + matrikelNummer + '\'' +
+					", newReceipt=" + newReceipt.getOriginalFilename() +
+					'}';
+		}
+		else
+			return "null";
 	}
 }
