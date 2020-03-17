@@ -34,13 +34,13 @@ public class RheinjugController {
   }
 
   @GetMapping("/")
-  public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
+  public String home(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
     model.addAttribute("events", meetupService.getUpcomingEvents());
     publicAccess.increment();
-    return "uebersicht";
+    return "home";
   }
 
   @GetMapping("/talk")
