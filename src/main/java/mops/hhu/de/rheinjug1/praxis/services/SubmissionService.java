@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,6 +24,12 @@ public class SubmissionService {
     return submissionRepository.findAllByEmail(account.getEmail());
   }
 
+  public List<Submission> getAllSubmissions() {
+    final ArrayList<Submission> arrayList = new ArrayList<>();
+    submissionRepository.findAll().forEach(arrayList::add);
+    return arrayList;
+  }
+
   public Optional<Submission> getAcceptedSubmissionIfAuthorized(
       final Long submissionId, final Account account) {
     final Optional<Submission> acceptedSubmissionOptional =
@@ -38,5 +45,11 @@ public class SubmissionService {
     }
 
     return Optional.empty();
+  }
+
+  public void accept(final Long submissionId) {
+    final Submission oldSubmission = submissionRepository.findById(submissionId).get();
+    oldSubmission.accept();
+    submissionRepository.save(oldSubmission);
   }
 }

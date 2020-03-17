@@ -27,4 +27,8 @@ public class Submission {
     this.minIoLink = Optional.ofNullable(minIoLink).orElse("");
     this.accepted = accepted;
   }
+
+  public void accept() {
+    this.accepted = true;
+  }
 }
