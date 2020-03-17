@@ -24,9 +24,20 @@ public class PraxisApplication {
   ApplicationRunner init() {
     return args -> {
       final Submission submission =
-          new Submission(256264912L, "ottolin@outlook.de", "otlin100", "");
+          Submission.builder()
+              .meetupId(256264912L)
+              .email("hajoa100@hhu.de")
+              .name("hjizerena")
+              .minIoLink("")
+              .build();
       final Submission acceptedSubmission =
-          new Submission(247416797L, "ottolin@outlook.de", "otlin100", "", true);
+          Submission.builder()
+              .name("hjizerena")
+              .accepted(true)
+              .email("hajoa100@hhu.de")
+              .meetupId(247416797L)
+              .minIoLink("")
+              .build();
       Thread.sleep(5000);
       submissionRepository.save(submission);
       submissionRepository.save(acceptedSubmission);
