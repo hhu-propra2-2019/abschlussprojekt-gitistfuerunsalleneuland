@@ -22,18 +22,14 @@ public class ReceiptSendService {
     this.receiptPrintService = receiptPrintService;
   }
 
-  public void sendReceipt(final Receipt receipt, final String to) {
+  public void sendReceipt(final Receipt receipt, final String to) throws MessagingException {
     final String path = receiptPrintService.printReceipt(receipt);
 
-    try {
-      mailService.sendMailWithAttachment(
-          to,
-          "Deine Quittung für " + receipt.getMeetupTitle(),
-          TEXT,
-          path,
-          receipt.getMeetupTitle() + "-Quittung.txt");
-    } catch (MessagingException e) {
-      e.printStackTrace();
-    }
+    mailService.sendMailWithAttachment(
+        to,
+        "Deine Quittung für " + receipt.getMeetupTitle(),
+        TEXT,
+        path,
+        receipt.getMeetupTitle() + "-Quittung.txt");
   }
 }

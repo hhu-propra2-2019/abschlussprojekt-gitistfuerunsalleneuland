@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+<body>
+<div id="content" th:fragment="mycontent">
+    <div class="container">
+        <h3></h3>
+        <p class="mt-5">Hier seht ihr eure akzeptierten Zusammenfassungen und könnt Quittungen erstellen, die ihr per
+            Mail bekommt.</p>
+    </div>
+
+    <div class="container mt-5">
+        <h4>Zusammenfassungen</h4>
+        <table>
+            <thead>
+            <th>Meetup Id</th>
+            <th>Status</th>
+            <th>Quittung</th>
+            </thead>
+            <tbody>
+            <tr th:each="submission : ${accepted_submissions}">
+                <td><a th:href="@{${submission.getMinIoLink()}}"><span th:text="${submission.getMeetupId()}"></span></a>
+                </td>
+                <td><span th:text="${submission.isAccepted()}? 'Akzeptiert': 'Ausstehend'"></span></td>
+                <td><a th:href="@{/submissions/create-receipt/{id}(id= ${submission.getId()})}"><span
+                        th:if="${submission.isAccepted()}">senden</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mx-5">
+        <p></p>
+    </div>
+</div>
+</body>
+</html>

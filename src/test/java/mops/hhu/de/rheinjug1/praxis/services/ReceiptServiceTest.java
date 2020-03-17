@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
-import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.ReceiptSignatureRepository;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
@@ -27,7 +27,7 @@ class ReceiptServiceTest {
 
   @MockBean private EncryptionService encryptionService;
 
-  @MockBean private ReceiptSignatureRepository receiptSignatureRepository;
+  @MockBean private SignatureRepository signatureRepository;
 
   @MockBean private EventRepository eventRepository;
 
@@ -56,9 +56,10 @@ class ReceiptServiceTest {
 
     when(eventRepository.findById(meetupId)).thenReturn(Optional.of(TEST_EVENT));
     when(encryptionService.sign(meetupType, meetupId, name, email)).thenReturn(signature);
-    when(receiptSignatureRepository.save(any())).thenReturn(null);
+    when(signatureRepository.save(any())).thenReturn(null);
 
-    final AcceptedSubmission submission = new AcceptedSubmission(meetupId, name, email);
+    final Submission submission =
+        Submission.builder().email(email).meetupId(meetupId).name(name).build();
     final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
 
     final Receipt expectedReceipt =

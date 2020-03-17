@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+<body>
+
+<div id="content" th:fragment="mycontent">
+    <div class="container">
+        <h3>Willkommen bei Java in der Praxis!</h3>
+        <p class="mt-5">Über diese Seite besteht die Möglichkeit sich für verschiedene Projekte von Rheinjug und
+            Entwickelbar
+            anzumelden und sich so im Bereich der Informatik weiterzubilden. .... </p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div class="mt-5">
+                    <ol>
+                        <li class="my-4">Für Veranstaltung anmelden</li>
+                        <li class="my-4">Veranstaltung besuchen und notizen machen</li>
+                        <li class="my-4">Zusammenfassung schreiben und abgeben</li>
+                        <li class="my-4">Creditpoints erhalten 😊</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-md">
+                <img src="https://cdn.pixabay.com/photo/2015/09/04/19/32/landscape-922581_1280.png"
+                     class="img-fluid rounded mx-auto" alt="Responsive image">
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h4>Kommende Veranstaltungen</h4>
+        <table>
+            <thead>
+            <th>Name</th>
+            <th>Datum/Uhrzeit</th>
+            <th>Dauer</th>
+            </thead>
+            <tbody>
+            <tr th:each="event : ${events}">
+                <td><a th:href="@{${event.link}}"><span th:text="${event.name}">test</span></a></td>
+                <td th:text="${event.zonedDateTime}">3</td>
+                <td th:text="${event.duration}">3</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+
+</html>
