@@ -32,7 +32,8 @@ public class UploadServiceTest {
   @Test
   void uploadTestfile() throws Exception {
     minioClient = new MinioClient("http://localhost:9000/", "minio", "minio123");
-    minioClient.putObject(   "rheinjug", "testfile", "src/test/resources/test.txt", null, null, null, null);
+    minioClient.putObject(
+        "rheinjug", "testfile", "src/test/resources/test.txt", null, null, null, null);
     minioClient.statObject("rheinjug", "testfile");
   }
 }
