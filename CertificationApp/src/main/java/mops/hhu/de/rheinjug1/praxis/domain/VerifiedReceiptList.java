@@ -1,30 +1,28 @@
 package mops.hhu.de.rheinjug1.praxis.domain;
 
-import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class VerifiedReceiptList {
 
-    private List<Receipt> receiptList = new ArrayList<>();
-    private List<String> signatures = new ArrayList<>();
+  private List<Receipt> receiptList = new ArrayList<>();
+  private List<String> signatures = new ArrayList<>();
 
-    public void addNewReceipt(Receipt newReceipt){
-    	if (isDuplicateSignature(newReceipt.getSignature())) {  	
-    		System.out.println("duplikate signatures");
-    	} else {
-          receiptList.add(newReceipt);
-          signatures.add(newReceipt.getSignature());
-    	}
+  public void addNewReceipt(final Receipt newReceipt) {
+    if (!isDuplicateSignature(newReceipt.getSignature())) {
+      receiptList.add(newReceipt);
+      signatures.add(newReceipt.getSignature());
     }
-    private boolean isDuplicateSignature(String newSignature) {
-    	for (String signature : signatures) {
-    		if (signature.equals(newSignature)) {
-    			return true;
-    		}
-    	}
-    	return false;
+  }
+
+  private boolean isDuplicateSignature(final String newSignature) {
+    for (final String signature : signatures) {
+      if (signature.equals(newSignature)) {
+        return true;
+      }
     }
-    
+    return false;
+  }
 }

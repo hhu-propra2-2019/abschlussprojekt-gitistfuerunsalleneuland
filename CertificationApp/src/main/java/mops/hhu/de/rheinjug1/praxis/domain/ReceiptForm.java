@@ -8,5 +8,4 @@ public class ReceiptForm {
 
   private String matrikelNummer;
   private MultipartFile newReceipt;
-
 }

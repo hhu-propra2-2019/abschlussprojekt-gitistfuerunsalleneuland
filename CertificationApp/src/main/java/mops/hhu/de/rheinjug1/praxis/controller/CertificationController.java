@@ -2,13 +2,13 @@ package mops.hhu.de.rheinjug1.praxis.controller;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.ReceiptForm;
 import mops.hhu.de.rheinjug1.praxis.domain.VerifiedReceiptList;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -33,7 +33,7 @@ public class CertificationController {
   private final ReceiptService receiptService = new ReceiptService();
   private final Counter publicAccess;
   private final VerifiedReceiptList receiptList = new VerifiedReceiptList();
-  
+
   public CertificationController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
@@ -61,34 +61,35 @@ public class CertificationController {
 
   @PutMapping("/")
   public String revertInput(final KeycloakAuthenticationToken token, final Model model) {
-      receiptList.getReceiptList().remove(0);
-      System.out.println("wird ausgeführt.");
-      return "redirect://";
-  }
-  
-  @PostMapping("/")
-  @Secured({"ROLE_student","ROLE_orga"})
-  public String submitReceipt(final KeycloakAuthenticationToken token, final Model model, final ReceiptForm input) { 
-	  if (token != null) {
-	        model.addAttribute("account", createAccountFromPrincipal(token));}
-	    try {
-			Receipt receipt = receiptService.read(input.getNewReceipt());
-			receipt.setName(input.getNewReceipt().getOriginalFilename());
-			if (receiptService.verify(receipt)) {
-				receiptList.addNewReceipt(receipt);
-			}
-		} catch (IOException e) {
-			//Todo
-		}
-	    model.addAttribute("input", input);
-	    model.addAttribute("receiptList", receiptList);
-	    return "uebersicht";
+    receiptList.getReceiptList().remove(0);
+    return "redirect://";
   }
 
-  @GetMapping("/logout") 
+  @PostMapping("/")
+  @Secured({"ROLE_student", "ROLE_orga"})
+  public String submitReceipt(
+      final KeycloakAuthenticationToken token, final Model model, final ReceiptForm input) {
+    if (token != null) {
+      model.addAttribute("account", createAccountFromPrincipal(token));
+    }
+    try {
+      final Receipt receipt = receiptService.read(input.getNewReceipt());
+      receipt.setName(input.getNewReceipt().getOriginalFilename());
+      if (receiptService.verify(receipt)) {
+        receiptList.addNewReceipt(receipt);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+      // Todo
+    }
+    model.addAttribute("input", input);
+    model.addAttribute("receiptList", receiptList);
+    return "uebersicht";
+  }
+
+  @GetMapping("/logout")
   public String logout(final HttpServletRequest request) throws ServletException {
     request.logout();
     return "redirect:/";
   }
-		
 }
