@@ -5,48 +5,74 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.database.entities.SignatureRecord;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
-import mops.hhu.de.rheinjug1.praxis.entities.AcceptedSubmission;
-import mops.hhu.de.rheinjug1.praxis.entities.ReceiptSignature;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
-import mops.hhu.de.rheinjug1.praxis.repositories.ReceiptSignatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReceiptService {
 
-  @Autowired private EncryptionService encryptionService;
+  private final EncryptionService encryptionService;
 
-  @Autowired private ReceiptSignatureRepository receiptSignatureRepository;
+  private final SignatureRepository signatureRepository;
 
-  @Autowired private EventRepository eventRepository;
+  private final EventRepository eventRepository;
 
-  public Receipt createReceiptAndSaveSignatureInDatabase(
-      final AcceptedSubmission submission, final String name)
+  private final JdbcAggregateTemplate jdbcAggregateTemplate;
+
+  @Autowired
+  public ReceiptService(
+      final EncryptionService encryptionService,
+      final SignatureRepository signatureRepository,
+      final EventRepository eventRepository,
+      final JdbcAggregateTemplate jdbcAggregateTemplate) {
+    this.encryptionService = encryptionService;
+    this.signatureRepository = signatureRepository;
+    this.eventRepository = eventRepository;
+    this.jdbcAggregateTemplate = jdbcAggregateTemplate;
+  }
+
+  public Receipt createReceiptAndSaveSignatureInDatabase(final Submission submission)
       throws UnrecoverableEntryException, NoSuchAlgorithmException, IOException,
           CertificateException, KeyStoreException, SignatureException, InvalidKeyException,
           EventNotFoundException {
-    final Long meetupId = submission.getMeetupId();
+    final Long meetUpId = submission.getMeetupId();
 
-    final Optional<Event> eventOptional = eventRepository.findById(meetupId);
+    final Optional<Event> eventOptional = eventRepository.findById(meetUpId);
 
-    if (!eventOptional.isPresent()) {
-      throw new EventNotFoundException(meetupId);
+    if (eventOptional.isEmpty()) {
+      throw new EventNotFoundException(meetUpId);
     }
 
     final Event event = eventOptional.get();
 
     final MeetupType meetupType = event.getMeetupType();
     final String meetUpTitle = event.getName();
+    final String studentName = submission.getName();
+    final String studentEmail = submission.getEmail();
 
-    final String signature =
-        encryptionService.sign(meetupType, meetupId, submission.getKeycloakId());
+    final String signatureString =
+        encryptionService.sign(meetupType, meetUpId, studentName, studentEmail);
 
-    final ReceiptSignature receiptSignature = new ReceiptSignature(signature, meetupId);
-    receiptSignatureRepository.save(receiptSignature);
-    return new Receipt(name, meetupId, meetUpTitle, meetupType, signature);
+    final SignatureRecord signature = new SignatureRecord(signatureString, meetUpId);
+    try {
+      saveNew(signature);
+    } catch (final DbActionExecutionException e) {
+      signatureRepository.save(signature);
+    }
+    return new Receipt(
+        studentName, studentEmail, meetUpId, meetUpTitle, meetupType, signatureString);
   };
+
+  private void saveNew(final SignatureRecord signature) {
+    jdbcAggregateTemplate.insert(signature);
+  }
 }

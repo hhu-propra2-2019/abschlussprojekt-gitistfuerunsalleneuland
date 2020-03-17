@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -18,9 +19,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class MeetupService {
 
-  @Autowired private MeetupClient meetupClient;
-  @Autowired private EventRepository eventRepository;
-  @Autowired private JdbcAggregateTemplate jdbcAggregateTemplate;
+  private final MeetupClient meetupClient;
+  private final EventRepository eventRepository;
+  final JdbcAggregateTemplate jdbcAggregateTemplate;
+  final SubmissionRepository submissionRepository;
+
+  @Autowired
+  public MeetupService(
+      final MeetupClient meetupClient,
+      final EventRepository eventRepository,
+      final JdbcAggregateTemplate jdbcAggregateTemplate,
+      final SubmissionRepository submissionRepository) {
+    this.meetupClient = meetupClient;
+    this.eventRepository = eventRepository;
+    this.jdbcAggregateTemplate = jdbcAggregateTemplate;
+    this.submissionRepository = submissionRepository;
+  }
 
   @PostConstruct
   private void initDatabase() {
@@ -42,7 +56,7 @@ public class MeetupService {
   }
 
   public int getSubmissionCount(final Event event) {
-    return eventRepository.submissionCountByMeetupId(event.getId());
+    return submissionRepository.countSubmissionByMeetupId(event.getId());
   }
 
   private void insertNonExistingEvents(

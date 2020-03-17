@@ -18,25 +18,28 @@ import org.junit.jupiter.api.Test;
 class ReceiptPrintServiceTest {
 
   File file;
+  String expectedPath;
   Path path;
 
   @BeforeEach
   void createFile() {
     file = new File("src/main/resources/Titel-Quittung.txt");
-    path = Paths.get("src/main/resources/Titel-Quittung.txt");
+    expectedPath = "src/main/resources/Titel-Quittung.txt";
+    path = Paths.get(expectedPath);
   }
 
   @Test
   void receiptGetsPrintedToFileInResources() throws IOException {
     final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
     final Receipt receipt =
-        new Receipt("Name", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
+        new Receipt("testName", "testEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
 
-    receiptPrintService.printReceipt(receipt);
+    final String actualPath = receiptPrintService.printReceipt(receipt);
 
     final List<String> expected =
         Arrays.asList(
-            "Name: Name",
+            "Name: testName",
+            "Email: testEmail",
             "Veranstaltungs-ID: 1",
             "Titel: Titel",
             "Typ: Entwickelbar",
@@ -44,6 +47,7 @@ class ReceiptPrintServiceTest {
     final List<String> actual = Files.readAllLines(path);
 
     assertThat(actual).isEqualTo(expected);
+    assertThat(actualPath).isEqualTo(expectedPath);
   }
 
   @AfterEach
