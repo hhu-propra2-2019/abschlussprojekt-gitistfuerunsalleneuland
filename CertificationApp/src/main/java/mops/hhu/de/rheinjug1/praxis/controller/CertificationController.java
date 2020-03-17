@@ -53,7 +53,7 @@ public class CertificationController {
     if (token != null) {
       model.addAttribute("account", createAccountFromPrincipal(token));
     }
-    model.addAttribute("receipts", new ReceiptForm());
+    model.addAttribute("input", new ReceiptForm());
     model.addAttribute("receiptList", receiptList);
     publicAccess.increment();
     return "uebersicht";
@@ -62,14 +62,14 @@ public class CertificationController {
   @PutMapping("/")
   public String revertInput(final KeycloakAuthenticationToken token, final Model model) {
       receiptList.getReceiptList().remove(0);
-      System.out.println("wird ausgeführt.");
-      return "uebersicht";
+      System.out.println("wird ausgefÃ¼hrt.");
+      return "redirect://";
   }
   
   @PostMapping("/")
   @Secured({"ROLE_student","ROLE_orga"})
-  public String submitReceipt(final KeycloakAuthenticationToken token, final Model model, final ReceiptForm input) {
-	    if (token != null) {
+  public String submitReceipt(final KeycloakAuthenticationToken token, final Model model, final ReceiptForm input) { 
+	  if (token != null) {
 	        model.addAttribute("account", createAccountFromPrincipal(token));}
 	    try {
 			Receipt receipt = receiptService.read(input.getNewReceipt());
@@ -80,7 +80,7 @@ public class CertificationController {
 		} catch (IOException e) {
 			//Todo
 		}
-	    model.addAttribute("receipts", input);
+	    model.addAttribute("input", input);
 	    model.addAttribute("receiptList", receiptList);
 	    return "uebersicht";
   }
