@@ -9,7 +9,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
 import javax.mail.MessagingException;
-import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
@@ -52,7 +52,7 @@ public class SubmissionController {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
-        ACCEPTED_SUBMISSIONS_ATTRIBUTE, submissionService.getAllAcceptedSubmissions(account));
+        ACCEPTED_SUBMISSIONS_ATTRIBUTE, submissionService.getAllSubmissionsByUser(account));
 
     return "submissions";
   }
@@ -66,16 +66,15 @@ public class SubmissionController {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
-    final Optional<AcceptedSubmission> acceptedSubmissionOptional =
+    final Optional<Submission> acceptedSubmissionOptional =
         submissionService.getAcceptedSubmissionIfAuthorized(submissionId, account);
     if (acceptedSubmissionOptional.isEmpty()) {
       return "error";
     }
 
-    final AcceptedSubmission acceptedSubmission = acceptedSubmissionOptional.get();
+    final Submission submission = acceptedSubmissionOptional.get();
     try {
-      final Receipt receipt =
-          receiptService.createReceiptAndSaveSignatureInDatabase(acceptedSubmission);
+      final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
       receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException

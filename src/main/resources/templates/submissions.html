@@ -32,16 +32,18 @@
     </div>
 
     <div class="container mt-5">
-        <h4>Akzeptierte Zusammenfassungen</h4>
+        <h4>Zusammenfassungen</h4>
         <table>
             <thead>
             <th>Meetup Id</th>
-            <th>Akzeptieren</th>
+            <th>Status</th>
+            <th>Quittung</th>
             </thead>
             <tbody>
             <tr th:each="submission : ${accepted_submissions}">
                 <td><a th:href="@{${submission.getMinIoLink()}}"><span th:text="${submission.getMeetupId()}"></span></a></td>
-                <td><a th:href="@{/submissions/create-receipt/{id}(id= ${submission.getId()})}"><span>Akzeptieren</span></a></td>
+                <td><span th:text="${submission.isAccepted()}? 'Akzeptiert': 'Ausstehend'"></span></td>
+                <td><a th:href="@{/submissions/create-receipt/{id}(id= ${submission.getId()})}"><span th:if="${submission.isAccepted()}">senden</span></a></td>
             </tr>
             </tbody>
         </table>

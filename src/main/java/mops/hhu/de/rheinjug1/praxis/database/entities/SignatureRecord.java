@@ -10,12 +10,11 @@ import org.springframework.data.annotation.Id;
 @Setter
 @ToString
 @NoArgsConstructor
-public class ReceiptSignature {
-  @Id private Long id;
-  private String signature;
+public class SignatureRecord {
+  @Id private String signature;
   private Long meetupId;
 
-  public ReceiptSignature(final String signature, final Long meetupId) {
+  public SignatureRecord(final String signature, final Long meetupId) {
     this.signature = signature;
     this.meetupId = meetupId;
   }

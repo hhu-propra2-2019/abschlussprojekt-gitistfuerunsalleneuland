@@ -4,15 +4,17 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
-import mops.hhu.de.rheinjug1.praxis.database.entities.AcceptedSubmission;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
-import mops.hhu.de.rheinjug1.praxis.database.entities.ReceiptSignature;
+import mops.hhu.de.rheinjug1.praxis.database.entities.SignatureRecord;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.ReceiptSignatureRepository;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,21 +22,25 @@ public class ReceiptService {
 
   private final EncryptionService encryptionService;
 
-  private final ReceiptSignatureRepository receiptSignatureRepository;
+  private final SignatureRepository signatureRepository;
 
   private final EventRepository eventRepository;
+
+  private final JdbcAggregateTemplate jdbcAggregateTemplate;
 
   @Autowired
   public ReceiptService(
       final EncryptionService encryptionService,
-      final ReceiptSignatureRepository receiptSignatureRepository,
-      final EventRepository eventRepository) {
+      final SignatureRepository signatureRepository,
+      final EventRepository eventRepository,
+      final JdbcAggregateTemplate jdbcAggregateTemplate) {
     this.encryptionService = encryptionService;
-    this.receiptSignatureRepository = receiptSignatureRepository;
+    this.signatureRepository = signatureRepository;
     this.eventRepository = eventRepository;
+    this.jdbcAggregateTemplate = jdbcAggregateTemplate;
   }
 
-  public Receipt createReceiptAndSaveSignatureInDatabase(final AcceptedSubmission submission)
+  public Receipt createReceiptAndSaveSignatureInDatabase(final Submission submission)
       throws UnrecoverableEntryException, NoSuchAlgorithmException, IOException,
           CertificateException, KeyStoreException, SignatureException, InvalidKeyException,
           EventNotFoundException {
@@ -42,7 +48,7 @@ public class ReceiptService {
 
     final Optional<Event> eventOptional = eventRepository.findById(meetUpId);
 
-    if (!eventOptional.isPresent()) {
+    if (eventOptional.isEmpty()) {
       throw new EventNotFoundException(meetUpId);
     }
 
@@ -53,11 +59,20 @@ public class ReceiptService {
     final String studentName = submission.getName();
     final String studentEmail = submission.getEmail();
 
-    final String signature =
+    final String signatureString =
         encryptionService.sign(meetupType, meetUpId, studentName, studentEmail);
 
-    final ReceiptSignature receiptSignature = new ReceiptSignature(signature, meetUpId);
-    receiptSignatureRepository.save(receiptSignature);
-    return new Receipt(studentName, studentEmail, meetUpId, meetUpTitle, meetupType, signature);
+    final SignatureRecord signature = new SignatureRecord(signatureString, meetUpId);
+    try {
+      saveNew(signature);
+    } catch (final DbActionExecutionException e) {
+      signatureRepository.save(signature);
+    }
+    return new Receipt(
+        studentName, studentEmail, meetUpId, meetUpTitle, meetupType, signatureString);
   };
+
+  private void saveNew(final SignatureRecord signature) {
+    jdbcAggregateTemplate.insert(signature);
+  }
 }
