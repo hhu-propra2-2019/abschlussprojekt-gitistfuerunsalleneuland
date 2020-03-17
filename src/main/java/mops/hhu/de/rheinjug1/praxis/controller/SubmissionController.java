@@ -1,8 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
 import static mops.hhu.de.rheinjug1.praxis.models.Account.createAccountFromPrincipal;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCEPTED_SUBMISSIONS_ATTRIBUTE;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.*;
 
 import java.io.IOException;
 import java.security.*;
@@ -37,15 +36,40 @@ public class SubmissionController {
   private final ReceiptSendService receiptSendService;
 
   @GetMapping
+  @Secured("ROLE_orga")
+  public String getAllSubmissions(final KeycloakAuthenticationToken token, final Model model) {
+
+    final Account account = createAccountFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+    model.addAttribute(ALL_SUBMISSIONS_ATTRIBUTE, submissionService.getAllSubmissions());
+    return "allSubmissions";
+  }
+
+  @GetMapping(value = "/accept/{submissionId}")
+  @Secured("ROLE_orga")
+  public String acceptSubmission(
+      final KeycloakAuthenticationToken token,
+      final Model model,
+      @PathVariable("submissionId") final Long submissionId) {
+
+    final Account account = createAccountFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+
+    submissionService.accept(submissionId);
+
+    return "redirect:/submissions";
+  }
+
+  @GetMapping("/user")
   @Secured("ROLE_studentin")
   public String getSubmissions(final KeycloakAuthenticationToken token, final Model model) {
 
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
-        ACCEPTED_SUBMISSIONS_ATTRIBUTE, submissionService.getAllSubmissionsByUser(account));
+        ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE, submissionService.getAllSubmissionsByUser(account));
 
-    return "submissions";
+    return "mySubmissions";
   }
 
   @GetMapping(value = "/create-receipt/{submissionId}")
