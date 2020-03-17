@@ -10,11 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
-<<<<<<< HEAD
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
-=======
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
->>>>>>> feat/chart
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
