@@ -34,11 +34,12 @@
 </header>
 <main th:fragment="bodycontent">
 
+
     <div class="row">
 
         <div class="col-sm-8">
             <div class="container">
-                <form enctype="multipart/form-data" method="post" th:object="${receipts}">
+                <form enctype="multipart/form-data" method="post" th:object="${input}">
                     <h4>neue Quittung hochladen</h4>
                     <div class="form-group">
                         <input placeholder="Matrikel-Nummer" required th:field="*{matrikelNummer}" type="number">
@@ -63,7 +64,7 @@
                 <ul th:each="receipt : ${receiptList.receiptList}">
                     <li class="my-4">
                         <h3>
-                            <span class="badge badge-dark" th:text="${receipt?.getOriginalFilename()}"></span>
+                            <span class="badge badge-dark" th:text="${receipt?.getName()}"></span>
                         </h3>
                         <!--                        <span><button type="submit">verwerfen</button></span>-->
                     </li>
