@@ -19,6 +19,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -86,4 +87,12 @@ public class RheinjugController {
     model.addAttribute("summaryForm", new Summary());
     return "talk";
   }
+  
+  @GetMapping({"/update/{page}", "/update"})
+  public String update(@PathVariable(required = false) String page) {
+	  meetupService.update();
+	  final String redirect = page == null ? "redirect:/" : "redirect:/" + page;
+	  return redirect;
+  }
+  
 }

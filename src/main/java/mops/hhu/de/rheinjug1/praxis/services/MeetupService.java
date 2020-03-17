@@ -28,7 +28,7 @@ public class MeetupService {
   }
 
   @Scheduled(cron = "0 0 8 * * ?")
-  private void update() {
+  public void update() {
     final List<Event> meetupEvents = meetupClient.getAllEvents();
     final List<Event> allEvents = eventRepository.findAll();
     updateExistingEvents(meetupEvents, allEvents);

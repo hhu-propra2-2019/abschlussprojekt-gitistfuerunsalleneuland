@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <!-- Links, Skripts, Styles hier einfügen! -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -53,9 +54,21 @@
             </div>
         </div>
     </div>
-
-    <div class="container mt-5">
-        <h4>Kommende Veranstaltungen</h4>
+    <div class="container my-3">
+    	<div class="row my-4">
+    		<div class="col">
+    			<h4>Kommende Veranstaltungen</h4>
+    		</div>
+    		<div class="col">
+    			<div class="float-right">
+    				<a href="/update">  <!-- Hardcoding -->
+    					<button type="button" class="btn btn-default">
+  							<i class="fas fa-redo-alt"></i>
+						</button>
+    				</a>
+    			</div>
+    		</div>
+    	</div>
         <table class="w3-table">
             <tbody th:each="event : ${events}">
             <tr>
