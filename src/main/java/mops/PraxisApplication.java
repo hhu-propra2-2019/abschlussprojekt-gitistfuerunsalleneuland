@@ -22,14 +22,5 @@ public class PraxisApplication {
 
   @Bean
   ApplicationRunner init() {
-    return args -> {
-      final Submission submission =
-          new Submission(256264912L, "ottolin@outlook.de", "otlin100", "");
-      final Submission acceptedSubmission =
-          new Submission(247416797L, "ottolin@outlook.de", "otlin100", "", true);
-      Thread.sleep(5000);
-      submissionRepository.save(submission);
-      submissionRepository.save(acceptedSubmission);
-    };
   }
 }
