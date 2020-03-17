@@ -14,14 +14,6 @@
        list-style: none;
      }
 
-
-
-
-
-
-
-
-
         </style>
         <!-- Links, Skripts, Styles hier einfügen! -->
     </th:block>
@@ -44,7 +36,6 @@
 
     <div class="row">
 
-
         <div class="col-sm-8">
             <div class="container">
                 <form enctype="multipart/form-data" method="post" th:object="${receipts}">
@@ -56,7 +47,7 @@
                         <div class="custom-file">
                             <label class="custom-file-label" for="inputGroupFile04">Quittung auswählen</label>
                             <input class="custom-file-input" id="inputGroupFile04" th:field="*{newReceipt}"
-                                   type="file">
+                                   type="file" lang="de">
                         </div>
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="submit">hochladen</button>
@@ -65,7 +56,6 @@
                 </form>
             </div>
         </div>
-
 
         <div class="col-sm-4" th:object="${receiptList}">
             <div class="container">
