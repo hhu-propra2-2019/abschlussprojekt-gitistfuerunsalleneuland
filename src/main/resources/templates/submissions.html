@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{mopslayout :: html(name='Java in der Praxis', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
+<head>
+    <meta charset="utf-8">
+    <title>Java in der Praxis</title>
+    <th:block th:fragment="headcontent">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!-- Links, Skripts, Styles hier einfügen! -->
+    </th:block>
+</head>
+<body>
+<header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link text-dark" href="/">Übersicht<span class="sr-only">(current)</span></a></li>
+            <div>
+                <!-- th:switch="${user}" / th:case="" / oder th:if="${param.error}"-->
+                <li class="nav-item"><a class="nav-link text-dark" href="/statistics">Statistiken</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/submissions">Meine Zusammenfassungen</a></li>
+            </div>
+        </ul>
+    </nav>
+</header>
+<main th:fragment="bodycontent">
+
+    <div class="container">
+        <h3></h3>
+        <p class="mt-5">Hier seht ihr eure akzeptierten Zusammenfassungen und könnt Quittungen erstellen, die ihr per Mail bekommt.</p>
+    </div>
+
+    <div class="container mt-5">
+        <h4>Zusammenfassungen</h4>
+        <table>
+            <thead>
+            <th>Meetup Id</th>
+            <th>Status</th>
+            <th>Quittung</th>
+            </thead>
+            <tbody>
+            <tr th:each="submission : ${accepted_submissions}">
+                <td><a th:href="@{${submission.getMinIoLink()}}"><span th:text="${submission.getMeetupId()}"></span></a></td>
+                <td><span th:text="${submission.isAccepted()}? 'Akzeptiert': 'Ausstehend'"></span></td>
+                <td><a th:href="@{/submissions/create-receipt/{id}(id= ${submission.getId()})}"><span th:if="${submission.isAccepted()}">senden</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mx-5">
+        <p></p>
+    </div>
+
+</main>
+</body>
+</html>
