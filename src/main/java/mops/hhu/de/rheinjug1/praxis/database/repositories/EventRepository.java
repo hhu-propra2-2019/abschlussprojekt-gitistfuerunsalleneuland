@@ -15,18 +15,8 @@ public interface EventRepository extends CrudRepository<Event, Long> {
   List<Event> findAll();
 
   @Query(
-      "UPDATE `rheinjug1`.`event`\n"
-          + "SET\n"
-          + "`id` = :id,\n"
-          + "`duration` = :duration,\n"
-          + "`name` = :name,\n"
-          + "`status` = :status,\n"
-          + "`zoned_date_time` = :time,\n"
-          + "`link` = :link,\n"
-          + "`description` = :description\n"
-          +
-          // "`meetup_type` = :meetup_type\n" +
-          "WHERE `id` = :id\n")
+      "UPDATE rheinjug1.event SET id` = :id, duration` = :duration, name` = :name, status` = :status, zoned_date_time = :time,"
+          + "link = :link, description` = :description  WHERE id = :id;")
   @Transactional
   @Modifying
   void updateWithoutParticipantsCounter(
