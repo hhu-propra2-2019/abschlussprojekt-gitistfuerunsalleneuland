@@ -18,14 +18,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/rheinjug1")
 @SuppressWarnings({
-  "PMD.UnusedPrivateField",
-  "PMD.SingularField",
-  "PMD.UnusedImports",
-  "PMD.AvoidDuplicateLiterals"
+        "PMD.UnusedPrivateField",
+        "PMD.SingularField",
+        "PMD.UnusedImports",
+        "PMD.AvoidDuplicateLiterals"
 })
 public class CertificationController {
 
@@ -92,4 +93,5 @@ public class CertificationController {
     request.logout();
     return "redirect:/";
   }
+
 }
