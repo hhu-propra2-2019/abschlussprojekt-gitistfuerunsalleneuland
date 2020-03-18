@@ -14,8 +14,8 @@ import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
+import mops.hhu.de.rheinjug1.praxis.services.ReceiptCreationAndStorageService;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
 import mops.hhu.de.rheinjug1.praxis.services.SubmissionService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -31,9 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SubmissionController {
 
   private final SubmissionService submissionService;
-
-  private final ReceiptService receiptService;
-
+  private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
   private final ReceiptSendService receiptSendService;
 
   @GetMapping
@@ -91,7 +89,8 @@ public class SubmissionController {
 
     final Submission submission = acceptedSubmissionOptional.get();
     try {
-      final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
+      final Receipt receipt =
+          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
       receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException
