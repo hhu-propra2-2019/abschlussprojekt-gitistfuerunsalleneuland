@@ -2,6 +2,8 @@ package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
@@ -14,20 +16,21 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnusedPrivateMethod"})
 @EnableScheduling
 @Component
+@AllArgsConstructor
 public class MeetupService {
 
   private final MeetupClient meetupClient;
   private final EventRepository eventRepository;
   final JdbcAggregateTemplate jdbcAggregateTemplate;
 
-  @Autowired
-  public MeetupService(
-      final MeetupClient meetupClient,
-      final EventRepository eventRepository,
-      final JdbcAggregateTemplate jdbcAggregateTemplate) {
-    this.meetupClient = meetupClient;
-    this.eventRepository = eventRepository;
-    this.jdbcAggregateTemplate = jdbcAggregateTemplate;
+  public List<Event> getUpcomingEvents() {
+    return eventRepository.findAll().stream()
+            .filter(i -> i.getStatus().equals("upcoming"))
+            .collect(Collectors.toList());
+  }
+
+  public List<Event> getAll() {
+    return eventRepository.findAll();
   }
 
   @Scheduled(fixedDelay = 3_600_000) // Todo:Zeitintervall?
@@ -47,15 +50,5 @@ public class MeetupService {
     meetupEvents.stream()
         .filter(i -> !allEvents.contains(i))
         .forEach(jdbcAggregateTemplate::insert);
-  }
-
-  public List<Event> getUpcomingEvents() {
-    return eventRepository.findAll().stream()
-        .filter(i -> i.getStatus().equals("upcoming"))
-        .collect(Collectors.toList());
-  }
-
-  public List<Event> getAll() {
-    return eventRepository.findAll();
   }
 }
