@@ -29,7 +29,7 @@ public class MeetupService {
             .collect(Collectors.toList());
   }
 
-  public List<Event> getAll() {
+  public List<Event> getAllEvents() {
     return eventRepository.findAll();
   }
 
