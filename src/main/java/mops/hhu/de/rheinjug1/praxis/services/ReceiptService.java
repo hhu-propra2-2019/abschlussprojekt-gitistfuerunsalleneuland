@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
+
+import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.entities.SignatureRecord;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
@@ -18,27 +20,13 @@ import org.springframework.data.relational.core.conversion.DbActionExecutionExce
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ReceiptService {
 
   private final EncryptionService encryptionService;
-
   private final SignatureRepository signatureRepository;
-
   private final EventRepository eventRepository;
-
   private final JdbcAggregateTemplate jdbcAggregateTemplate;
-
-  @Autowired
-  public ReceiptService(
-      final EncryptionService encryptionService,
-      final SignatureRepository signatureRepository,
-      final EventRepository eventRepository,
-      final JdbcAggregateTemplate jdbcAggregateTemplate) {
-    this.encryptionService = encryptionService;
-    this.signatureRepository = signatureRepository;
-    this.eventRepository = eventRepository;
-    this.jdbcAggregateTemplate = jdbcAggregateTemplate;
-  }
 
   public Receipt createReceiptAndSaveSignatureInDatabase(final Submission submission)
       throws UnrecoverableEntryException, NoSuchAlgorithmException, IOException,
