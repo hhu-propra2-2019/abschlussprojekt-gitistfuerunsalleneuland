@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class FormaterServiceTest {
 
-  FormatService formater = new FormatService();
+  TimeFormatService formater = new TimeFormatService();
 
   @Test
   void formatTimeHours() {

@@ -8,7 +8,7 @@ import java.util.Calendar;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FormatService {
+public class TimeFormatService {
 
   public String format(final Duration duration) {
     final Calendar cal = Calendar.getInstance();
