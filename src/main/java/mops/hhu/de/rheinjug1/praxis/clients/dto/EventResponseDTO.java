@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
-import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.services.TimeFormatService;
 
 @SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
@@ -37,22 +36,33 @@ public class EventResponseDTO {
   private String visibility;
   private boolean member_pay_fee;
 
-  public Event toEvent() { // translate the DTO to the Event Object that is saved in the database
-    final TimeFormatService formatter =
-        new TimeFormatService(); // Formatter to format Java Duration and Java zonedDateTime
+  public Event toEvent() { // translate the DTO to the Event Object that is saved in the databas
+
+    final TimeFormatService timeFormatService = new TimeFormatService();
+
+    return Event.builder()
+        .id(Long.parseLong(this.id))
+        .duration(formatDuration(timeFormatService))
+        .name(name)
+        .status(status)
+        .zonedDateTime(formatTime(timeFormatService))
+        .link(link)
+        .description(description)
+        .meetupType(name.contains("Entwickelbar") ? ENTWICKELBAR : RHEINJUG)
+        .build();
+  }
+
+  private String formatDuration(final TimeFormatService timeFormatService) {
     final Duration duration = Duration.ofMillis(this.duration);
-    final long id = Long.parseLong(this.id);
+    return timeFormatService.format(duration);
+  }
+
+  private String formatTime(final TimeFormatService timeFormatService) {
     final Duration timeAsDuration = Duration.ofMillis(this.time);
     final LocalDateTime dateTime =
         LocalDateTime.ofEpochSecond(timeAsDuration.toSeconds(), 0, ZoneOffset.UTC);
     final ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("UTC"));
-    final String formattedDuration = formatter.format(duration);
-    final String formattedZonedDateTime =
-        formatter.toLocalEventTimeString(zonedDateTime, group.getZoneId());
 
-    final MeetupType meetupType = name.contains("Entwickelbar") ? ENTWICKELBAR : RHEINJUG;
-
-    return new Event(
-        id, formattedDuration, name, status, formattedZonedDateTime, link, description, meetupType);
+    return timeFormatService.toLocalEventTimeString(zonedDateTime, group.getZoneId());
   }
 }
