@@ -14,21 +14,25 @@ import org.mockito.Mockito;
 public class ChartServiceTest {
 
   private final List<Event> sampleData = new LinkedList<>();
+  private MeetupService meetupServiceMock;
+  private ChartService chartService;
 
   @BeforeEach
   void init() {
     final String time = "12:30 - 12.03.2020";
     sampleData.add(new Event("", 0, "", "", time, "", "", null));
     sampleData.add(new Event("", 0, "", "", time, "", "", null));
+    this.meetupServiceMock = mock(MeetupService.class);
+    this.chartService = new ChartService(meetupServiceMock, new FormatService());
   }
 
   @Test
   void testNumberOfDataPoints() {
-    final MeetupService meetupServiceMock = mock(MeetupService.class);
-    final ChartService chartService = new ChartService(meetupServiceMock);
+    //Arrange
     when(meetupServiceMock.getLastXEvents(Mockito.anyInt())).thenReturn(sampleData);
+    //Act
     final int numberOfTalks = chartService.getXEventsChart(2).getTalksLength();
-
+    //Assert
     assertThat(numberOfTalks).isEqualTo(sampleData.size());
   }
 }
