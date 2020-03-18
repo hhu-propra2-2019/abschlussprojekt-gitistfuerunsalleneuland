@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class SubmissionService {
     final Optional<Submission> acceptedSubmissionOptional =
         submissionRepository.findById(submissionId);
     if (acceptedSubmissionOptional.isEmpty()) {
-      return acceptedSubmissionOptional;
+      return Optional.empty();
     }
 
     final Submission submission = acceptedSubmissionOptional.get();
@@ -47,8 +48,15 @@ public class SubmissionService {
     return Optional.empty();
   }
 
-  public void accept(final Long submissionId) {
-    final Submission oldSubmission = submissionRepository.findById(submissionId).get();
+  public void accept(final Long submissionId) throws SubmissionNotFoundException {
+    final Optional<Submission> oldSubmissionOptional = submissionRepository.findById(submissionId);
+
+    if (oldSubmissionOptional.isEmpty()) {
+      throw new SubmissionNotFoundException(submissionId);
+    }
+
+    final Submission oldSubmission = oldSubmissionOptional.get();
+
     oldSubmission.accept();
     submissionRepository.save(oldSubmission);
   }
