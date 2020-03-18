@@ -9,6 +9,8 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
 import javax.mail.MessagingException;
+
+import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
@@ -26,24 +28,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/submissions")
 public class SubmissionController {
 
   private final SubmissionService submissionService;
-
   private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
-
   private final ReceiptSendService receiptSendService;
-
-  @Autowired
-  public SubmissionController(
-      final SubmissionService submissionService,
-      final ReceiptCreationAndStorageService receiptCreationAndStorageService,
-      final ReceiptSendService receiptSendService) {
-    this.submissionService = submissionService;
-    this.receiptCreationAndStorageService = receiptCreationAndStorageService;
-    this.receiptSendService = receiptSendService;
-  }
 
   @GetMapping
   @Secured("ROLE_studentin")
