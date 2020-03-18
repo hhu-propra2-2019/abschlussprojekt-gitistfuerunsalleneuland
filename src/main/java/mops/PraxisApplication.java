@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class PraxisApplication {
 
-  @Autowired SubmissionRepository submissionRepository;
+  @Autowired private SubmissionRepository submissionRepository;
 
   public static void main(final String[] args) {
     SpringApplication.run(PraxisApplication.class, args);
