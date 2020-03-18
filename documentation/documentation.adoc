@@ -51,11 +51,11 @@ include::src/01_introduction_and_goals.adoc[]
 
 <<<<
 // 2. Randbedingungen
-include::src/02_architecture_constraints.adoc[]
+include::src/02_architecture_constraints (empty).adoc[]
 
 <<<<
 // 3. Kontextabgrenzung
-include::src/03_system_scope_and_context.adoc[]
+include::src/03_system_scope_and_context (empty).adoc[]
 
 <<<<
 // 4. Lösungsstrategie
