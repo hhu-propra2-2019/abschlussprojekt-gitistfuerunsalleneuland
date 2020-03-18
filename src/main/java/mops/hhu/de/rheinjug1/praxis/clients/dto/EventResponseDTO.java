@@ -53,6 +53,6 @@ public class EventResponseDTO {
     final MeetupType meetupType = name.contains("Entwickelbar") ? ENTWICKELBAR : RHEINJUG;
 
     return new Event(
-        formattedDuration, id, name, status, formattedZonedDateTime, link, description, meetupType);
+        id, formattedDuration, name, status, formattedZonedDateTime, link, description, meetupType);
   }
 }

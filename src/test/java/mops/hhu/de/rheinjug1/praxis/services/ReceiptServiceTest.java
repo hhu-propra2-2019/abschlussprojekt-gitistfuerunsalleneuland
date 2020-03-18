@@ -24,17 +24,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 class ReceiptServiceTest {
 
   @Autowired private ReceiptService receiptService;
-
   @MockBean private EncryptionService encryptionService;
-
   @MockBean private SignatureRepository signatureRepository;
-
   @MockBean private EventRepository eventRepository;
 
   private static final Event TEST_EVENT =
       new Event(
-          "testDuration",
           0L,
+          "testDuration",
           "testMeetupTitle",
           "testStatus",
           "testZonedDateTime",
