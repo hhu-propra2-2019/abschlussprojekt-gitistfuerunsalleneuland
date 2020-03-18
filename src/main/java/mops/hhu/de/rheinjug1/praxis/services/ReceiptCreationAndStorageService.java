@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ReceiptService {
+public class ReceiptCreationAndStorageService {
 
   private final EncryptionService encryptionService;
   private final SignatureRepository signatureRepository;

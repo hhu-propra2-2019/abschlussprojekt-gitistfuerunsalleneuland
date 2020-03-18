@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignatureRecord {
-  
+
   @Id private String signature;
   private Long meetupId;
 }

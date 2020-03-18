@@ -14,7 +14,7 @@ import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
+import mops.hhu.de.rheinjug1.praxis.services.ReceiptCreationAndStorageService;
 import mops.hhu.de.rheinjug1.praxis.services.SubmissionService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +31,17 @@ public class SubmissionController {
 
   private final SubmissionService submissionService;
 
-  private final ReceiptService receiptService;
+  private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
 
   private final ReceiptSendService receiptSendService;
 
   @Autowired
   public SubmissionController(
       final SubmissionService submissionService,
-      final ReceiptService receiptService,
+      final ReceiptCreationAndStorageService receiptCreationAndStorageService,
       final ReceiptSendService receiptSendService) {
     this.submissionService = submissionService;
-    this.receiptService = receiptService;
+    this.receiptCreationAndStorageService = receiptCreationAndStorageService;
     this.receiptSendService = receiptSendService;
   }
 
@@ -74,7 +74,7 @@ public class SubmissionController {
 
     final Submission submission = acceptedSubmissionOptional.get();
     try {
-      final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
+      final Receipt receipt = receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
       receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException

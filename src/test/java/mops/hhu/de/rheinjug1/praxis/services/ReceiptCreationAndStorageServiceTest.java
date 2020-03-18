@@ -21,9 +21,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
-class ReceiptServiceTest {
+class ReceiptCreationAndStorageServiceTest {
 
-  @Autowired private ReceiptService receiptService;
+  @Autowired private ReceiptCreationAndStorageService receiptCreationAndStorageService;
   @MockBean private EncryptionService encryptionService;
   @MockBean private SignatureRepository signatureRepository;
   @MockBean private EventRepository eventRepository;
@@ -57,7 +57,7 @@ class ReceiptServiceTest {
 
     final Submission submission =
         Submission.builder().email(email).meetupId(meetupId).name(name).build();
-    final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
+    final Receipt receipt = receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
 
     final Receipt expectedReceipt =
         new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
