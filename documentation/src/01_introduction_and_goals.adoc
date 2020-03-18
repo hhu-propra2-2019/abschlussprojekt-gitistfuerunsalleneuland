@@ -1,11 +1,11 @@
 [[section-introduction-and-goals]]
 ==	Einführung und Ziele
 
-****
+
 
 === Aufgabenstellung
 
-****
+
 .Aufgaben
 Information über Veranstaltungen der rheinjug und Entwickelbar.
 Anmeldung bei einer rheinjug- oder Entwickelbarveranstaltung in der Rolle des Studierenden.
@@ -16,50 +16,27 @@ Möglichkeit des Einlösen von drei rheinjug-Quittungen oder einer Entwickelbar-
 
 
 .Motivation
-Steigerung der Anzahl der Besuche der rheinjug- und Entwickelbarveranstaltungen (r/E-Veranstaltungen) durch Studierende.
-Vereinfachung des Erhalts von Creditpoints durch Teilnahme an r/E-Veranstaltungen und verbesserter Überblick über noch nicht oder bereits ausgestellte Creditpoints oder zugehörige Abgaben.
-Vereinfachung der Organisation von r/E-Veranstaltungen und bessere Kommunikation mit Studierenden.
+* Studierende: verlässliches und flexibles Ernlangen von Creditpoints durch Besuch der r/E-Veranstaltungen
+* Verbesserter Überblick über noch nicht oder bereits ausgestellte Creditpoints oder zugehörige Abgaben
+* Organisatoren: einfacher Zugriff auf wohlformatierte Abgaben, flexible Möglichkeit der Erteilung von Creditpoints(Ausstellen von Quittungen)
+* Vereinfachung der Organisation von r/E-Veranstaltungen und bessere Kommunikation mit Studierenden
+* Steigerung der Anzahl der Besuche der rheinjug- und Entwickelbarveranstaltungen (r/E-Veranstaltungen) durch Studierende
 
-****
 
 === Qualitätsziele
 
-****
-.Inhalt
+- Bereitstellen eines formatierten Templates für Abgaben
 - Modularität
 - Unabhängigkeit der Rollen
 - Datenerhalt und geeignete Speicherung von Daten
+- Verschlüsselung der Metadaten zu Abgaben, um Infomrationen möglichst lange zu erhalten und diese nur einmal einlösbar zu machen
 - Wartbarkeit
 - Sicherheit
 
-.Motivation
-
-- Organisatoren: einfacher Zugriff auf wohlformatierte Abgaben, flexible Möglichkeit der Erteilung von Creditpoints(Ausstellen von Quittungen)
-- Studierende: verlässliches und flexibles Ernlangen von Creditpoints durch Besuch der r/E-Veranstaltungen
-
-.Form
-
-- Bereitstellen eines formatierten Templates für Abgaben
-- Verschlüsselung der Metadaten zu Abgaben, um Infomrationen möglichst lange zu erhalten und diese nur einmal einlösbar zu machen
-
-****
-
 === Stakeholder
-
-****
-.Inhalt
 
 * Studierende der Informatik
 * Organisatoren der r/E-Veranstaltungen mit Verbindungen zur Informatik der HHU (v.a. Jens)
-
-.Motivation
-Vereinfachung des Erlangen von zusätzlichen Creditpoints für Informatikstudierende.
-Übersichtliche Information über studiengangbezogene, übergreifende Angebote.
-Organisation der Anmeldung von Studierenden und Creditpointvergabe durch Organisatoren.
-
-.Form
-
-****
 
 [cols="1,1,2" options="header"]
 |===
