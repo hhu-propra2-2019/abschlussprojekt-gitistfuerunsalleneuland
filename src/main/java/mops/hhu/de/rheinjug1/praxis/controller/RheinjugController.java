@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
@@ -58,9 +59,10 @@ public class RheinjugController {
     model.addAttribute("chart", chartService.getXEventsChart(6));
     model.addAttribute(
         "numberEntwickelbarReceipts",
-        String.valueOf(chartService.getNumberOfEntwickelbarReceipts()));
+        String.valueOf(chartService.getNumberOfReceiptsByMeetupType(MeetupType.ENTWICKELBAR)));
     model.addAttribute(
-        "numberRheinjugReceipts", String.valueOf(chartService.getNumberOfRheinjugReceipts()));
+        "numberRheinjugReceipts",
+        String.valueOf(chartService.getNumberOfReceiptsByMeetupType(MeetupType.RHEINJUG)));
     return "statistics";
   }
 
