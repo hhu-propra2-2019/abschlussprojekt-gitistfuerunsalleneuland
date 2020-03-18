@@ -5,13 +5,14 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 
 @Getter
+@EqualsAndHashCode
 public class Submission {
 
   @Id private Long id;
-  @NonNull private Long meetupId;
-  @NonNull private String email;
-  @NonNull private String name;
-  @NonNull private String minIoLink;
+  @NonNull private final Long meetupId;
+  @NonNull private final String email;
+  @NonNull private final String name;
+  @NonNull private final String minIoLink;
   private boolean accepted = false;
 
   @Builder
@@ -26,5 +27,9 @@ public class Submission {
     this.name = name;
     this.minIoLink = Optional.ofNullable(minIoLink).orElse("");
     this.accepted = accepted;
+  }
+
+  public void accept() {
+    this.accepted = true;
   }
 }

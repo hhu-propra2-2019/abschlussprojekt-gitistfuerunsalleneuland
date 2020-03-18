@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
@@ -37,14 +38,16 @@ public class RheinjugController {
   }
 
   @GetMapping("/")
-  public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
+  @Secured({"ROLE_orga", "ROLE_studentin"})
+  public String home(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
+      final Account account = createAccountFromPrincipal(token);
+      model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
     final List<Event> upcoming = meetupService.getEventsByStatus("upcoming");
     model.addAttribute("events", upcoming);
     publicAccess.increment();
-    return "uebersicht";
+    return "home";
   }
 
   @GetMapping("/statistics")

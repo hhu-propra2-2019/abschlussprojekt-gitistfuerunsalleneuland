@@ -21,6 +21,6 @@ class PraxisApplicationTests {
 
   @Test
   void testUebersicht() throws Exception {
-    mvc.perform(get("/")).andExpect(status().isOk());
+    mvc.perform(get("/")).andExpect(status().is3xxRedirection());
   }
 }
