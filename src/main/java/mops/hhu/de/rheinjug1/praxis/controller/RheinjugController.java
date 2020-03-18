@@ -12,6 +12,7 @@ import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
+import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -28,6 +29,7 @@ public class RheinjugController {
   private final MeetupService meetupService;
   private final Counter publicAccess;
   @Autowired private ChartService chartService;
+  @Autowired private ReceiptService receiptService;
 
   @Autowired
   public RheinjugController(final MeterRegistry registry, final MeetupService meetupService) {
@@ -54,6 +56,11 @@ public class RheinjugController {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
     model.addAttribute("chart", chartService.getXEventsChart(6));
+    model.addAttribute(
+        "numberEntwickelbarReceipts",
+        String.valueOf(chartService.getNumberOfEntwickelbarReceipts()));
+    model.addAttribute(
+        "numberRheinjugReceipts", String.valueOf(chartService.getNumberOfRheinjugReceipts()));
     return "statistics";
   }
 

@@ -72,6 +72,10 @@ public class ReceiptService {
         studentName, studentEmail, meetUpId, meetUpTitle, meetupType, signatureString);
   };
 
+  public Iterable<SignatureRecord> getAll() {
+    return signatureRepository.findAll();
+  }
+
   private void saveNew(final SignatureRecord signature) {
     jdbcAggregateTemplate.insert(signature);
   }

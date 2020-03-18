@@ -25,7 +25,7 @@ public class ChartServiceTest {
   @Test
   void testNumberOfDataPoints() {
     final MeetupService meetupServiceMock = mock(MeetupService.class);
-    final ChartService chartService = new ChartService(meetupServiceMock);
+    final ChartService chartService = new ChartService(meetupServiceMock, null, null);
     when(meetupServiceMock.getLastXEvents(Mockito.anyInt())).thenReturn(sampleData);
     final int numberOfTalks = chartService.getXEventsChart(2).getTalksLength();
 
