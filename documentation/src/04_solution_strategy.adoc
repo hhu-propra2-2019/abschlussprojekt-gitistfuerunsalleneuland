@@ -5,7 +5,7 @@
 * Set-Up von Docker-Compose und Gradle nach Angaben der Vorlesung(Spring Boot Actuator, SpotBugs, PMD)
 
 === Top-Level-Zerlegung des Systems / Architekturmuster
-* Entscheidung für Onion/Orthogonal-Architektur
+* Entscheidung für Onion/Hexagonal-Architektur
 
 === Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen technologisch
 * Verwendung von kryptographsicher Signatur für Quittungen, welche alle relevanten Informationen in sich trägt(Bibliothek JDK Security, tutorials.jenkov.com/java-cryptography).
