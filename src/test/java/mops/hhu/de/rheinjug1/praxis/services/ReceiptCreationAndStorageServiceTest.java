@@ -29,15 +29,16 @@ class ReceiptCreationAndStorageServiceTest {
   @MockBean private EventRepository eventRepository;
 
   private static final Event TEST_EVENT =
-      new Event(
-          0L,
-          "testDuration",
-          "testMeetupTitle",
-          "testStatus",
-          "testZonedDateTime",
-          "testLink",
-          "testDescription",
-          MeetupType.ENTWICKELBAR);
+      Event.builder()
+          .id(0L)
+          .duration("testDuration")
+          .name("testMeetupTitle")
+          .status("testStatus")
+          .zonedDateTime("testZonedDateTime")
+          .link("testLink")
+          .description("testDescription")
+          .meetupType(MeetupType.ENTWICKELBAR)
+          .build();
 
   @Test
   void receiptService_returns_correct_receipt()
@@ -57,7 +58,8 @@ class ReceiptCreationAndStorageServiceTest {
 
     final Submission submission =
         Submission.builder().email(email).meetupId(meetupId).name(name).build();
-    final Receipt receipt = receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
+    final Receipt receipt =
+        receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
 
     final Receipt expectedReceipt =
         new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);

@@ -9,17 +9,14 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Optional;
 import javax.mail.MessagingException;
-
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
-import mops.hhu.de.rheinjug1.praxis.models.Receipt;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptCreationAndStorageService;
+import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.services.SubmissionService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,8 +62,9 @@ public class SubmissionController {
 
     final Submission submission = acceptedSubmissionOptional.get();
     try {
-      final Receipt receipt = receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
-      receiptSendService.sendReceipt(receipt, account.getEmail());
+      receiptSendService.sendReceipt(
+          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission),
+          account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException
         | IOException

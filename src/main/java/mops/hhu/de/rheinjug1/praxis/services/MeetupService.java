@@ -2,12 +2,10 @@ package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,8 +23,8 @@ public class MeetupService {
 
   public List<Event> getUpcomingEvents() {
     return eventRepository.findAll().stream()
-            .filter(i -> i.getStatus().equals("upcoming"))
-            .collect(Collectors.toList());
+        .filter(i -> i.getStatus().equals("upcoming"))
+        .collect(Collectors.toList());
   }
 
   public List<Event> getAllEvents() {
