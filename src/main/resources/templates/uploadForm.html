@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+<body>
+<div id="content" th:fragment="mycontent">
+    <div>
+        <form method="POST" enctype="multipart/form-data"
+              th:action="@{/upload/{meetup_id}(meetup_id=${meetup_id})}">
+            <table>
+                <tr>
+                    <td>Zusammenfassung:</td>
+                    <td><input type="file" name="file"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Hochladen"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div>
+    </div>
+</div>
+</body>
+</html>

@@ -28,8 +28,8 @@ public class EncryptionService {
 
   public String sign(
       final MeetupType meetupType, final long meetupId, final String name, final String email)
-      throws NoSuchAlgorithmException, IOException, InvalidKeyException, SignatureException,
-          KeyStoreException, UnrecoverableEntryException, CertificateException {
+      throws NoSuchAlgorithmException, IOException, InvalidKeyException, KeyStoreException,
+          UnrecoverableEntryException, CertificateException, SignatureException {
 
     final KeyPair pair = keyService.getKeyPairFromKeyStore();
     final PrivateKey privateKey = pair.getPrivate();

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+<body>
+
+<div id="content" th:fragment="mycontent">
+    <div class="container mt-5">
+        <h4>Alle Veranstaltungen</h4>
+        <table>
+            <thead>
+            <th>Name</th>
+            <th>Datum/Uhrzeit</th>
+            <th>Dauer</th>
+            <th>Zusammenfassung</th>
+            </thead>
+            <tbody>
+            <tr th:each="event : ${events}">
+                <td><a th:href="@{${event.link}}"><span th:text="${event.name}">test</span></a></td>
+                <td th:text="${event.zonedDateTime}">3</td>
+                <td th:text="${event.duration}">3</td>
+                <td><a th:href="@{/upload/{meetup_id}(meetup_id= ${event.getId()})}"><span>hochladen</span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+
+</html>

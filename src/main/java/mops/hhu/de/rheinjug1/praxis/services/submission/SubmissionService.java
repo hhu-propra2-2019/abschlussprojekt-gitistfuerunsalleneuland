@@ -1,13 +1,15 @@
-package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.services.submission;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionInfoRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +17,18 @@ import org.springframework.stereotype.Service;
 public class SubmissionService {
 
   private final SubmissionRepository submissionRepository;
+  private final SubmissionInfoRepository submissionInfoRepository;
 
   @Autowired
-  public SubmissionService(final SubmissionRepository submissionRepository) {
+  public SubmissionService(
+      final SubmissionRepository submissionRepository,
+      final SubmissionInfoRepository submissionInfoRepository) {
     this.submissionRepository = submissionRepository;
+    this.submissionInfoRepository = submissionInfoRepository;
   }
 
-  public List<Submission> getAllSubmissionsByUser(final Account account) {
-    return submissionRepository.findAllByEmail(account.getEmail());
+  public List<SubmissionInfo> getAllSubmissionsWithInfosByUser(final Account account) {
+    return submissionInfoRepository.getSubmissionInfoListByEmail(account.getEmail());
   }
 
   public List<Submission> getAllSubmissions() {

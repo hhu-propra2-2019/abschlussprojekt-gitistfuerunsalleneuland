@@ -1,5 +1,6 @@
-package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.services.receipt;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReceiptPrintService {
 
-  public String printReceipt(final Receipt receipt) {
-    final String path = "src/main/resources/" + receipt.getMeetupTitle() + "-Quittung.txt";
+  public String printReceipt(final Receipt receipt) throws IOException {
+    final String path = File.createTempFile("receipt", ".tmp").getAbsolutePath();
 
     try (FileWriter fileWriter = new FileWriter(path);
         PrintWriter printWriter = new PrintWriter(fileWriter)) {

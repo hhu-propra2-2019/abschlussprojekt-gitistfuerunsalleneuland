@@ -18,8 +18,13 @@
                 </td>
                 <td><span th:text="${submission.getName()}"></span></td>
                 <td><span th:text="${submission.isAccepted()}? 'Akzeptiert': 'Ausstehend'"></span></td>
-                <td><a th:href="@{/submissions/accept/{id}(id= ${submission.getId()})}"><span
-                        th:if="${!submission.isAccepted()}">akzeptieren</span></a></td>
+                <td>
+                    <form method="POST" th:action="@{/admin/submissions/accept/{id}(id=${submission.getId()})}">
+                        <button th:if="${!submission.isAccepted()}" type="submit" name="submit" value="value"
+                                class="card-link">akzeptieren
+                        </button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

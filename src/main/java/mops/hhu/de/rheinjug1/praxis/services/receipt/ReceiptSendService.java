@@ -1,7 +1,9 @@
-package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.services.receipt;
 
+import java.io.IOException;
 import javax.mail.MessagingException;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
+import mops.hhu.de.rheinjug1.praxis.services.MailService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +24,8 @@ public class ReceiptSendService {
     this.receiptPrintService = receiptPrintService;
   }
 
-  public void sendReceipt(final Receipt receipt, final String to) throws MessagingException {
+  public void sendReceipt(final Receipt receipt, final String to)
+      throws MessagingException, IOException {
     final String path = receiptPrintService.printReceipt(receipt);
 
     mailService.sendMailWithAttachment(
