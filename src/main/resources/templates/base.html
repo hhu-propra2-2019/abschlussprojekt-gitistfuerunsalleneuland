@@ -18,10 +18,12 @@
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link text-dark" href="/">Übersicht<span class="sr-only">(current)</span></a>
             </li>
-            <div>
-                <!-- th:switch="${user}" / th:case="" / oder th:if="${param.error}"-->
+            <div th:if="${account != null and account.getRoles().contains('orga')}">
+                <li class="nav-item"><a class="nav-link text-dark" href="/submissions">Alle Zusammenfassungen</a></li>
                 <li class="nav-item"><a class="nav-link text-dark" href="/statistics">Statistiken</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="/submissions">Meine Zusammenfassungen</a></li>
+            </div>
+            <div th:if="${account != null and account.getRoles().contains('studentin')}">
+                <li class="nav-item"><a class="nav-link text-dark" href="/submissions/user">Meine Zusammenfassungen</a></li>
             </div>
         </ul>
     </nav>
