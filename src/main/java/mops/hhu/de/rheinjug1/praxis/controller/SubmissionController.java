@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
@@ -50,7 +51,8 @@ public class SubmissionController {
   public String acceptSubmission(
       final KeycloakAuthenticationToken token,
       final Model model,
-      @PathVariable("submissionId") final Long submissionId) {
+      @PathVariable("submissionId") final Long submissionId)
+      throws SubmissionNotFoundException {
 
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
