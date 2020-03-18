@@ -7,7 +7,10 @@ import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionEventInfoRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,10 +24,11 @@ public class MeetupService {
 
   private final MeetupClient meetupClient;
   private final EventRepository eventRepository;
+  private final SubmissionEventInfoRepository submissionEventInfoRepository;
   final JdbcAggregateTemplate jdbcAggregateTemplate;
 
-  public List<Event> getAllEvents() {
-    return eventRepository.findAll();
+  public List<SubmissionEventInfo> getAllEventsWithInfosByEmail(final Account account) {
+    return submissionEventInfoRepository.getAllEventsWithUserInfosByEmail(account.getEmail());
   }
 
   @Scheduled(fixedDelay = 3_600_000) // Todo:Zeitintervall?

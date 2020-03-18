@@ -5,9 +5,12 @@ import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.A
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfoDateComparator;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +51,15 @@ public class RheinjugController {
   @GetMapping("/events")
   @Secured({"ROLE_orga", "ROLE_studentin"})
   public String showAllEvents(final KeycloakAuthenticationToken token, final Model model) {
-    if (token != null) {
-      final Account account = createAccountFromPrincipal(token);
-      model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-    }
-    model.addAttribute("events", meetupService.getAllEvents());
+
+    final Account account = createAccountFromPrincipal(token);
+
+    final List<SubmissionEventInfo> submissionEventInfos =
+        meetupService.getAllEventsWithInfosByEmail(account);
+    submissionEventInfos.sort(new SubmissionEventInfoDateComparator());
+
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+    model.addAttribute("eventsWithInfos", submissionEventInfos);
     publicAccess.increment();
     return "allEvents";
   }

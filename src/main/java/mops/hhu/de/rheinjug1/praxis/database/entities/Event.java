@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.database.entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Value;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.data.annotation.Id;
 

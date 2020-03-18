@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionInfoRepository;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionEventInfoRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
-import mops.hhu.de.rheinjug1.praxis.models.SubmissionInfo;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,18 +18,18 @@ import org.springframework.stereotype.Service;
 public class SubmissionService {
 
   private final SubmissionRepository submissionRepository;
-  private final SubmissionInfoRepository submissionInfoRepository;
+  private final SubmissionEventInfoRepository submissionEventInfoRepository;
 
   @Autowired
   public SubmissionService(
       final SubmissionRepository submissionRepository,
-      final SubmissionInfoRepository submissionInfoRepository) {
+      final SubmissionEventInfoRepository submissionEventInfoRepository) {
     this.submissionRepository = submissionRepository;
-    this.submissionInfoRepository = submissionInfoRepository;
+    this.submissionEventInfoRepository = submissionEventInfoRepository;
   }
 
-  public List<SubmissionInfo> getAllSubmissionsWithInfosByUser(final Account account) {
-    return submissionInfoRepository.getSubmissionInfoListByEmail(account.getEmail());
+  public List<SubmissionEventInfo> getAllSubmissionsWithInfosByUser(final Account account) {
+    return submissionEventInfoRepository.getSubmissionInfoListByEmail(account.getEmail());
   }
 
   public List<Submission> getAllSubmissions() {

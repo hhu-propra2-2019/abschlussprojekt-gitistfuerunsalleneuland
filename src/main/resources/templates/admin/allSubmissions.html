@@ -14,13 +14,13 @@
             </thead>
             <tbody>
             <tr th:each="submission : ${all_submissions}">
-                <td><a th:href="@{${submission.getMinIoLink()}}"><span th:text="${submission.getMeetupId()}"></span></a>
+                <td><a th:href="@{${submission.minIoLink}}"><span th:text="${submission.meetupId}"></span></a>
                 </td>
-                <td><span th:text="${submission.getName()}"></span></td>
-                <td><span th:text="${submission.isAccepted()}? 'Akzeptiert': 'Ausstehend'"></span></td>
+                <td><span th:text="${submission.name}"></span></td>
+                <td><span th:text="${submission.accepted}? 'Akzeptiert': 'Ausstehend'"></span></td>
                 <td>
-                    <form method="POST" th:action="@{/admin/submissions/accept/{id}(id=${submission.getId()})}">
-                        <button th:if="${!submission.isAccepted()}" type="submit" name="submit" value="value"
+                    <form method="POST" th:action="@{/admin/submissions/accept/{id}(id=${submission.id})}">
+                        <button th:if="${!submission.accepted}" type="submit" name="submit" value="value"
                                 class="card-link">akzeptieren
                         </button>
                     </form>

@@ -34,14 +34,16 @@
         <table>
             <thead>
             <th>Name</th>
-            <th>Datum/Uhrzeit</th>
+            <th>Datum</th>
+            <th>Uhrzeit</th>
             <th>Dauer</th>
             </thead>
             <tbody>
             <tr th:each="event : ${events}">
-                <td><a th:href="@{${event.link}}"><span th:text="${event.name}">test</span></a></td>
-                <td th:text="${event.zonedDateTime}">3</td>
-                <td th:text="${event.duration}">3</td>
+                <td><a th:href="@{${event.link}}"><span th:text="${event.name}">default</span></a></td>
+                <td th:text="${@timeFormatService.getGermanDateString(event)}">01.01.2000</td>
+                <td th:text="${@timeFormatService.getGermanTimeString(event)}">12:00</td>
+                <td th:text="${event.duration}">0:00</td>
             </tr>
             </tbody>
         </table>

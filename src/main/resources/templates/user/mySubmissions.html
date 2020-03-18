@@ -21,17 +21,17 @@
             </thead>
             <tbody>
             <tr th:each="submissionInfo : ${all_submissions_from_user}">
-                <td><a th:href="@{${submissionInfo.getEventLink()}}"><span
-                        th:text="${submissionInfo.getEventName()}"></span></a>
+                <td><a th:href="@{${submissionInfo.eventLink}}"><span
+                        th:text="${submissionInfo.eventName}"></span></a>
                 </td>
-                <td><span th:text="${submissionInfo.getMeetupType().getLabel()}"></span></td>
-                <td><a th:href="@{${submissionInfo.getMinIoLink()}}"><span>Download</span></a>
+                <td><span th:text="${submissionInfo.meetupType.getLabel()}"></span></td>
+                <td><a th:href="@{${submissionInfo.minIoLink}}"><span>Download</span></a>
                 </td>
-                <td><span th:text="${submissionInfo.isAccepted()}? 'Akzeptiert': 'Ausstehend'"></span></td>
+                <td><span th:text="${submissionInfo.accepted}? 'Akzeptiert': 'Ausstehend'"></span></td>
                 <td>
                     <form method="POST"
-                          th:action="@{/user/submissions/create-receipt/{id}(id=${submissionInfo.getId()})}">
-                        <button th:if="${submissionInfo.isAccepted()}" type="submit" name="submit" value="value"
+                          th:action="@{/user/submissions/create-receipt/{id}(id=${submissionInfo.id})}">
+                        <button th:if="${submissionInfo.accepted}" type="submit" name="submit" value="value"
                                 class="card-link">senden
                         </button>
                     </form>

@@ -9,16 +9,22 @@
         <table>
             <thead>
             <th>Name</th>
-            <th>Datum/Uhrzeit</th>
-            <th>Dauer</th>
-            <th>Zusammenfassung</th>
+            <th>Datum</th>
+            <th>Abgabe</th>
+            <th>Aktion</th>
             </thead>
             <tbody>
-            <tr th:each="event : ${events}">
-                <td><a th:href="@{${event.link}}"><span th:text="${event.name}">test</span></a></td>
-                <td th:text="${event.zonedDateTime}">3</td>
-                <td th:text="${event.duration}">3</td>
-                <td><a th:href="@{/upload/{meetup_id}(meetup_id= ${event.getId()})}"><span>hochladen</span></a></td>
+            <tr th:each="eventWithInfos : ${eventsWithInfos}">
+                <td><a th:href="@{${eventWithInfos.eventLink}}"><span th:text="${eventWithInfos.eventName}">Name</span></a></td>
+                <td th:text="${@timeFormatService.getGermanDateString(eventWithInfos)}">Date</td>
+                <td th:text="${eventWithInfos.id > 0} ? 'erfolgt' : (${@timeFormatService.isUploadPeriodExpired(eventWithInfos)} ? 'abgelaufen' : (${@timeFormatService.isInTheFuture(eventWithInfos)}? 'zukünftig' : 'offen')) ">
+                    Date
+                </td>
+                <td>
+                    <a th:if="${eventWithInfos.id == 0 && @timeFormatService.isInUploadPeriod(eventWithInfos)}"
+                       th:href="@{/upload/{meetup_id}(meetup_id= ${eventWithInfos.meetupId})}"><span>hochladen</span></a>
+                    <a th:if="${eventWithInfos.id > 0}" th:href="@{${eventWithInfos.minIoLink}}"><span>herunterladen</span></a>
+                </td>
             </tr>
             </tbody>
         </table>
