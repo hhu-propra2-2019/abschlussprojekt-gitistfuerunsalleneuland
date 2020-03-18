@@ -63,32 +63,32 @@ include::src/04_solution_strategy.adoc[]
 
 <<<<
 // 5. Bausteinsicht
-include::src/05_building_block_view.adoc[]
+include::src/05_building_block_view (empty).adoc[]
 
 <<<<
 // 6. Laufzeitsicht
-include::src/06_runtime_view.adoc[]
+include::src/06_runtime_view (empty).adoc[]
 
 <<<<
 // 7. Verteilungssicht
-include::src/07_deployment_view.adoc[]
+include::src/07_deployment_view (empty).adoc[]
 
 <<<<
 // 8. Querschnittliche Konzepte
-include::src/08_concepts.adoc[]
+include::src/08_concepts (empty).adoc[]
 
 <<<<
 // 9. Entscheidungen
-include::src/09_design_decisions.adoc[]
+include::src/09_design_decisions (empty).adoc[]
 
 <<<<
 // 10. Qualität...
-include::src/10_quality_scenarios.adoc[]
+include::src/10_quality_scenarios (empty).adoc[]
 
 <<<<
 // 11. Risiken
-include::src/11_technical_risks.adoc[]
+include::src/11_technical_risks (empty).adoc[]
 
 <<<<
 // 12. Glossar
-include::src/12_glossary.adoc[]
+include::src/12_glossary (empty).adoc[]
