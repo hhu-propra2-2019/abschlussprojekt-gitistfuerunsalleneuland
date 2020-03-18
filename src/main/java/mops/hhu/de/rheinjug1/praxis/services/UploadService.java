@@ -6,28 +6,34 @@ import io.minio.errors.MinioException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
 @Service
 public class UploadService {
 
-  private final MinioClient minioClient;
+  @Value("${spring.minio.url}")
+  private String minioUrl;
 
-  public UploadService()
-      throws MinioException, InvalidKeyException, NoSuchAlgorithmException, IOException,
-          XmlPullParserException {
+  @Value("${spring.minio.bucket}")
+  private String minioBucket;
 
-    minioClient = new MinioClient("http://localhost:9000/", "minio", "minio123");
+  @Value("${spring.minio.access-key}")
+  private String minioAccessKey;
 
-    if (!minioClient.bucketExists("rheinjug")) {
-      minioClient.makeBucket("rheinjug");
-    }
-  }
+  @Value("${spring.minio.secret-key}")
+  private String minioSecretKey;
 
   public void uploadFile(final String name, final String localFilePath)
       throws InvalidKeyException, InvalidBucketNameException, NoSuchAlgorithmException,
           MinioException, IOException, XmlPullParserException {
-    minioClient.putObject("rheinjug", name, localFilePath, null, null, null, null);
+    final MinioClient minioClient =
+        new MinioClient(this.minioUrl, this.minioAccessKey, this.minioSecretKey);
+
+    if (!minioClient.bucketExists(this.minioBucket)) {
+      minioClient.makeBucket(this.minioBucket);
+    }
+    minioClient.putObject(this.minioBucket, name, localFilePath, null, null, null, null);
   }
 }
