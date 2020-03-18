@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.services.submission;
 
 import java.util.ArrayList;
 import java.util.List;

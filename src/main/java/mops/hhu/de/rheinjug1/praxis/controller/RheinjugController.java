@@ -8,7 +8,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
-import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +45,16 @@ public class RheinjugController {
     return "home";
   }
 
-  @GetMapping("/talk")
-  @Secured("ROLE_orga")
-  public String statistics(final KeycloakAuthenticationToken token, final Model model) {
+  @GetMapping("/events")
+  @Secured({"ROLE_orga", "ROLE_studentin"})
+  public String showAllEvents(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
+      final Account account = createAccountFromPrincipal(token);
+      model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
-    model.addAttribute("summaryForm", new Summary());
-    return "talk";
+    model.addAttribute("events", meetupService.getAll());
+    publicAccess.increment();
+    return "allEvents";
   }
 
   @GetMapping("/logout")
@@ -62,16 +63,9 @@ public class RheinjugController {
     return "redirect:/";
   }
 
-  @GetMapping("/profil")
-  public String profil(final KeycloakAuthenticationToken token, final Model model) {
-    if (token != null) {
-      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
-    }
-    return "profil";
-  }
-
-  @GetMapping("/statistics")
-  public String talk(final KeycloakAuthenticationToken token, final Model model) {
+  @GetMapping("/admin/statistics")
+  @Secured("ROLE_orga")
+  public String getStatistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }

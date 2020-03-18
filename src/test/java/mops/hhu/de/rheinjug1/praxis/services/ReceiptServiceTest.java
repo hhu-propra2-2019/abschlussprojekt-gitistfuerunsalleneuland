@@ -15,6 +15,7 @@ import mops.hhu.de.rheinjug1.praxis.database.repositories.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +44,7 @@ class ReceiptServiceTest {
           MeetupType.ENTWICKELBAR);
 
   @Test
-  void receiptService_returns_correct_receipt()
+  void it_returns_correct_receipt_in_signature_creation_process()
       throws CertificateException, InvalidKeyException, NoSuchAlgorithmException, IOException,
           KeyStoreException, SignatureException, UnrecoverableEntryException,
           EventNotFoundException {

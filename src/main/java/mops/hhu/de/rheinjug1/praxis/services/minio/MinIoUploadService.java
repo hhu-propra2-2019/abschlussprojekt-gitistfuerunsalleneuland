@@ -1,17 +1,18 @@
-package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.services.minio;
 
 import io.minio.MinioClient;
-import io.minio.errors.InvalidBucketNameException;
 import io.minio.errors.MinioException;
+import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
 @Service
-public class UploadService {
+public class MinIoUploadService {
 
   @Value("${spring.minio.url}")
   private String minioUrl;
@@ -25,9 +26,9 @@ public class UploadService {
   @Value("${spring.minio.secret-key}")
   private String minioSecretKey;
 
-  public void uploadFile(final String name, final String localFilePath)
-      throws InvalidKeyException, InvalidBucketNameException, NoSuchAlgorithmException,
-          MinioException, IOException, XmlPullParserException {
+  private void uploadFile(final String name, final String localFilePath)
+      throws InvalidKeyException, NoSuchAlgorithmException, MinioException, IOException,
+          XmlPullParserException {
     final MinioClient minioClient =
         new MinioClient(this.minioUrl, this.minioAccessKey, this.minioSecretKey);
 
@@ -35,5 +36,13 @@ public class UploadService {
       minioClient.makeBucket(this.minioBucket);
     }
     minioClient.putObject(this.minioBucket, name, localFilePath, null, null, null, null);
+  }
+
+  public void transferMultipartFileToMinIo(final MultipartFile file, final String filename)
+      throws IOException, MinioException, XmlPullParserException, NoSuchAlgorithmException,
+          InvalidKeyException {
+    final File tempFile = File.createTempFile("temp", null);
+    file.transferTo(tempFile);
+    uploadFile(filename, tempFile.getPath());
   }
 }

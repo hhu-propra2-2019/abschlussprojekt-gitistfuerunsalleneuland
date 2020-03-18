@@ -11,70 +11,42 @@ import javax.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
-import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
-import mops.hhu.de.rheinjug1.praxis.services.SubmissionService;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptSendService;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptService;
+import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/submissions")
-public class SubmissionController {
+@RequestMapping("/user/submissions")
+public class SubmissionUserController {
 
   private final SubmissionService submissionService;
-
   private final ReceiptService receiptService;
-
   private final ReceiptSendService receiptSendService;
 
   @GetMapping
-  @Secured("ROLE_orga")
-  public String getAllSubmissions(final KeycloakAuthenticationToken token, final Model model) {
-
-    final Account account = createAccountFromPrincipal(token);
-    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-    model.addAttribute(ALL_SUBMISSIONS_ATTRIBUTE, submissionService.getAllSubmissions());
-    return "allSubmissions";
-  }
-
-  @GetMapping(value = "/accept/{submissionId}")
-  @Secured("ROLE_orga")
-  public String acceptSubmission(
-      final KeycloakAuthenticationToken token,
-      final Model model,
-      @PathVariable("submissionId") final Long submissionId)
-      throws SubmissionNotFoundException {
-
-    final Account account = createAccountFromPrincipal(token);
-    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-
-    submissionService.accept(submissionId);
-
-    return "redirect:/submissions";
-  }
-
-  @GetMapping("/user")
   @Secured("ROLE_studentin")
-  public String getSubmissions(final KeycloakAuthenticationToken token, final Model model) {
+  public String showMySubmissions(final KeycloakAuthenticationToken token, final Model model) {
 
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
         ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE, submissionService.getAllSubmissionsByUser(account));
 
-    return "mySubmissions";
+    return "user/mySubmissions";
   }
 
-  @GetMapping(value = "/create-receipt/{submissionId}")
+  @PostMapping(value = "/create-receipt/{submissionId}")
   @Secured("ROLE_studentin")
   public String createReceipt(
       final KeycloakAuthenticationToken token,
@@ -105,7 +77,6 @@ public class SubmissionController {
     } catch (final MessagingException e) {
       return "messageCantBeSentError";
     }
-
-    return "receiptCreated";
+    return "user/receiptCreated";
   }
 }

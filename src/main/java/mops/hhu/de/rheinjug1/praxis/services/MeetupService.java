@@ -1,10 +1,12 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
+import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -57,5 +59,15 @@ public class MeetupService {
 
   public List<Event> getAll() {
     return eventRepository.findAll();
+  }
+
+  public Event getEventIfExistent(final Long meetUpId) throws EventNotFoundException {
+    final Optional<Event> eventOptional = eventRepository.findById(meetUpId);
+
+    if (eventOptional.isEmpty()) {
+      throw new EventNotFoundException(meetUpId);
+    }
+
+    return eventOptional.get();
   }
 }

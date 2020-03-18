@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.xmlpull.v1.XmlPullParserException;
 
 @SpringBootTest
-public class UploadServiceTest {
+public class MinIoUploadServiceTest {
 
   static MinioClient minioClient;
 
