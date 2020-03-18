@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.services.FormatService;
+import mops.hhu.de.rheinjug1.praxis.services.TimeFormatService;
 
 @SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
 @ToString
@@ -38,8 +38,8 @@ public class EventResponseDTO {
   private boolean member_pay_fee;
 
   public Event toEvent() { // translate the DTO to the Event Object that is saved in the database
-    final FormatService formatter =
-        new FormatService(); // Formatter to format Java Duration and Java zonedDateTime
+    final TimeFormatService formatter =
+        new TimeFormatService(); // Formatter to format Java Duration and Java zonedDateTime
     final Duration duration = Duration.ofMillis(this.duration);
     final long id = Long.parseLong(this.id);
     final Duration timeAsDuration = Duration.ofMillis(this.time);
