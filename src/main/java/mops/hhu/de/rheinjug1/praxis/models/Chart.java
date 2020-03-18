@@ -1,16 +1,12 @@
 package mops.hhu.de.rheinjug1.praxis.models;
 
 import com.google.gson.Gson;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class Chart {
 
-  private List<String> dates = new ArrayList<>();
-  private List<Integer> participants = new ArrayList<>();
+  private final List<String> dates = new ArrayList<>();
+  private final List<Integer> participants = new ArrayList<>();
   private final Gson gson = new Gson();
 
   public Chart(final List<String> dates, final List<Integer> participants) {

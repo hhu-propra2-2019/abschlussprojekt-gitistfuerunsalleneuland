@@ -18,16 +18,15 @@ public class ChartService {
   public Chart getXEventsChart(final int events) {
     final List<Event> xEvents = meetUpService.getLastXEvents(events);
 
-    final List<String> dates = xEvents.stream()
-            .map(i->i.getZonedDateTime())
-            .map(i->formatService.toLocalDateString(i))
+    final List<String> dates =
+        xEvents.stream()
+            .map(i -> i.getZonedDateTime())
+            .map(i -> formatService.toLocalDateString(i))
             .collect(Collectors.toList());
 
-    final List<Integer> participants = xEvents.stream()
-            .map(i->meetUpService.getSubmissionCount(i))
-            .collect(Collectors.toList());
+    final List<Integer> participants =
+        xEvents.stream().map(i -> meetUpService.getSubmissionCount(i)).collect(Collectors.toList());
 
     return new Chart(dates, participants);
   }
-
 }

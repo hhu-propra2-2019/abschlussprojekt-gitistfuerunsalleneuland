@@ -28,11 +28,11 @@ public class ChartServiceTest {
 
   @Test
   void testNumberOfDataPoints() {
-    //Arrange
+    // Arrange
     when(meetupServiceMock.getLastXEvents(Mockito.anyInt())).thenReturn(sampleData);
-    //Act
+    // Act
     final int numberOfTalks = chartService.getXEventsChart(2).getTalksLength();
-    //Assert
+    // Assert
     assertThat(numberOfTalks).isEqualTo(sampleData.size());
   }
 }
