@@ -18,7 +18,7 @@ public class Chart {
     return gson.toJson(this.dates);
   }
 
-  public String getData() {
+  public String getParticipants() {
     return gson.toJson(this.participants);
   }
 

@@ -30,7 +30,7 @@ public class ChartTest {
     dates.add(SAMPLE);
     chart = new Chart(dates, participants);
     // Act
-    final String data = chart.getData();
+    final String data = chart.getParticipants();
     // Assert
     assertThat(data).isEqualTo("[5]");
   }
@@ -44,7 +44,7 @@ public class ChartTest {
     dates.add(SAMPLE);
     chart = new Chart(dates, participants);
     // Act
-    final String data = chart.getData();
+    final String data = chart.getParticipants();
     // Assert
     assertThat(data).isEqualTo("[5,6]");
   }
@@ -56,7 +56,7 @@ public class ChartTest {
     participants.add(5);
     chart = new Chart(dates, participants);
     // Act
-    final String data = chart.getData();
+    final String data = chart.getParticipants();
     // Assert
     assertThat(data).isEqualTo("[5]");
   }
