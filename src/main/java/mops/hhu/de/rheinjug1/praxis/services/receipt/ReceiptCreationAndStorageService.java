@@ -57,6 +57,7 @@ public class ReceiptCreationAndStorageService {
         encryptionService.sign(meetupType, meetUpId, studentName, studentEmail);
 
     final SignatureRecord signature = new SignatureRecord(signatureString, meetUpId);
+
     try {
       jdbcAggregateTemplate.insert(signature);
     } catch (final DbActionExecutionException e) {

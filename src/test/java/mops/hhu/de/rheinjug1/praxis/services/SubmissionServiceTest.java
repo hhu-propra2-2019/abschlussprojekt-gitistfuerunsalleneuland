@@ -10,6 +10,7 @@ import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionService;
 import org.junit.jupiter.api.Test;
@@ -43,11 +44,12 @@ public class SubmissionServiceTest {
   }
 
   @Test
-  public void returns_empty_optional_if_submission_not_found() {
+  public void throws_exception_if_submission_not_found()
+      throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
     when(submissionRepository.findById(0L)).thenReturn(Optional.empty());
-    final Optional<Submission> submissionOptional =
-        submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
-    assertThat(submissionOptional.isEmpty()).isTrue();
+    assertThrows(
+        SubmissionNotFoundException.class,
+        () -> submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT));
   }
 
   @Test
@@ -72,16 +74,17 @@ public class SubmissionServiceTest {
                     .name("testName")
                     .accepted(false)
                     .build()));
-    final Optional<Submission> submissionOptional1 =
-        submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
-    final Optional<Submission> submissionOptional2 =
-        submissionService.getAcceptedSubmissionIfAuthorized(1L, TEST_ACCOUNT);
-    assertThat(submissionOptional1.isEmpty()).isTrue();
-    assertThat(submissionOptional2.isEmpty()).isTrue();
+    assertThrows(
+        UnauthorizedSubmissionAccessException.class,
+        () -> submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT));
+    assertThrows(
+        UnauthorizedSubmissionAccessException.class,
+        () -> submissionService.getAcceptedSubmissionIfAuthorized(1L, TEST_ACCOUNT));
   }
 
   @Test
-  public void returns_optional_of_submission_if_name_and_email_are_equal_to_account() {
+  public void returns_submission_if_name_and_email_are_equal_to_account()
+      throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
     final Submission testSubmission =
         Submission.builder()
             .email("testEmail")
@@ -91,9 +94,8 @@ public class SubmissionServiceTest {
             .accepted(false)
             .build();
     when(submissionRepository.findById(0L)).thenReturn(Optional.ofNullable(testSubmission));
-    final Optional<Submission> submissionOptional =
+    final Submission actualSubmission =
         submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
-    assertThat(submissionOptional.isPresent()).isTrue();
-    assertEquals(testSubmission, submissionOptional.get());
+    assertEquals(testSubmission, actualSubmission);
   }
 }

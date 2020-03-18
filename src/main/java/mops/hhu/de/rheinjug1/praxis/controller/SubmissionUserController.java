@@ -1,12 +1,12 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
 import static mops.hhu.de.rheinjug1.praxis.models.Account.createAccountFromPrincipal;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.*;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE;
 
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.util.Optional;
 import javax.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
@@ -17,6 +17,7 @@ import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptCreationAndStorageSe
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.HttpServerErrorException;
 
 @Controller
 @AllArgsConstructor
@@ -52,17 +54,14 @@ public class SubmissionUserController {
   public String createReceipt(
       final KeycloakAuthenticationToken token,
       final Model model,
-      @PathVariable("submissionId") final Long submissionId) {
+      @PathVariable("submissionId") final Long submissionId)
+      throws Throwable {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
-    final Optional<Submission> acceptedSubmissionOptional =
+    final Submission submission =
         submissionService.getAcceptedSubmissionIfAuthorized(submissionId, account);
-    if (acceptedSubmissionOptional.isEmpty()) {
-      return "error";
-    }
 
-    final Submission submission = acceptedSubmissionOptional.get();
     try {
       final Receipt receipt =
           receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
@@ -75,9 +74,17 @@ public class SubmissionUserController {
         | InvalidKeyException
         | EventNotFoundException
         | CertificateException e) {
-      return "internalServerError";
+      throw (HttpServerErrorException)
+          new HttpServerErrorException(
+                  HttpStatus.INTERNAL_SERVER_ERROR,
+                  "Da scheint etwas schief gelaufen zu sein. Das tut uns leid :(")
+              .initCause(e);
     } catch (final MessagingException e) {
-      return "messageCantBeSentError";
+      throw (HttpServerErrorException)
+          new HttpServerErrorException(
+                  HttpStatus.INTERNAL_SERVER_ERROR,
+                  "Offenbar konnte die Nachricht nicht gesendet werden. Wenden Sie sich an einen Administrator.")
+              .initCause(e);
     }
     return "user/receiptCreated";
   }
