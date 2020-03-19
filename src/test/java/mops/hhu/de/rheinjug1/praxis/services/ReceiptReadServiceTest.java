@@ -17,16 +17,16 @@ public class ReceiptReadServiceTest {
   void readYml() throws IOException {
 
     final String path = File.createTempFile("receipt", ".tmp").getAbsolutePath();
-    final Writer fileWriter = new FileWriter(path);
-    final BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-    bufferedWriter.write(TEST_FILE_CONTENT);
-    bufferedWriter.close();
+    try (Writer fileWriter = new FileWriter(path);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        Reader fileReader = new FileReader(path)) {
+      bufferedWriter.write(TEST_FILE_CONTENT);
+      bufferedWriter.close();
 
-    final Reader fileReader = new FileReader(path);
-    final ReceiptReadService receiptReadService = new ReceiptReadService();
+      final ReceiptReadService receiptReadService = new ReceiptReadService();
+      final Receipt receipt = receiptReadService.read(path);
 
-    final Receipt receipt = receiptReadService.read(path);
-
-    assertThat(receipt.getName()).isEqualTo("testName");
+      assertThat(receipt.getName()).isEqualTo("testName");
+    }
   }
 }
