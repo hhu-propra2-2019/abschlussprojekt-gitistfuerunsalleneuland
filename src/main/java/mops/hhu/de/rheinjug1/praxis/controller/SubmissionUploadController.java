@@ -57,8 +57,7 @@ public class SubmissionUploadController {
         | MinioException
         | XmlPullParserException
         | NoSuchAlgorithmException
-        | InvalidKeyException
-        | InterruptedException e) {
+        | InvalidKeyException e) {
       e.printStackTrace();
     }
 

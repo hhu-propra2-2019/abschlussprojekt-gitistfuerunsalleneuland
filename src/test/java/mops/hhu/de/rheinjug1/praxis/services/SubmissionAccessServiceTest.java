@@ -12,15 +12,15 @@ import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
-import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionService;
+import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionAccessService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
-public class SubmissionServiceTest {
-  @Autowired private SubmissionService submissionService;
+public class SubmissionAccessServiceTest {
+  @Autowired private SubmissionAccessService submissionAccessService;
 
   @MockBean private SubmissionRepository submissionRepository;
 
@@ -33,23 +33,22 @@ public class SubmissionServiceTest {
         Optional.of(new Submission(0L, "", "", "", false));
 
     when(submissionRepository.findById(0L)).thenReturn(submissionOptional);
-    submissionService.accept(0L);
+    submissionAccessService.accept(0L);
     assertThat(submissionOptional.get().isAccepted()).isTrue();
   }
 
   @Test
   public void a_non_existent_submission_throws_exception() {
     when(submissionRepository.findById(0L)).thenReturn(Optional.empty());
-    assertThrows(SubmissionNotFoundException.class, () -> submissionService.accept(0L));
+    assertThrows(SubmissionNotFoundException.class, () -> submissionAccessService.accept(0L));
   }
 
   @Test
-  public void throws_exception_if_submission_not_found()
-      throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
+  public void throws_exception_if_submission_not_found() {
     when(submissionRepository.findById(0L)).thenReturn(Optional.empty());
     assertThrows(
         SubmissionNotFoundException.class,
-        () -> submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT));
+        () -> submissionAccessService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT));
   }
 
   @Test
@@ -76,10 +75,10 @@ public class SubmissionServiceTest {
                     .build()));
     assertThrows(
         UnauthorizedSubmissionAccessException.class,
-        () -> submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT));
+        () -> submissionAccessService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT));
     assertThrows(
         UnauthorizedSubmissionAccessException.class,
-        () -> submissionService.getAcceptedSubmissionIfAuthorized(1L, TEST_ACCOUNT));
+        () -> submissionAccessService.getAcceptedSubmissionIfAuthorized(1L, TEST_ACCOUNT));
   }
 
   @Test
@@ -95,7 +94,7 @@ public class SubmissionServiceTest {
             .build();
     when(submissionRepository.findById(0L)).thenReturn(Optional.ofNullable(testSubmission));
     final Submission actualSubmission =
-        submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
+        submissionAccessService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
     assertEquals(testSubmission, actualSubmission);
   }
 }
