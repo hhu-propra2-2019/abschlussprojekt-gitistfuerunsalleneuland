@@ -28,6 +28,14 @@
                 border-radius: 10px;
                 margin-bottom: 1rem;
                 }
+
+                label{
+                width:70%;
+                }
+                #button1{
+                width: 20%;
+                margin-left: 80%;
+                }
         </style>
         
         <!-- Links, Skripts, Styles hier einfügen! -->
@@ -66,15 +74,18 @@
                         </div>
                         <div class="input-group input-file">
                             <p>
-                            <label for="input1">Drei Rheinjug Quittungen: </label>
+                            <label>Drei Rheinjug Quittungen: </label>
                             <input class="form-control" id="input1" th:field="*{firstRheinjugReceipt}"
                                                type="file" placeholder='1.Rheinjug-Quittung' style="cursor: pointer;">
+                            <!--Bau das noch ein dann werden Fehler angezeigt th:text="${firstRheinjugReceiptUploadMessage}"-->
                             <br>
                             <input class="form-control" id="input2" th:field="*{seccondRheinjugReceipt}"
                                                type="file">
+                            <!--Bau das noch ein dann werden Fehler angezeigt th:text="${seccondRheinjugReceiptUploadMessage}"-->
                             <br>
                             <input class="form-control" id="input3" th:field="*{thirdRheinjugReceipt}"
                                                type="file">
+                            <!--Bau das noch ein dann werden Fehler angezeigt th:text="${thirdRheinjugReceiptUploadMessage}"-->
                             </p>
                         </div>
                         <div class="input-group input-file">
@@ -82,11 +93,10 @@
                             <label for="input1">Entwickelbar Quittung: </label>
                             <input class="form-control" id="input4" th:field="*{entwickelbarReceipt}"
                                                type="file">
-                        </div>
-                        <div class="input-group">
-                            <div class="input-group-append">
-                                 <button class="btn btn-outline-secondary" type="submit">Einlösen</button>
-                            </div>
+                            <span th:text="${entwickelbarReceiptUploadMessage}"></span>
+                        </div>                      
+                        <div>
+                            <button type="submit" class="btn btn-outline-success" id="button1">Einlösen</button>
                         </div>
                     </div>
                 </form>
@@ -98,7 +108,6 @@
             </div>
         </div>
     </div>
-
 </main>
 </body>
 </html>
