@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +28,13 @@ public class FormatService {
     return toLocalEventTime(utcTime, zoneId).format(formatter);
   }
 
-  public static String getDateTimePattern() {
-    return dateTimeFormat;
+  public String toLocalDateString(final String date) {
+    final LocalDateTime time = LocalDateTime.parse(date, getDateTimePattern());
+    final DateTimeFormatter formatte = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    return time.format(formatte);
+  }
+
+  public static DateTimeFormatter getDateTimePattern() {
+    return DateTimeFormatter.ofPattern(dateTimeFormat);
   }
 }

@@ -21,6 +21,10 @@ import org.mockito.Mockito;
 public class ChartServiceTest {
 
   private final List<Event> sampleData = new LinkedList<>();
+  private MeetupService meetupServiceMock;
+  private ChartService chartService;
+  private EventRepository eventRepository;
+  private ReceiptService receiptService;
 
   @BeforeEach
   void init() {
@@ -28,23 +32,25 @@ public class ChartServiceTest {
     sampleData.add(new Event("", 1, "", "", time, "", "", MeetupType.RHEINJUG));
     sampleData.add(new Event("", 2, "", "", time, "", "", MeetupType.RHEINJUG));
     sampleData.add(new Event("", 3, "", "", time, "", "", MeetupType.ENTWICKELBAR));
+    this.meetupServiceMock = mock(MeetupService.class);
+    this.eventRepository = spy(EventRepository.class);
+    this.receiptService = spy(new ReceiptService(null, null, null, null));
+    this.chartService =
+        new ChartService(meetupServiceMock, eventRepository, receiptService, new FormatService());
   }
 
   @Test
   void testNumberOfDataPoints() {
-    final MeetupService meetupServiceMock = mock(MeetupService.class);
-    final ChartService chartService = new ChartService(meetupServiceMock, null, null);
+    // Arrange
     when(meetupServiceMock.getLastXEvents(Mockito.anyInt())).thenReturn(sampleData);
-    final int numberOfTalks = chartService.getXEventsChart(3).getTalksLength();
-
+    // Act
+    final int numberOfTalks = chartService.getXEventsChart(2).getTalksLength();
+    // Assert
     assertThat(numberOfTalks).isEqualTo(sampleData.size());
   }
 
   @Test
   void testCountingReceiptsByMeetupType() {
-    final EventRepository eventRepository = spy(EventRepository.class);
-    final ReceiptService receiptService = spy(new ReceiptService(null, null, null, null));
-    final ChartService chartService = new ChartService(null, eventRepository, receiptService);
     final Iterable<SignatureRecord> sampleReceipts =
         Arrays.asList(
             new SignatureRecord("", 1L),
@@ -62,9 +68,6 @@ public class ChartServiceTest {
 
   @Test
   void testEmptyReceiptsRepository() {
-    final EventRepository eventRepository = spy(EventRepository.class);
-    final ReceiptService receiptService = spy(new ReceiptService(null, null, null, null));
-    final ChartService chartService = new ChartService(null, eventRepository, receiptService);
     final Iterable<SignatureRecord> sampleReceipts = new LinkedList<>();
     doReturn(Optional.of(sampleData.get(0))).when(eventRepository).findById(Mockito.anyLong());
     doReturn(sampleReceipts).when(receiptService).getAll();
