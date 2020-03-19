@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,17 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 @SuppressWarnings("PMD.ConfusingTernary")
 public class InputHandler {
 
+  private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
   private static final String ENTWICKELBAR = "Entwickelbar";
-  private static final String KEINE_ENTWICKELBAR_QUITTUNG = "Keine Entwickelbar Quittung";
   private static final String FEHLERHAFTE_QUITTUNG = "Fehlerhafte Quittung";
   private static final String DOPPELT = "Doppelt";
-  private static final String KEINE_RHEINJUG_QUITTUNG = "Keine Rheinjug Quittung";
   private static final String RHEINJUG = "Rheinjug";
   private static final String VALIDE = "Valide";
 
   private final ReceiptService receiptService = new ReceiptService();
 
-  private String matrikelNummer;
+  @Setter private String matrikelNummer;
 
   private List<String> signatures = new ArrayList(3);
 
@@ -32,25 +32,39 @@ public class InputHandler {
   private Receipt thirdRheinjugReceipt;
   private Receipt entwickelbarReceipt;
 
+  private Receipt newReceipt;
+
   private String firstRheinjugReceiptUploadMessage = "Erste Rheinjug Quittung";
   private String seccondRheinjugReceiptUploadMessage = "Zweite Rheinjug Quittung";
   private String thirdRheinjugReceiptUploadMessage = "Dritte Rheinjug Quittung";
   private String entwickelbarReceiptUploadMessage = "Entwickelbar Quittung";
 
   public void setFirstRheinjugReceipt(final MultipartFile firstRheinjugFile) {
-    firstRheinjugReceiptUploadMessage = getRheinjugUploadMessage(firstRheinjugFile);
+    firstRheinjugReceiptUploadMessage = getUploadMessage(firstRheinjugFile, RHEINJUG);
+    if (firstRheinjugReceiptUploadMessage.equals(VALIDE)) {
+      firstRheinjugReceipt = newReceipt.cloneThisReceipt();
+    }
   }
 
   public void setSeccondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
-    seccondRheinjugReceiptUploadMessage = getRheinjugUploadMessage(seccondRheinjugFile);
+    seccondRheinjugReceiptUploadMessage = getUploadMessage(seccondRheinjugFile, RHEINJUG);
+    if (seccondRheinjugReceiptUploadMessage.equals(VALIDE)) {
+      seccondRheinjugReceipt = newReceipt.cloneThisReceipt();
+    }
   }
 
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
-    thirdRheinjugReceiptUploadMessage = getRheinjugUploadMessage(thirdRheinjugFile);
+    thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, RHEINJUG);
+    if (thirdRheinjugReceiptUploadMessage.equals(VALIDE)) {
+      thirdRheinjugReceipt = newReceipt.cloneThisReceipt();
+    }
   }
 
   public void setEntwickelbarReceipt(final MultipartFile entwickelbarFile) {
-    entwickelbarReceiptUploadMessage = getEntwickelbarUploadMessage(entwickelbarFile);
+    entwickelbarReceiptUploadMessage = getUploadMessage(entwickelbarFile, ENTWICKELBAR);
+    if (entwickelbarReceiptUploadMessage.equals(VALIDE)) {
+      entwickelbarReceipt = newReceipt.cloneThisReceipt();
+    }
   }
 
   public boolean areRheinjugUploadsOkForCertification() {
@@ -65,28 +79,15 @@ public class InputHandler {
     // &&signature ist nicht in der Datenbank
   }
 
-  private String getEntwickelbarUploadMessage(final MultipartFile entwickelbarFile) {
+  private String getUploadMessage(final MultipartFile firstRheinjugFile, final String type) {
     try {
-      this.entwickelbarReceipt = receiptService.read(entwickelbarFile);
-      if (entwickelbarReceipt.getType().equals(ENTWICKELBAR)) {
-        return VALIDE;
-      } else {
-        return KEINE_ENTWICKELBAR_QUITTUNG;
-      }
-    } catch (IOException e) {
-      return FEHLERHAFTE_QUITTUNG;
-    }
-  }
-
-  private String getRheinjugUploadMessage(final MultipartFile firstRheinjugFile) {
-    try {
-      this.firstRheinjugReceipt = receiptService.read(firstRheinjugFile);
-      if (!firstRheinjugReceipt.getType().equals(RHEINJUG)) {
-        return KEINE_RHEINJUG_QUITTUNG;
-      } else if (isDuplicateSignature(firstRheinjugReceipt.getSignature())) {
+      newReceipt = receiptService.read(firstRheinjugFile);
+      if (!newReceipt.getType().equals(type)) {
+        return FALSCHE_VERANSTALTUNG;
+      } else if (isDuplicateSignature(newReceipt.getSignature())) {
         return DOPPELT;
       } else {
-        signatures.add(firstRheinjugReceipt.getSignature());
+        signatures.add(newReceipt.getSignature());
         return VALIDE;
       }
     } catch (IOException e) {

@@ -42,7 +42,10 @@
                 <form enctype="multipart/form-data" method="post" th:object="${input}">
 
                     <div class="alert alert-success alert-dismissible fade show" th:if="${input.areRheinjugUploadsOkForCertification()}">
-                        <strong>Erfolgreich!</strong> Die Quittungen wurden erfolgreich hochgeladen und abgeschickt.
+                        <strong>Erfolgreich!</strong> Die Rheinjug Quittungen wurden erfolgreich hochgeladen und abgeschickt.
+                    </div>
+                    <div class="alert alert-success alert-dismissible fade show" th:if="${input.isEntwickelbarUploadOkForCertification()}">
+                        <strong>Erfolgreich!</strong> Die Entwickelbar Quittung wurde erfolgreich hochgeladen und abgeschickt.
                     </div>
                     <h4>neue Quittung hochladen</h4>
                     <div class="form-group">
@@ -70,15 +73,16 @@
                             <input class="custom-file-input" id="inputGroupFile04" th:field="*{thirdRheinjugReceipt}"
                                    type="file">
                         </div>                       
-                    </div>
-                    <div class="input-group">                   
-                        <br>
+                    </div>                   
+                    <br>
+                    <div class="input-group">
                        <div class="custom-file">
                             <label th:text="*{entwickelbarReceiptUploadMessage}" class="custom-file-label" for="inputGroupFile04">Entwickelbar Quittung</label>
                             <input class="custom-file-input" id="inputGroupFile04" th:field="*{entwickelbarReceipt}"
                                    type="file">
                         </div>                       
-                    </div>
+                    </div>                   
+                    <br>
                     <div class="input-group">                 
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="submit">Einlösen</button>
