@@ -56,7 +56,8 @@ public class RheinjugController {
 
   @GetMapping("/events")
   @Secured({"ROLE_orga", "ROLE_studentin"})
-  public String showAllEvents(final KeycloakAuthenticationToken token, final Model model) {
+  public String showAllEventsSortedByDate(
+      final KeycloakAuthenticationToken token, final Model model) {
 
     final Account account = createAccountFromPrincipal(token);
 
