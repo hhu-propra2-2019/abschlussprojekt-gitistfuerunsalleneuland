@@ -51,47 +51,42 @@
     <div class="row">
         <div class="col-sm-8">
             <div class="container">
-                <form enctype="multipart/form-data" method="post" th:object="${input}">
                     <div class="alert alert-success alert-dismissible fade show" th:if="${input.areRheinjugUploadsOkForCertification()}">
                         <strong>Erfolgreich!</strong> Die Quittungen wurden erfolgreich hochgeladen und abgeschickt.
                     </div>
 
                     <h3 style="padding-bottom: 50px">Quittungen hochladen</h3>
-
+                <form enctype="multipart/form-data" method="post" th:object="${input}">
                     <div class="inputForm">
                         <div class="form-group">
                             <p>Bitte laden sie hier ihre Quittungen hoch:</p>
                             <label for="matrikel">Matrikel-Nummer</label>
-                            <input class="form-control" placeholder="Matrikel-Nummer" required th:field="*{matrikelNummer}" type="number" id="matrikel">
+                            <input class="form-control" placeholder="Matrikel-Nummer eingeben" required th:field="*{matrikelNummer}" type="number" id="matrikel">
                         </div>
-
-                        <div class="form-group">
-                                <div class="input-group">
-                                    <div class="custom-file">
+                                <div class="form-group">
+                                    <div class="input-group input-file">
                                         <label for="input1">Rheinjug1</label>
                                         <input class="form-control" id="input1" th:field="*{firstRheinjugReceipt}"
-                                               name="newReceipt" type="file" placeholder='Choose a file...'/>
+                                               type="file" placeholder='1.Rheinjug-Quittung' style="cursor: pointer;">
                                     </div>
                                 </div>
-                                <div class="input-group">
 
-                                    <div class="custom-file">
+                        <div class="form-group">
+                            <div class="input-group input-file">
                                         <label for="input1">Rheinjug2</label>
                                         <input class="form-control" id="input2" th:field="*{seccondRheinjugReceipt}"
                                                type="file">
                                     </div>
                                 </div>
-                                <div class="input-group">
-
-                                    <div class="custom-file">
+                        <div class="form-group">
+                            <div class="input-group input-file">
                                         <label for="input1">Rheinjug3</label>
                                         <input class="form-control" id="input3" th:field="*{thirdRheinjugReceipt}"
                                                type="file">
                                     </div>
                                 </div>
-                                <div class="input-group">
-                                    <br>
-                                    <div class="custom-file">
+                        <div class="form-group">
+                            <div class="input-group input-file">
                                         <label for="input1">Entwickelbar</label>
                                         <input class="form-control" id="input4" th:field="*{entwickelbarReceipt}"
                                                type="file">
@@ -102,12 +97,11 @@
                                         <button class="btn btn-outline-secondary" type="submit">Einlösen</button>
                                     </div>
                                 </div>
-                        </div>
+
                     </div>
                 </form>
             </div>
         </div>
-
 
         <div class="col-sm-4">
             <div class="container">
