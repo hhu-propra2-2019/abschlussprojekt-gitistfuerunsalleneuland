@@ -1,21 +1,18 @@
 package mops.hhu.de.rheinjug1.praxis.models;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 
-@ToString
-@Getter
-@EqualsAndHashCode
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Receipt {
 
-  private final String name;
-  private final String email;
-  private final Long meetupId;
-  private final String meetupTitle;
-  private final MeetupType meetupType;
-  private final String signature;
+  private String name;
+  private  String email;
+  private  Long meetupId;
+  private  String meetupTitle;
+  private  MeetupType meetupType;
+  private  String signature;
 }

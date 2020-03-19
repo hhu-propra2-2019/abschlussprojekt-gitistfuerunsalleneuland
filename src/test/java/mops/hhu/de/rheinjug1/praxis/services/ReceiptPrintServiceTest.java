@@ -14,25 +14,25 @@ import org.junit.jupiter.api.Test;
 
 class ReceiptPrintServiceTest {
 
+  private static final String TEST_FILE_CONTENT =
+          "!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: testEmail, meetupId: 12345,\n"
+                  + "  meetupTitle: testMeetupTitle, meetupType: ENTWICKELBAR, name: testName, signature: testSignature}\n";
+
   @Test
-  void receiptGetsPrintedCorrectlyToTemporaryFile() throws IOException {
-    final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
+  void writeYml() throws IOException {
+
+    final long meetupId = 12_345L;
+    final String name = "testName";
+    final String email = "testEmail";
+    final String meetupTitle = "testMeetupTitle";
+    final String signature = "testSignature";
+    final MeetupType meetupType = MeetupType.ENTWICKELBAR;
+
     final Receipt receipt =
-        new Receipt("testName", "testEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
+            new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
+    final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
+    final String path = receiptPrintService.printReceipt(receipt);
 
-    final String actualPath = receiptPrintService.printReceipt(receipt);
-
-    final List<String> expected =
-        Arrays.asList(
-            "Name: testName",
-            "Email: testEmail",
-            "Veranstaltungs-ID: 1",
-            "Titel: Titel",
-            "Typ: Entwickelbar",
-            "OEUIc5654eut");
-
-    final List<String> actual = Files.readAllLines(Paths.get(actualPath));
-
-    assertThat(actual).isEqualTo(expected);
+    assertThat(Files.readString(Paths.get(path))).isEqualTo(TEST_FILE_CONTENT);
   }
 }
