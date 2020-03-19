@@ -32,10 +32,8 @@ public class MinIoDownloadService {
           MinioException, InternalException, InvalidExpiresRangeException,
           InvalidResponseException {
 
-    String downloadUrl = "";
     final MinioClient minioClient =
         new MinioClient(this.minioUrl, this.minioAccessKey, this.minioSecretKey);
-    downloadUrl = minioClient.presignedGetObject(this.minioBucket, filename);
-    return downloadUrl;
+    return minioClient.presignedGetObject(this.minioBucket, filename);
   }
 }
