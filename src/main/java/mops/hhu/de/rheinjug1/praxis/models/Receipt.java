@@ -10,9 +10,9 @@ import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 public class Receipt {
 
   private String name;
-  private  String email;
-  private  Long meetupId;
-  private  String meetupTitle;
-  private  MeetupType meetupType;
-  private  String signature;
+  private String email;
+  private Long meetupId;
+  private String meetupTitle;
+  private MeetupType meetupType;
+  private String signature;
 }

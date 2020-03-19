@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
@@ -15,8 +13,8 @@ import org.junit.jupiter.api.Test;
 class ReceiptPrintServiceTest {
 
   private static final String TEST_FILE_CONTENT =
-          "!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: testEmail, meetupId: 12345,\n"
-                  + "  meetupTitle: testMeetupTitle, meetupType: ENTWICKELBAR, name: testName, signature: testSignature}\n";
+      "!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: testEmail, meetupId: 12345,\n"
+          + "  meetupTitle: testMeetupTitle, meetupType: ENTWICKELBAR, name: testName, signature: testSignature}\n";
 
   @Test
   void writeYml() throws IOException {
@@ -28,8 +26,7 @@ class ReceiptPrintServiceTest {
     final String signature = "testSignature";
     final MeetupType meetupType = MeetupType.ENTWICKELBAR;
 
-    final Receipt receipt =
-            new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
+    final Receipt receipt = new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
     final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
     final String path = receiptPrintService.printReceipt(receipt);
 

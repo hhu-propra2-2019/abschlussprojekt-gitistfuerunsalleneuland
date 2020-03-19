@@ -3,6 +3,8 @@ package mops.hhu.de.rheinjug1.praxis.services.receipt;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
+
+import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.entities.SignatureRecord;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
@@ -18,27 +20,13 @@ import org.springframework.data.relational.core.conversion.DbActionExecutionExce
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ReceiptCreationAndStorageService {
 
   private final EncryptionService encryptionService;
-
   private final SignatureRepository signatureRepository;
-
   private final JdbcAggregateTemplate jdbcAggregateTemplate;
-
   private final MeetupService meetupService;
-
-  @Autowired
-  public ReceiptCreationAndStorageService(
-      final EncryptionService encryptionService,
-      final SignatureRepository signatureRepository,
-      final JdbcAggregateTemplate jdbcAggregateTemplate,
-      final MeetupService meetupService) {
-    this.encryptionService = encryptionService;
-    this.signatureRepository = signatureRepository;
-    this.jdbcAggregateTemplate = jdbcAggregateTemplate;
-    this.meetupService = meetupService;
-  }
 
   public Receipt createReceiptAndSaveSignatureInDatabase(final Submission submission)
       throws UnrecoverableEntryException, NoSuchAlgorithmException, IOException,

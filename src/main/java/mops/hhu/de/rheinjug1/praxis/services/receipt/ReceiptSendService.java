@@ -2,7 +2,6 @@ package mops.hhu.de.rheinjug1.praxis.services.receipt;
 
 import java.io.IOException;
 import javax.mail.MessagingException;
-
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.MailService;

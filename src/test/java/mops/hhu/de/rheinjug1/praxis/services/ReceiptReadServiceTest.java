@@ -1,23 +1,17 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.models.Receipt;
-import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
-import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptReadService;
-import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import mops.hhu.de.rheinjug1.praxis.models.Receipt;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptReadService;
+import org.junit.jupiter.api.Test;
 
 public class ReceiptReadServiceTest {
 
   private static final String TEST_FILE_CONTENT =
-          "!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: testEmail, meetupId: 12345,\n"
-                  + "  meetupTitle: testMeetupTitle, meetupType: ENTWICKELBAR, name: testName, signature: testSignature}\n";
+      "!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: testEmail, meetupId: 12345,\n"
+          + "  meetupTitle: testMeetupTitle, meetupType: ENTWICKELBAR, name: testName, signature: testSignature}\n";
 
   @Test
   void readYml() throws IOException {
