@@ -3,6 +3,7 @@ package mops.hhu.de.rheinjug1.praxis.services;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptReadService;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
@@ -20,7 +21,7 @@ public class ReceiptReadServiceTest {
 
   @Test
   void readYml() throws IOException {
-    final Yaml yaml = new Yaml();
+
     final String path = File.createTempFile("receipt", ".tmp").getAbsolutePath();
     final Writer fileWriter = new FileWriter(path);
     final BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -28,9 +29,10 @@ public class ReceiptReadServiceTest {
     bufferedWriter.close();
 
     final Reader fileReader = new FileReader(path);
+    final ReceiptReadService receiptReadService = new ReceiptReadService();
 
-    final Receipt receiptDTO = (Receipt) yaml.load(fileReader);
+    final Receipt receipt = receiptReadService.read(path);
 
-    assertThat(receiptDTO.getName()).isEqualTo("testName");
+    assertThat(receipt.getName()).isEqualTo("testName");
   }
 }
