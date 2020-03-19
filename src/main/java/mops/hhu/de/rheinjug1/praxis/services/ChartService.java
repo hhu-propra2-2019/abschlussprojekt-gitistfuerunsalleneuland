@@ -22,12 +22,6 @@ public class ChartService {
   @Autowired ReceiptService receiptService;
   FormatService formatService;
 
-  //  public Chart getXEventsChart(final int events) {
-  //    final List<Event> xEvents = meetupService.getLastXEvents(events);
-  //    final List<Talk> xTalks = xEvents.stream().map(x -> toTalk(x)).collect(Collectors.toList());
-  //    return new Chart(xTalks);
-  //  }
-
   public int getNumberOfReceiptsByMeetupType(final MeetupType meetupType) {
 
     final LinkedList<SignatureRecord> asList = new LinkedList<>();
@@ -40,13 +34,6 @@ public class ChartService {
             .filter(x -> x == meetupType)
             .count();
   }
-
-  //  private Talk toTalk(final Event event) {
-  //    final DateTimeFormatter formatter =
-  //        DateTimeFormatter.ofPattern(FormatService.getDateTimePattern());
-  //    final LocalDateTime time = LocalDateTime.parse(event.getZonedDateTime(), formatter);
-  //    return new Talk(time, meetupService.getSubmissionCount(event));
-  //  }
 
   private Optional<MeetupType> getMeetupTypeById(final long id) {
     final Optional<Event> optionalEvent = eventRepository.findById(id);
