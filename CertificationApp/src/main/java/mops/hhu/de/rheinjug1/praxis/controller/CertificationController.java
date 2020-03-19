@@ -54,13 +54,6 @@ public class CertificationController {
     return "uebersicht";
   }
 
-  // remove button fehlt
-  //  @PutMapping("/")
-  //  public String revertInput(final KeycloakAuthenticationToken token, final Model model) {
-  //    receiptList.getReceiptList().remove(0);
-  //    return "redirect://";
-  //  }
-
   @PostMapping("/")
   @Secured({"ROLE_student", "ROLE_orga"})
   public String submitReceipt(
@@ -68,6 +61,7 @@ public class CertificationController {
     if (token != null) {
       model.addAttribute("account", createAccountFromPrincipal(token));
     }
+
     model.addAttribute("input", input);
     if (input.areRheinjugUploadsOkForCertification()) {
       certificationService.createCertification(input);

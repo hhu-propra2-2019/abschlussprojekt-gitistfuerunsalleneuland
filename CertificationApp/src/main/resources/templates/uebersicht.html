@@ -10,18 +10,10 @@
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
               rel="stylesheet">
         <style>
-     ul {
-       list-style: none;
-     }
-
-
-
-
-
-
-
-
-
+             ul {
+                padding: 0;
+                list-style: none;
+             }
         </style>
         
         <!-- Links, Skripts, Styles hier einfügen! -->
@@ -43,12 +35,21 @@
 </header>
 <main th:fragment="bodycontent">
 
-
     <div class="row">
 
         <div class="col-sm-8">
             <div class="container">
                 <form enctype="multipart/form-data" method="post" th:object="${input}">
+
+                    <div class="alert alert-success alert-dismissible fade show" th:if="*{isValidNewReceipt()} == true">
+                        <strong>Erfolgreich!</strong> Die Quittung wurde erfolgreich hochgeladen und verifiziert.
+                        <button type="button" class="close" data-dismiss="alert" onclick="/">&times;</button>
+                    </div>
+
+                    <div class="alert alert-danger alert-dismissible fade show" th:if="*{isNotValidNewReceipt()} == true">
+                        <strong>Fehler!</strong> Die hochgeladene Quittung ist nicht gültig.
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    </div>
                     <h4>neue Quittung hochladen</h4>
                     <div class="form-group">
                         <input placeholder="Matrikel-Nummer" required th:field="*{matrikelNummer}" type="number">
@@ -91,22 +92,6 @@
                 </form>
             </div>
         </div>
-
-
-        <!-- <div class="col-sm-4" th:object="${receiptList}">
-            <div class="container">
-                <h4 th:if="${receiptList.receiptList.size() != 0}">Hochgeladene Quittungen</h4>
-                <ul th:each="receipt : ${receiptList.receiptList}">
-                    <li class="my-4">
-                        <h3>
-                            <span class="badge badge-dark" th:text="${receipt?.getName()}"></span>
-                        </h3>
-                        <!--                        <span><button type="submit">verwerfen</button></span>
-                    </li>
-                </ul>
-            </div>
-        </div-->
-
 
     </div>
 
