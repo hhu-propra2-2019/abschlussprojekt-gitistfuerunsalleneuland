@@ -52,13 +52,8 @@
         <div class="col-sm-8">
             <div class="container">
                 <form enctype="multipart/form-data" method="post" th:object="${input}">
-
-                    <div class="alert alert-success alert-dismissible fade show" th:if="*{getFirstRheinjugReceiptUploadMessage()[0]} == VALIDE">
-                        <strong>Erfolgreich!</strong> Die Quittung wurde erfolgreich hochgeladen und verifiziert.
-                    </div>
-
-                    <div class="alert alert-danger alert-dismissible fade show" th:if="*{firstRheinjugReceiptUploadMessage} != VALIDE">
-                        <strong>Fehler!</strong> Die hochgeladene Quittung ist nicht gültig.
+                    <div class="alert alert-success alert-dismissible fade show" th:if="${input.areRheinjugUploadsOkForCertification()}">
+                        <strong>Erfolgreich!</strong> Die Quittungen wurden erfolgreich hochgeladen und abgeschickt.
                     </div>
 
                     <h3 style="padding-bottom: 50px">Quittungen hochladen</h3>

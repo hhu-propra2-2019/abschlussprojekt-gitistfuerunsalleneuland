@@ -32,10 +32,10 @@ public class InputHandler {
   private Receipt thirdRheinjugReceipt;
   private Receipt entwickelbarReceipt;
 
-  private String firstRheinjugReceiptUploadMessage;
-  private String seccondRheinjugReceiptUploadMessage;
-  private String thirdRheinjugReceiptUploadMessage;
-  private String entwickelbarReceiptUploadMessage;
+  private String firstRheinjugReceiptUploadMessage = "Erste Rheinjug Quittung";
+  private String seccondRheinjugReceiptUploadMessage = "Zweite Rheinjug Quittung";
+  private String thirdRheinjugReceiptUploadMessage = "Dritte Rheinjug Quittung";
+  private String entwickelbarReceiptUploadMessage = "Entwickelbar Quittung";
 
   public void setFirstRheinjugReceipt(final MultipartFile firstRheinjugFile) {
     try {
