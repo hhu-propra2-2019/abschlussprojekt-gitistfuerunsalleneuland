@@ -62,8 +62,8 @@ public class ReceiptService {
     }
   }
 
-  public boolean verify(final Receipt receipts) {
-    // TODO Auto-generated method stub
+  public boolean verify(final Receipt receipt) {
+    // Mit Signatur abgleichen
     return true;
   }
 }
