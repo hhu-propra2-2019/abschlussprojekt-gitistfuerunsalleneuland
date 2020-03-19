@@ -38,64 +38,19 @@ public class InputHandler {
   private String entwickelbarReceiptUploadMessage = "Entwickelbar Quittung";
 
   public void setFirstRheinjugReceipt(final MultipartFile firstRheinjugFile) {
-    try {
-      this.firstRheinjugReceipt = receiptService.read(firstRheinjugFile);
-      if (!firstRheinjugReceipt.getType().equals(RHEINJUG)) {
-        firstRheinjugReceiptUploadMessage = KEINE_RHEINJUG_QUITTUNG;
-      } else if (isDuplicateSignature(firstRheinjugReceipt.getSignature())) {
-        firstRheinjugReceiptUploadMessage = DOPPELT;
-      } else {
-        signatures.add(firstRheinjugReceipt.getSignature());
-        firstRheinjugReceiptUploadMessage = VALIDE;
-      }
-    } catch (IOException e) {
-      firstRheinjugReceiptUploadMessage = FEHLERHAFTE_QUITTUNG;
-    }
+    firstRheinjugReceiptUploadMessage = getRheinjugUploadMessage(firstRheinjugFile);
   }
 
   public void setSeccondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
-    try {
-      this.seccondRheinjugReceipt = receiptService.read(seccondRheinjugFile);
-      if (!seccondRheinjugReceipt.getType().equals(RHEINJUG)) {
-        seccondRheinjugReceiptUploadMessage = KEINE_RHEINJUG_QUITTUNG;
-      } else if (isDuplicateSignature(seccondRheinjugReceipt.getSignature())) {
-        seccondRheinjugReceiptUploadMessage = DOPPELT;
-      } else {
-        signatures.add(seccondRheinjugReceipt.getSignature());
-        seccondRheinjugReceiptUploadMessage = VALIDE;
-      }
-    } catch (IOException e) {
-      seccondRheinjugReceiptUploadMessage = FEHLERHAFTE_QUITTUNG;
-    }
+    seccondRheinjugReceiptUploadMessage = getRheinjugUploadMessage(seccondRheinjugFile);
   }
 
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
-    try {
-      this.thirdRheinjugReceipt = receiptService.read(thirdRheinjugFile);
-      if (!thirdRheinjugReceipt.getType().equals(RHEINJUG)) {
-        thirdRheinjugReceiptUploadMessage = KEINE_RHEINJUG_QUITTUNG;
-      } else if (isDuplicateSignature(thirdRheinjugReceipt.getSignature())) {
-        thirdRheinjugReceiptUploadMessage = DOPPELT;
-      } else {
-        signatures.add(thirdRheinjugReceipt.getSignature());
-        thirdRheinjugReceiptUploadMessage = VALIDE;
-      }
-    } catch (IOException e) {
-      thirdRheinjugReceiptUploadMessage = FEHLERHAFTE_QUITTUNG;
-    }
+    thirdRheinjugReceiptUploadMessage = getRheinjugUploadMessage(thirdRheinjugFile);
   }
 
   public void setEntwickelbarReceipt(final MultipartFile entwickelbarFile) {
-    try {
-      this.entwickelbarReceipt = receiptService.read(entwickelbarFile);
-      if (entwickelbarReceipt.getType().equals(ENTWICKELBAR)) {
-        entwickelbarReceiptUploadMessage = VALIDE;
-      } else {
-        entwickelbarReceiptUploadMessage = KEINE_ENTWICKELBAR_QUITTUNG;
-      }
-    } catch (IOException e) {
-      entwickelbarReceiptUploadMessage = FEHLERHAFTE_QUITTUNG;
-    }
+    entwickelbarReceiptUploadMessage = getEntwickelbarUploadMessage(entwickelbarFile);
   }
 
   public boolean areRheinjugUploadsOkForCertification() {
@@ -108,6 +63,35 @@ public class InputHandler {
   public boolean isEntwickelbarUploadOkForCertification() {
     return entwickelbarReceiptUploadMessage.equals(VALIDE);
     // &&signature ist nicht in der Datenbank
+  }
+
+  private String getEntwickelbarUploadMessage(final MultipartFile entwickelbarFile) {
+    try {
+      this.entwickelbarReceipt = receiptService.read(entwickelbarFile);
+      if (entwickelbarReceipt.getType().equals(ENTWICKELBAR)) {
+        return VALIDE;
+      } else {
+        return KEINE_ENTWICKELBAR_QUITTUNG;
+      }
+    } catch (IOException e) {
+      return FEHLERHAFTE_QUITTUNG;
+    }
+  }
+
+  private String getRheinjugUploadMessage(final MultipartFile firstRheinjugFile) {
+    try {
+      this.firstRheinjugReceipt = receiptService.read(firstRheinjugFile);
+      if (!firstRheinjugReceipt.getType().equals(RHEINJUG)) {
+        return KEINE_RHEINJUG_QUITTUNG;
+      } else if (isDuplicateSignature(firstRheinjugReceipt.getSignature())) {
+        return DOPPELT;
+      } else {
+        signatures.add(firstRheinjugReceipt.getSignature());
+        return VALIDE;
+      }
+    } catch (IOException e) {
+      return FEHLERHAFTE_QUITTUNG;
+    }
   }
 
   private boolean isDuplicateSignature(final String newSignature) {
