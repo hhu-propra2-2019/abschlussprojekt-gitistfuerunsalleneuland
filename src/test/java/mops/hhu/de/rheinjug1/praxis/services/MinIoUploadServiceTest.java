@@ -36,7 +36,7 @@ public class MinIoUploadServiceTest {
 
   @Test
   void uploadTestfile() throws Exception {
-    MultipartFile testMultipartFile =
+    final MultipartFile testMultipartFile =
         new MockMultipartFile(
             "test.txt", new FileInputStream(new File("src/test/resources/test.txt")));
     uploadService.transferMultipartFileToMinIo(testMultipartFile, "testfile");

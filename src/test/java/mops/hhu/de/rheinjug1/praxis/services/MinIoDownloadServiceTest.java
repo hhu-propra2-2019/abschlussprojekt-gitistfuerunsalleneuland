@@ -40,9 +40,9 @@ public class MinIoDownloadServiceTest {
   void downloadTestfile()
       throws InvalidKeyException, NoSuchAlgorithmException, MinioException, IOException,
           XmlPullParserException {
-    URL downloadUrl = new URL(downloadService.getURLforObjectDownload(filename));
-    URLConnection connection = downloadUrl.openConnection();
-    String contentType = connection.getContentType();
+    final URL downloadUrl = new URL(downloadService.getURLforObjectDownload(filename));
+    final URLConnection connection = downloadUrl.openConnection();
+    final String contentType = connection.getContentType();
     assertThat(contentType).isEqualTo("text/plain");
   }
 }
