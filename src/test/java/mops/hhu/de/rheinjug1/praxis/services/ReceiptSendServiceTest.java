@@ -14,10 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ReceiptSendServiceTest {
 
   @Autowired ReceiptSendService receiptSendService;
-  @Autowired ReceiptPrintService receiptPrintService;
 
   @Test
-  void receiptSendTest() throws MessagingException, IOException {
+  void sendRealMail() throws MessagingException, IOException {
     final Receipt receipt =
         new Receipt("TestName", "TestEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
     receiptSendService.sendReceipt(receipt, "rheinjughhu@gmail.com");
