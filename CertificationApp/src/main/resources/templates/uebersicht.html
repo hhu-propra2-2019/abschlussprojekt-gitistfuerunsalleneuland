@@ -14,6 +14,12 @@
                 padding: 0;
                 list-style: none;
              }
+             .inputForm {
+                padding: 1rem;
+                border:3px solid black;
+                border-color: #F1F1F1;
+                border-radius: 10px;
+                }
         </style>
         <!-- Links, Skripts, Styles hier einfügen! -->
     </th:block>
@@ -43,34 +49,36 @@
 
                     <div class="alert alert-success alert-dismissible fade show" th:if="*{isValidNewReceipt()} == true">
                         <strong>Erfolgreich!</strong> Die Quittung wurde erfolgreich hochgeladen und verifiziert.
-                        <button type="button" class="close" data-dismiss="alert" onclick="/">&times;</button>
                     </div>
 
                     <div class="alert alert-danger alert-dismissible fade show" th:if="*{isNotValidNewReceipt()} == true">
                         <strong>Fehler!</strong> Die hochgeladene Quittung ist nicht gültig.
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
                     </div>
 
-                    <h4>neue Quittung hochladen</h4>
-                    <div class="form-group">
-                        <input placeholder="Matrikel-Nummer" required th:field="*{matrikelNummer}" type="number">
-                    </div>
-                    <div class="input-group">
-                        <div class="custom-file">
-                            <label class="custom-file-label" for="inputGroupFile04">Quittung auswählen</label>
-                            <input class="custom-file-input" id="inputGroupFile04" lang="de"
-                                   th:field="*{newReceipt}" type="file">
+                    <h3 style="padding-bottom: 50px">Quittungen hochladen</h3>
+
+                    <div class="inputForm">
+                        <div class="form-group">
+                            <p>Bitte laden sie hier ihre Quittung hoch:</p>
+                            <label for="matrikel">Matrikel-Nummer</label>
+                            <input class="form-control" placeholder="Matrikel-Nummer" required th:field="*{matrikelNummer}" type="number" id="matrikel">
                         </div>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit">hochladen</button>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input class="form-control" id="inputGroupFile04"
+                                       th:field="*{newReceipt}" name="newReceipt" type="file" placeholder='Choose a file...'/>
+<!--                                <label class="custom-file-label" for="inputGroupFile04">Quittung auswählen</label>-->
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">hochladen</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
-
-
-
 
 
         <div class="col-sm-4" th:object="${receiptList}">
@@ -84,6 +92,9 @@
                         <!--                        <span><button type="submit">verwerfen</button></span>-->
                     </li>
                 </ul>
+
+                <img src=../static/images/eminem.jpg alt="eminem" th:src="@{/img/eminem.jpg}" style="width:90%;height:auto;">
+
             </div>
         </div>
 

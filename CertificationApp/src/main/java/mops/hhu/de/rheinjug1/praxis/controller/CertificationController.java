@@ -73,8 +73,9 @@ public class CertificationController {
       if (receiptService.verify(receipt)) {
         receiptList.addNewReceipt(receipt);
         input.setValidNewReceipt(true);
+      } else {
+        input.setNotValidNewReceipt(true);
       }
-      input.setNotValidNewReceipt(true);
     } catch (IOException e) {
       e.printStackTrace();
       input.setNotValidNewReceipt(true);
