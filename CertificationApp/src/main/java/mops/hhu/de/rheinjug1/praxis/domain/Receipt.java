@@ -10,6 +10,7 @@ public class Receipt {
   private String name;
   private long keycloakId;
   private long meetupId;
-  private String type;
+  private String type; // sollte ein enum sein
   private String signature;
+  private String error;
 }
