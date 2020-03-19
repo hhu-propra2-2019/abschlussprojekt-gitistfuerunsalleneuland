@@ -10,7 +10,7 @@ import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.services.FormatService;
 
-@SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
+@SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields","PMD.UseLocaleWithCaseConversions"})
 @ToString
 @Setter
 @NoArgsConstructor
@@ -49,8 +49,8 @@ public class EventResponseDTO {
     final String formattedDuration = formatter.format(duration);
     final String formattedZonedDateTime =
         formatter.toLocalEventTimeString(zonedDateTime, group.getZoneId());
-
-    final MeetupType meetupType = name.contains("Entwickelbar") ? ENTWICKELBAR : RHEINJUG;
+    final String compareString = name.toLowerCase();
+    final MeetupType meetupType = compareString.contains("entwickelbar") ? ENTWICKELBAR : RHEINJUG;
 
     return new Event(
         formattedDuration, id, name, status, formattedZonedDateTime, link, description, meetupType);
