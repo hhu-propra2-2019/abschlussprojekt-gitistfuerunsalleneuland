@@ -31,7 +31,7 @@
              }
 
                 label{
-                width: 30%;
+                width: 40%;
                 padding-right: 10%;
                 }
 
@@ -96,21 +96,21 @@
                         <div class="form-group">
                             <p>Drei Rheinjug Quittungen:</p>
                             <div class="input-group input-file">
-                                <label for="input1" th:text="*{getFirstRheinjugReceiptUploadMessage()}">Erste Rheinjug Quittung</label>
+                                <label for="input1" th:text="*{getFirstRheinjugReceiptUploadMessage().equals('Empty')} ? 'Erste Rheinjug Quittung' : *{getFirstRheinjugReceiptUploadMessage()}">Erste Rheinjug Quittung</label>
                                 <input class="form-control" id="input1" th:field="*{firstRheinjugReceipt}" type="file">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input2" th:text="*{getSeccondRheinjugReceiptUploadMessage()}">Zweite Rheinjug Quittung</label>
+                                <label for="input2" th:text="*{getSeccondRheinjugReceiptUploadMessage().equals('Empty')} ? 'Zweite Rheinjug Quittung' : *{getSeccondRheinjugReceiptUploadMessage()}">Zweite Rheinjug Quittung</label>
                                 <input class="form-control" id="input2" th:field="*{seccondRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input3" th:text="*{getThirdRheinjugReceiptUploadMessage()}">Dritte Rheinjug Quittung</label>
+                                <label for="input3" th:text="*{getThirdRheinjugReceiptUploadMessage().equals('Empty')} ? 'Dritte Rheinjug Quittung' : *{getThirdRheinjugReceiptUploadMessage()}">Dritte Rheinjug Quittung</label>
                                 <input class="form-control" id="input3" th:field="*{thirdRheinjugReceipt}"
                                        type="file">
                             </div>
@@ -120,7 +120,7 @@
                         <div class="form-group">
                             <p>Entwickelbar Quittung:</p>
                             <div class="input-group input-file">
-                                <label for="input4" th:text="*{getEntwickelbarReceiptUploadMessage()}">Entwickelbar Quittung</label>
+                                <label for="input4" th:text="*{getEntwickelbarReceiptUploadMessage().equals('Empty')} ? 'Entwickelbar Quittung' : *{getEntwickelbarReceiptUploadMessage()}">Entwickelbar Quittung</label>
                                 <input class="form-control" id="input4" th:field="*{entwickelbarReceipt}"
                                        type="file">
                                 <span th:text="${entwickelbarReceiptUploadMessage}"></span>
