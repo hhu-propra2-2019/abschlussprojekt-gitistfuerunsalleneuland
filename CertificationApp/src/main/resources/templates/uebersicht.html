@@ -31,8 +31,8 @@
              }
 
                 label{
-                width: 15%;
-                padding-right: 15%;
+                width: 30%;
+                padding-right: 10%;
                 }
 
                 #button1{
@@ -96,23 +96,23 @@
                         <div class="form-group">
                             <p>Drei Rheinjug Quittungen:</p>
                             <div class="input-group input-file">
+                                <label for="input1" th:text="*{getFirstRheinjugReceiptUploadMessage()}">Erste Rheinjug Quittung</label>
                                 <input class="form-control" id="input1" th:field="*{firstRheinjugReceipt}" type="file">
-                                <!--Bau das noch ein dann werden Fehler angezeigt th:text="${firstRheinjugReceiptUploadMessage}"-->
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="input-group input-file">
+                                <label for="input2" th:text="*{getSeccondRheinjugReceiptUploadMessage()}">Zweite Rheinjug Quittung</label>
                                 <input class="form-control" id="input2" th:field="*{seccondRheinjugReceipt}"
                                        type="file">
-                                <!--Bau das noch ein dann werden Fehler angezeigt th:text="${seccondRheinjugReceiptUploadMessage}"-->
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group input-file">
+                                <label for="input3" th:text="*{getThirdRheinjugReceiptUploadMessage()}">Dritte Rheinjug Quittung</label>
                                 <input class="form-control" id="input3" th:field="*{thirdRheinjugReceipt}"
                                        type="file">
-                                <!--Bau das noch ein dann werden Fehler angezeigt th:text="${thirdRheinjugReceiptUploadMessage}"-->
                             </div>
                         </div>
                     </div>
@@ -120,6 +120,7 @@
                         <div class="form-group">
                             <p>Entwickelbar Quittung:</p>
                             <div class="input-group input-file">
+                                <label for="input4" th:text="*{getEntwickelbarReceiptUploadMessage()}">Entwickelbar Quittung</label>
                                 <input class="form-control" id="input4" th:field="*{entwickelbarReceipt}"
                                        type="file">
                                 <span th:text="${entwickelbarReceiptUploadMessage}"></span>
