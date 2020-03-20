@@ -49,7 +49,13 @@ public class ReceiptCreationAndStorageService {
     } catch (final DbActionExecutionException e) {
       signatureRepository.save(signature);
     }
-    return new Receipt(
-        studentName, studentEmail, meetUpId, meetUpTitle, meetupType, signatureString);
-  };
+    return Receipt.builder()
+            .name(studentName)
+            .email(studentEmail)
+            .meetupId(meetUpId)
+            .meetupTitle(meetUpTitle)
+            .meetupType(meetupType)
+            .signature(signatureString)
+            .build();
+  }
 }
