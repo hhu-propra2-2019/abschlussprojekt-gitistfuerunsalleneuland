@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
+import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +22,7 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String EMPTY = "Empty";
 
-  private final ReceiptService receiptService = new ReceiptService();
+  private final FileReaderService fileReaderService = new FileReaderService();
 
   @Setter private String matrikelNummer;
 
@@ -82,7 +82,7 @@ public class InputHandler {
 
   private String getUploadMessage(final MultipartFile firstRheinjugFile, final String type) {
     try {
-      newReceipt = receiptService.read(firstRheinjugFile);
+      newReceipt = fileReaderService.read(firstRheinjugFile);
       if (!newReceipt.getType().equals(type)) {
         return FALSCHE_VERANSTALTUNG;
       } else if (isDuplicateSignature(newReceipt.getSignature())) {
