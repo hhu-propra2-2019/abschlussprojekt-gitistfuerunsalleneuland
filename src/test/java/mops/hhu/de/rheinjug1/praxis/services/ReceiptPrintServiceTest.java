@@ -19,14 +19,14 @@ class ReceiptPrintServiceTest {
   @Test
   void writeYml() throws IOException {
 
-    final long meetupId = 12_345L;
-    final String name = "testName";
-    final String email = "testEmail";
-    final String meetupTitle = "testMeetupTitle";
-    final String signature = "testSignature";
-    final MeetupType meetupType = MeetupType.ENTWICKELBAR;
-
-    final Receipt receipt = new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
+    final Receipt receipt = Receipt.builder()
+            .meetupId(12_345L)
+            .name("testName")
+            .email("testEmail")
+            .meetupTitle("testMeetupTitle")
+            .signature("testSignature")
+            .meetupType(MeetupType.ENTWICKELBAR)
+            .build();
     final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
     final String path = receiptPrintService.printReceipt(receipt);
 
