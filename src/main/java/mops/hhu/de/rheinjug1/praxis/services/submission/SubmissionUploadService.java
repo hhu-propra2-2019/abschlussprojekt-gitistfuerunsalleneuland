@@ -73,6 +73,10 @@ public class SubmissionUploadService {
     }
   }
 
+  public boolean checkAsciiFormat(final MultipartFile file) {
+    return !file.isEmpty() && file.getOriginalFilename().endsWith(".adoc");
+  }
+
   private boolean existsByMeetupIdAndEmail(final Long meetupId, final String email) {
     return !submissionRepository.findAllByMeetupIdAndEmail(meetupId, email).isEmpty();
   }
