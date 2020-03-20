@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @SuppressWarnings({"PMD.AvoidReassigningLoopVariables", "PMD.FieldNamingConventions"})
-public class ReceiptService {
+public class FileReaderService {
 
   private static final String format =
       "Name: \\w+\r\nVeranstaltungs-ID: \\d+\r\nTitel: \\w+\r\nTyp: \\w+\r\n.+\r\n";
