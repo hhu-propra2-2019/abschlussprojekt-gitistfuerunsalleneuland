@@ -19,6 +19,7 @@
                 border:3px solid black;
                 border-color: #F1F1F1;
                 border-radius: 10px;
+                margin-bottom: 1rem;
              }
 
                 .input-group {
@@ -88,9 +89,11 @@
                             <input class="form-control" id="matrikel" placeholder="Matrikel-Nummer eingeben"
                                    required th:field="*{matrikelNummer}" type="number">
                         </div>
+                    </div>
+                    <div class="inputForm">
                         <div class="form-group">
+                            <p>Bitte laden sie hier ihre Quittungen hoch:</p>
                             <div class="input-group input-file">
-                                <label for="input1">Rheinjug1</label>
                                 <input class="form-control" id="input1" placeholder='1.Rheinjug-Quittung'
                                        style="cursor: pointer;" th:field="*{firstRheinjugReceipt}" type="file">
                             </div>
@@ -98,30 +101,31 @@
 
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input1">Rheinjug2</label>
                                 <input class="form-control" id="input2" th:field="*{seccondRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input1">Rheinjug3</label>
                                 <input class="form-control" id="input3" th:field="*{thirdRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>
+                    </div>
+                    <div class="inputForm">
                         <div class="form-group">
+                            <p>Bitte laden sie hier ihre Quittungen hoch:</p>
                             <div class="input-group input-file">
-                                <label for="input1">Entwickelbar</label>
                                 <input class="form-control" id="input4" th:field="*{entwickelbarReceipt}"
                                        type="file">
                             </div>
                         </div>
-                        <div>
-                            <button class="btn btn-outline-success" id="button1" type="submit">Einlösen</button>
-                        </div>
-
                     </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-outline-success" id="button1" type="submit">Einlösen</button>
+                    </div>
+
                 </form>
             </div>
         </div>
