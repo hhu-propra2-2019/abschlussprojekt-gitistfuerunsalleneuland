@@ -33,7 +33,7 @@
                 label{
                 width: 15%;
                 padding-right: 15%;
-             }
+                }
 
                 #button1{
                 width: 20%;
@@ -75,12 +75,14 @@
     <div class="row">
         <div class="col-sm-8">
             <div class="container">
-                <div class="alert alert-success alert-dismissible fade show"
-                     th:if="${input.areRheinjugUploadsOkForCertification()}">
-                    <strong>Erfolgreich!</strong> Die Quittungen wurden erfolgreich hochgeladen und abgeschickt.
+                <div class="alert alert-success alert-dismissible fade show" th:if="${input.areRheinjugUploadsOkForCertification()}">
+                    <strong>Erfolgreich!</strong> Die Rheinjug Quittungen wurden erfolgreich hochgeladen und abgeschickt.
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" th:if="${input.isEntwickelbarUploadOkForCertification()}">
+                    <strong>Erfolgreich!</strong> Die Entwickelbar Quittung wurde erfolgreich hochgeladen und abgeschickt.
                 </div>
 
-                <h3 style="padding-bottom: 50px">Quittungen hochladen</h3>
+                <h3 style="padding-bottom: 10px">Quittungen hochladen</h3>
                 <form enctype="multipart/form-data" method="post" th:object="${input}">
                     <div class="inputForm">
                         <div class="form-group">
@@ -92,10 +94,10 @@
                     </div>
                     <div class="inputForm">
                         <div class="form-group">
-                            <p>Bitte laden sie hier ihre Quittungen hoch:</p>
+                            <p>Drei Rheinjug Quittungen:</p>
                             <div class="input-group input-file">
-                                <input class="form-control" id="input1" placeholder='1.Rheinjug-Quittung'
-                                       style="cursor: pointer;" th:field="*{firstRheinjugReceipt}" type="file">
+                                <input class="form-control" id="input1" th:field="*{firstRheinjugReceipt}" type="file">
+                                <!--Bau das noch ein dann werden Fehler angezeigt th:text="${firstRheinjugReceiptUploadMessage}"-->
                             </div>
                         </div>
 
@@ -103,21 +105,24 @@
                             <div class="input-group input-file">
                                 <input class="form-control" id="input2" th:field="*{seccondRheinjugReceipt}"
                                        type="file">
+                                <!--Bau das noch ein dann werden Fehler angezeigt th:text="${seccondRheinjugReceiptUploadMessage}"-->
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group input-file">
                                 <input class="form-control" id="input3" th:field="*{thirdRheinjugReceipt}"
                                        type="file">
+                                <!--Bau das noch ein dann werden Fehler angezeigt th:text="${thirdRheinjugReceiptUploadMessage}"-->
                             </div>
                         </div>
                     </div>
                     <div class="inputForm">
                         <div class="form-group">
-                            <p>Bitte laden sie hier ihre Quittungen hoch:</p>
+                            <p>Entwickelbar Quittung:</p>
                             <div class="input-group input-file">
                                 <input class="form-control" id="input4" th:field="*{entwickelbarReceipt}"
                                        type="file">
+                                <span th:text="${entwickelbarReceiptUploadMessage}"></span>
                             </div>
                         </div>
                     </div>
@@ -125,11 +130,9 @@
                     <div class="form-group">
                         <button class="btn btn-outline-success" id="button1" type="submit">Einlösen</button>
                     </div>
-
                 </form>
             </div>
         </div>
-
         <div class="col-sm-4">
             <div class="container">
                 <img alt="eminem" src=../static/images/eminem.jpg style="width:90%;height:auto;"
@@ -137,7 +140,6 @@
             </div>
         </div>
     </div>
-
 </main>
 </body>
 </html>
