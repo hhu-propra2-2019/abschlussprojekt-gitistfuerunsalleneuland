@@ -63,7 +63,14 @@ class ReceiptCreationAndStorageServiceTest {
         receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
 
     final Receipt expectedReceipt =
-        new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
+        Receipt.builder()
+                .meetupId(meetupId)
+            .name(name)
+            .email(email)
+            .meetupTitle(meetupTitle)
+            .signature(signature)
+            .meetupType(meetupType)
+            .build();
     assertThat(receipt).isEqualTo(expectedReceipt);
   }
 }
