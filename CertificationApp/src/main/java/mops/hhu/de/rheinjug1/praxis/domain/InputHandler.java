@@ -22,6 +22,7 @@ public class InputHandler {
   private static final String DOPPELT = "Doppelt";
   private static final String RHEINJUG = "Rheinjug";
   private static final String VALIDE = "Valide";
+  private static final String EMPTY = "Empty";
 
   private final FileReaderService fileReaderService = new FileReaderService();
 
@@ -93,6 +94,8 @@ public class InputHandler {
         return VALIDE;
       }
     } catch (IOException e) {
+      if(firstRheinjugFile.isEmpty())
+        return EMPTY;
       return FEHLERHAFTE_QUITTUNG;
     }
   }
