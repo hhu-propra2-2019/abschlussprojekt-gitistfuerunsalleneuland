@@ -4,18 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class SignatureRecord {
+
   @Id private String signature;
   private Long meetupId;
-
-  public SignatureRecord(final String signature, final Long meetupId) {
-    this.signature = signature;
-    this.meetupId = meetupId;
-  }
 }

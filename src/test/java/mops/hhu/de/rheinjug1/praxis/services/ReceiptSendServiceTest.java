@@ -1,43 +1,55 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import javax.mail.MessagingException;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
-import org.junit.jupiter.api.AfterEach;
+import static org.mockito.Mockito.*;
+
+import java.io.IOException;
+import javax.mail.internet.MimeMessage;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptSendService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.javamail.JavaMailSender;
 
 @SpringBootTest
 class ReceiptSendServiceTest {
 
-  File file;
-  String pathName;
-  Path path;
-
   @Autowired ReceiptSendService receiptSendService;
-  @Autowired ReceiptPrintService receiptPrintService;
+  Receipt receipt;
 
   @BeforeEach
-  void createFile() {
-    file = new File("src/main/resources/Titel-Quittung.txt");
-    pathName = "src/main/resources/Titel-Quittung.txt";
-    path = Paths.get(pathName);
+  void init() {
+    receipt =
+        Receipt.builder()
+            .name("TestName")
+            .email("TestEmail")
+            .meetupId(1L)
+            .meetupTitle("Titel")
+            .meetupType(MeetupType.ENTWICKELBAR)
+            .signature("OEUIc5654eut")
+            .build();
   }
 
   @Test
-  void receiptSendTest() throws MessagingException {
-    final Receipt receipt =
-        new Receipt("TestName", "TestEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
+  void sendRealMail() throws MessagingException, IOException {
     receiptSendService.sendReceipt(receipt, "rheinjughhu@gmail.com");
   }
 
-  @AfterEach
-  void deleteFile() {
-    file.delete();
+  @Test
+  void SendMockMail() throws IOException, MessagingException {
+    final JavaMailSender mailSender = mock(JavaMailSender.class);
+    final MimeMessage mimeMessage = mock(MimeMessage.class);
+    when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
+    final MailService mailService = new MailService(mailSender);
+    final ReceiptSendService receiptSendService =
+        new ReceiptSendService(mailService, new ReceiptPrintService());
+
+    receiptSendService.sendReceipt(receipt, "rheinjughhu@gmail.com");
+
+    verify(mailSender).send(mimeMessage);
   }
 }

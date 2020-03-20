@@ -29,7 +29,7 @@ CREATE TABLE `rheinjug1`.`submission` (
   `meetup_id` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
-  `min_io_link` VARCHAR(255) NOT NULL,
+  `min_io_link` VARCHAR(2000) NOT NULL,
   `accepted` CHAR(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `meetup_id__email__UNIQUE` (`meetup_id`,`email`)
@@ -38,4 +38,3 @@ CREATE TABLE `rheinjug1`.`submission` (
 alter table submission
 	add constraint submission_event_id_fk
 		foreign key (meetup_id) references event (id);
-

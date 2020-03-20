@@ -26,9 +26,9 @@ public class ChartServiceTest {
   @BeforeEach
   void init() {
     final String time = "12:30 - 12.03.2020";
-    sampleData.add(new Event("", 1, "", "", time, "", "", MeetupType.RHEINJUG));
-    sampleData.add(new Event("", 2, "", "", time, "", "", MeetupType.RHEINJUG));
-    sampleData.add(new Event("", 3, "", "", time, "", "", MeetupType.ENTWICKELBAR));
+    sampleData.add(Event.builder().id(1).zonedDateTime(time).meetupType(MeetupType.RHEINJUG).build());
+    sampleData.add(Event.builder().id(2).zonedDateTime(time).meetupType(MeetupType.RHEINJUG).build());
+    sampleData.add(Event.builder().id(3).zonedDateTime(time).meetupType(MeetupType.ENTWICKELBAR).build());
     this.meetupServiceMock = mock(MeetupService.class);
     this.eventRepository = spy(EventRepository.class);
     this.signatureRepository = mock(SignatureRepository.class);

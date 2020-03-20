@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+<body>
+<div id="content" th:fragment="mycontent">
+    <div class="container mt-5">
+        <h4>Alle Zusammenfassungen</h4>
+        <table>
+            <thead>
+            <th>Meetup Id</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Aktion</th>
+            </thead>
+            <tbody>
+            <tr th:each="submission : ${all_submissions}">
+                <td><a th:href="@{${submission.minIoLink}}"><span th:text="${submission.meetupId}"></span></a>
+                </td>
+                <td><span th:text="${submission.name}"></span></td>
+                <td><span th:text="${submission.accepted}? 'Akzeptiert': 'Ausstehend'"></span></td>
+                <td>
+                    <form method="POST" th:action="@{/admin/submissions/accept/{id}(id=${submission.id})}">
+                        <button th:if="${!submission.accepted}" type="submit" name="submit" value="value"
+                                class="card-link">akzeptieren
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -13,3 +13,4 @@ public interface SignatureRepository extends CrudRepository<SignatureRecord, Lon
       "SELECT COUNT(DISTINCT s.meetup_id) FROM rheinjug1.event e, rheinjug1.signature_record s WHERE s.meetup_id = e.id AND e.meetup_type = :meetup_type;")
   int countSignatureByMeetupType(@Param("meetup_type") String meetupType);
 }
+

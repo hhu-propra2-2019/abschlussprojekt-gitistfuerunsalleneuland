@@ -15,6 +15,10 @@ import mops.hhu.de.rheinjug1.praxis.models.Summary;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
+import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfoDateComparator;
+import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -32,6 +36,7 @@ public class RheinjugController {
   private final Counter publicAccess;
   @Autowired private ChartService chartService;
   @Autowired private ReceiptService receiptService;
+
 
   @Autowired
   public RheinjugController(final MeterRegistry registry, final MeetupService meetupService) {
@@ -53,9 +58,31 @@ public class RheinjugController {
     return "home";
   }
 
-  @GetMapping("/statistics")
+  @GetMapping("/events")
+  @Secured({"ROLE_orga", "ROLE_studentin"})
+  public String showAllEvents(final KeycloakAuthenticationToken token, final Model model) {
+
+    final Account account = createAccountFromPrincipal(token);
+
+    final List<SubmissionEventInfo> submissionEventInfos =
+        meetupService.getAllEventsWithInfosByEmail(account);
+    submissionEventInfos.sort(new SubmissionEventInfoDateComparator());
+
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+    model.addAttribute("eventsWithInfos", submissionEventInfos);
+    publicAccess.increment();
+    return "allEvents";
+  }
+
+  @GetMapping("/logout")
+  public String logout(final HttpServletRequest request) throws ServletException {
+    request.logout();
+    return "redirect:/";
+  }
+
+  @GetMapping("/admin/statistics")
   @Secured("ROLE_orga")
-  public String statistics(final KeycloakAuthenticationToken token, final Model model) {
+  public String getStatistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
@@ -66,35 +93,12 @@ public class RheinjugController {
     model.addAttribute(
         "numberRheinjugReceipts",
         String.valueOf(chartService.getNumberOfReceiptsByMeetupType(MeetupType.RHEINJUG)));
-    return "statistics";
+    return "admin/statistics";
   }
-
-  @GetMapping("/logout")
-  public String logout(final HttpServletRequest request) throws ServletException {
-    request.logout();
-    return "redirect:/";
-  }
-
-  @GetMapping("/profil")
-  public String profil(final KeycloakAuthenticationToken token, final Model model) {
-    if (token != null) {
-      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
-    }
-    return "profil";
-  }
-
-  @GetMapping("/talk")
-  public String talk(final KeycloakAuthenticationToken token, final Model model) {
-    if (token != null) {
-      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
-    }
-    model.addAttribute("summaryForm", new Summary());
-    return "talk";
-  }
-
-  @GetMapping({"/update/{page}", "/update"})
-  public String update(@PathVariable(required = false) final String page) {
-    meetupService.update();
-    return page == null ? "redirect:/" : "redirect:/" + page;
+  
+    @GetMapping({"/update/{page}", "/update"})
+    public String update(@PathVariable(required = false) final String page) {
+      meetupService.update();
+      return page == null ? "redirect:/" : "redirect:/" + page;
   }
 }

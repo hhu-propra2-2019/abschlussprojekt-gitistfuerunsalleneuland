@@ -15,35 +15,34 @@ import mops.hhu.de.rheinjug1.praxis.database.repositories.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptCreationAndStorageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
-class ReceiptServiceTest {
+class ReceiptCreationAndStorageServiceTest {
 
-  @Autowired private ReceiptService receiptService;
-
+  @Autowired private ReceiptCreationAndStorageService receiptCreationAndStorageService;
   @MockBean private EncryptionService encryptionService;
-
   @MockBean private SignatureRepository signatureRepository;
-
   @MockBean private EventRepository eventRepository;
 
   private static final Event TEST_EVENT =
-      new Event(
-          "testDuration",
-          0L,
-          "testMeetupTitle",
-          "testStatus",
-          "testZonedDateTime",
-          "testLink",
-          "testDescription",
-          MeetupType.ENTWICKELBAR);
+      Event.builder()
+          .id(0L)
+          .duration("testDuration")
+          .name("testMeetupTitle")
+          .status("testStatus")
+          .zonedDateTime("testZonedDateTime")
+          .link("testLink")
+          .description("testDescription")
+          .meetupType(MeetupType.ENTWICKELBAR)
+          .build();
 
   @Test
-  void receiptService_returns_correct_receipt()
+  void it_returns_correct_receipt_in_signature_creation_process()
       throws CertificateException, InvalidKeyException, NoSuchAlgorithmException, IOException,
           KeyStoreException, SignatureException, UnrecoverableEntryException,
           EventNotFoundException {
@@ -60,10 +59,18 @@ class ReceiptServiceTest {
 
     final Submission submission =
         Submission.builder().email(email).meetupId(meetupId).name(name).build();
-    final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
+    final Receipt receipt =
+        receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
 
     final Receipt expectedReceipt =
-        new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
+        Receipt.builder()
+            .meetupId(meetupId)
+            .name(name)
+            .email(email)
+            .meetupTitle(meetupTitle)
+            .signature(signature)
+            .meetupType(meetupType)
+            .build();
     assertThat(receipt).isEqualTo(expectedReceipt);
   }
 }

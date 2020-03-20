@@ -1,5 +1,9 @@
 package mops.hhu.de.rheinjug1.praxis.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "submission not found")
 public class EventNotFoundException extends Exception {
 
   public EventNotFoundException(final Long meetupId) {

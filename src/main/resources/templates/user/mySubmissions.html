@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+<body>
+<div id="content" th:fragment="mycontent">
+    <div class="container">
+        <h3></h3>
+        <p class="mt-5">Hier seht ihr eure akzeptierten Zusammenfassungen und könnt Quittungen erstellen, die ihr per
+            Mail bekommt.</p>
+    </div>
+
+    <div class="container mt-5">
+        <h4>Zusammenfassungen</h4>
+        <table>
+            <thead>
+            <th>Meetup</th>
+            <th>Typ</th>
+            <th>MinIo Link</th>
+            <th>Status</th>
+            <th>Quittung</th>
+            </thead>
+            <tbody>
+            <tr th:each="submissionInfo : ${all_submissions_from_user}">
+                <td><a th:href="@{${submissionInfo.eventLink}}"><span
+                        th:text="${submissionInfo.eventName}"></span></a>
+                </td>
+                <td><span th:text="${submissionInfo.meetupType.getLabel()}"></span></td>
+                <td><a th:href="@{${submissionInfo.minIoLink}}"><span>Download</span></a>
+                </td>
+                <td><span th:text="${submissionInfo.accepted}? 'Akzeptiert': 'Ausstehend'"></span></td>
+                <td>
+                    <form method="POST"
+                          th:action="@{/user/submissions/create-receipt/{id}(id=${submissionInfo.id})}">
+                        <button th:if="${submissionInfo.accepted}" type="submit" name="submit" value="value"
+                                class="card-link">senden
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mx-5">
+        <p></p>
+    </div>
+</div>
+</body>
+</html>

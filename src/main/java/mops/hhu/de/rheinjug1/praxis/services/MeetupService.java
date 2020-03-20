@@ -9,6 +9,17 @@ import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import mops.hhu.de.rheinjug1.praxis.clients.MeetupClient;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionEventInfoRepository;
+import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,46 +28,38 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnusedPrivateMethod"})
 @EnableScheduling
 @Component
+@AllArgsConstructor
 public class MeetupService {
 
   private final MeetupClient meetupClient;
   private final EventRepository eventRepository;
   final JdbcAggregateTemplate jdbcAggregateTemplate;
+  private final SubmissionEventInfoRepository submissionEventInfoRepository;
   final SubmissionRepository submissionRepository;
 
-  @Autowired
-  public MeetupService(
-      final MeetupClient meetupClient,
-      final EventRepository eventRepository,
-      final JdbcAggregateTemplate jdbcAggregateTemplate,
-      final SubmissionRepository submissionRepository) {
-    this.meetupClient = meetupClient;
-    this.eventRepository = eventRepository;
-    this.jdbcAggregateTemplate = jdbcAggregateTemplate;
-    this.submissionRepository = submissionRepository;
-  }
-
-  @PostConstruct
-  private void initDatabase() {
-    update();
-  }
-
+	@PostConstruct
+	private void initDatabase() {
+		update();
+	}
+  
   @Scheduled(cron = "0 0 8 * * ?")
-  public void update() {
-    final List<Event> meetupEvents = meetupClient.getAllEvents();
-    final List<Event> allEvents = eventRepository.findAll();
-    updateExistingEvents(meetupEvents, allEvents);
-    insertNonExistingEvents(meetupEvents, allEvents);
-  }
+	public void update() {
+		final List<Event> meetupEvents = meetupClient.getAllEvents();
+		final List<Event> allEvents = eventRepository.findAll();
+		updateExistingEvents(meetupEvents, allEvents);
+		insertNonExistingEvents(meetupEvents, allEvents);
+	}
+
+	public List<SubmissionEventInfo> getAllEventsWithInfosByEmail(final Account account) {
+		return submissionEventInfoRepository.getAllEventsWithUserInfosByEmail(account.getEmail());
+	}
 
   private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
-    meetupEvents.stream()
-        .filter(allEvents::contains)
-        .forEach(jdbcAggregateTemplate::update); // .forEach(this::update);
+    meetupEvents.stream().filter(allEvents::contains).forEach(eventRepository::save);
   }
-
+  
   public int getSubmissionCount(final Event event) {
-    return submissionRepository.countSubmissionByMeetupId(event.getId());
+	    return submissionRepository.countSubmissionByMeetupId(event.getId());
   }
 
   private void insertNonExistingEvents(
@@ -92,5 +95,15 @@ public class MeetupService {
       return pastEvents;
     }
     return pastEvents.subList(n - x, n);
+  }
+
+  public Event getEventIfExistent(final Long meetUpId) throws EventNotFoundException {
+    final Optional<Event> eventOptional = eventRepository.findById(meetUpId);
+
+    if (eventOptional.isEmpty()) {
+      throw new EventNotFoundException(meetUpId);
+    }
+
+    return eventOptional.get();
   }
 }
