@@ -7,8 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
 import org.junit.jupiter.api.Test;
 

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Chart;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 public class ChartService {
 
   @Autowired MeetupService meetupService;
-  @Autowired EventRepository eventRepository;
   @Autowired SignatureRepository signatureRepository;
   FormatService formatService;
 

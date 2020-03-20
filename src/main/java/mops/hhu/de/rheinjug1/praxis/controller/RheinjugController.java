@@ -11,13 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
-import mops.hhu.de.rheinjug1.praxis.models.Summary;
-import mops.hhu.de.rheinjug1.praxis.services.ChartService;
-import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
-import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfoDateComparator;
+import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +31,6 @@ public class RheinjugController {
   private final MeetupService meetupService;
   private final Counter publicAccess;
   @Autowired private ChartService chartService;
-  @Autowired private ReceiptService receiptService;
-
 
   @Autowired
   public RheinjugController(final MeterRegistry registry, final MeetupService meetupService) {
@@ -95,10 +89,10 @@ public class RheinjugController {
         String.valueOf(chartService.getNumberOfReceiptsByMeetupType(MeetupType.RHEINJUG)));
     return "admin/statistics";
   }
-  
-    @GetMapping({"/update/{page}", "/update"})
-    public String update(@PathVariable(required = false) final String page) {
-      meetupService.update();
-      return page == null ? "redirect:/" : "redirect:/" + page;
+
+  @GetMapping({"/update/{page}", "/update"})
+  public String update(@PathVariable(required = false) final String page) {
+    meetupService.update();
+    return page == null ? "redirect:/" : "redirect:/" + page;
   }
 }

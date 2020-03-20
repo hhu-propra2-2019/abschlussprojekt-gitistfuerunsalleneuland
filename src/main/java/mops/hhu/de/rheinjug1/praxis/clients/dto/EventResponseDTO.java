@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
-import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.services.FormatService;
 import mops.hhu.de.rheinjug1.praxis.services.TimeFormatService;
 
 @SuppressWarnings({
@@ -16,7 +14,6 @@ import mops.hhu.de.rheinjug1.praxis.services.TimeFormatService;
   "PMD.TooManyFields",
   "PMD.UseLocaleWithCaseConversions"
 })
-
 @ToString
 @Setter
 @NoArgsConstructor
@@ -65,11 +62,11 @@ public class EventResponseDTO {
   }
 
   private String formatTime(final TimeFormatService timeFormatService) {
-	    final Duration timeAsDuration = Duration.ofMillis(this.time);
-	    final LocalDateTime dateTime =
-	        LocalDateTime.ofEpochSecond(timeAsDuration.toSeconds(), 0, ZoneOffset.UTC);
-	    final ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("UTC"));
+    final Duration timeAsDuration = Duration.ofMillis(this.time);
+    final LocalDateTime dateTime =
+        LocalDateTime.ofEpochSecond(timeAsDuration.toSeconds(), 0, ZoneOffset.UTC);
+    final ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime, ZoneId.of("UTC"));
 
-	    return timeFormatService.toLocalEventTimeString(zonedDateTime, group.getZoneId());
+    return timeFormatService.toLocalEventTimeString(zonedDateTime, group.getZoneId());
   }
 }
