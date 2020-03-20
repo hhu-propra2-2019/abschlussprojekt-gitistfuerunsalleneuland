@@ -9,6 +9,7 @@ import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptSendService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,18 +19,27 @@ import org.springframework.mail.javamail.JavaMailSender;
 class ReceiptSendServiceTest {
 
   @Autowired ReceiptSendService receiptSendService;
+  Receipt receipt;
+
+  @BeforeEach
+  void init() {
+    receipt =  Receipt.builder()
+            .name("TestName")
+            .email("TestEmail")
+            .meetupId(1L)
+            .meetupTitle("Titel")
+            .meetupType(MeetupType.ENTWICKELBAR)
+            .signature("OEUIc5654eut")
+            .build();
+  }
 
   @Test
   void sendRealMail() throws MessagingException, IOException {
-    final Receipt receipt =
-        new Receipt("TestName", "TestEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
     receiptSendService.sendReceipt(receipt, "rheinjughhu@gmail.com");
   }
 
   @Test
   void SendMockMail() throws IOException, MessagingException {
-    final Receipt receipt =
-        new Receipt("TestName", "TestEmail", 1L, "Titel", MeetupType.ENTWICKELBAR, "OEUIc5654eut");
     final JavaMailSender mailSender = mock(JavaMailSender.class);
     final MimeMessage mimeMessage = mock(MimeMessage.class);
     when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
