@@ -17,11 +17,9 @@ public class ReceiptPrintService {
     try (FileWriter fileWriter = new FileWriter(path);
         PrintWriter printWriter = new PrintWriter(fileWriter)) {
       final Yaml yaml = new Yaml();
-      yaml.dump(receipt, fileWriter);
-
-    } catch (IOException e) {
-      e.printStackTrace();
+      final String ymlString = yaml.dumpAsMap(receipt);
+      printWriter.print(ymlString);
+      return path;
     }
-    return path;
   }
 }

@@ -15,8 +15,12 @@ import org.junit.jupiter.api.Test;
 class ReceiptPrintServiceTest {
 
   private static final String TEST_FILE_CONTENT =
-      "!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: testEmail, meetupId: 12345,\n"
-          + "  meetupTitle: testMeetupTitle, meetupType: ENTWICKELBAR, name: testName, signature: testSignature}\n";
+     "email: testEmail\n" +
+             "meetupId: 12345\n" +
+             "meetupTitle: testMeetupTitle\n" +
+             "meetupType: ENTWICKELBAR\n" +
+             "name: testName\n" +
+             "signature: testSignature\n";
 
   @Test
   void writeYml() throws IOException {
@@ -32,7 +36,7 @@ class ReceiptPrintServiceTest {
             .build();
     final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
     final String path = receiptPrintService.printReceipt(receipt);
-
+    System.out.println(path);
     assertThat(Files.readString(Paths.get(path))).isEqualTo(TEST_FILE_CONTENT);
   }
 }
