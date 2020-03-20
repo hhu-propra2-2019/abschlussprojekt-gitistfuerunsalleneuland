@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,26 +14,35 @@ import org.springframework.web.multipart.MultipartFile;
 @SpringBootTest
 public class FileReaderServiceTests {
 
-  private static final String VALID_FILE =
-      "Name: file\r\n"
-          + "Veranstaltungs-ID: 123\r\n"
-          + "Titel: abc\r\n"
-          + "Typ: Rheinjug\r\n"
-          + "signature\r\n";
-  private static final String INVALID_FILE =
-      "Name:\r\n" + "Veranstaltungs-ID:\r\n" + "Titel:\r\n" + "Typ:\r\n";
+  private final MultipartFile validFile =
+      new MockMultipartFile(
+          "validFile",
+          ("Name: file\r\n"
+                  + "Veranstaltungs-ID: 123\r\n"
+                  + "Titel: abc\r\n"
+                  + "Typ: Rheinjug\r\n"
+                  + "signature\r\n")
+              .getBytes());
+  private final MultipartFile invalidFile =
+      new MockMultipartFile(
+          "validFile",
+          ("Name:\r\n" + "Veranstaltungs-ID:\r\n" + "Titel:\r\n" + "Typ:\r\n").getBytes());
+  private final Receipt receipt = new Receipt();
+
   @Autowired private FileReaderService fileReaderService;
 
-  @Test
-  public void validFileGenereatesCorrectReceipt() {
-    final MultipartFile file = new MockMultipartFile("validFile", VALID_FILE.getBytes());
-    final Receipt receipt = new Receipt();
+  @Before
+  public void setReceipt() {
     receipt.setMeetupId(123);
     receipt.setType("Rheinjug");
     receipt.setSignature("signature");
+  }
+
+  @Test
+  public void validFileGenereatesCorrectReceipt() {
     try {
       assertEquals(
-          "read file didn't equal expected receipt", receipt, fileReaderService.read(file));
+          "read file didn't equal expected receipt", receipt, fileReaderService.read(validFile));
     } catch (IOException e) {
       fail();
     }
@@ -40,14 +50,9 @@ public class FileReaderServiceTests {
 
   @Test
   public void invalidFileDoesNotBecomeReceipt() {
-    final MultipartFile file = new MockMultipartFile("invalidFile", INVALID_FILE.getBytes());
-    final Receipt receipt = new Receipt();
-    receipt.setMeetupId(123);
-    receipt.setType("Rheinjug");
-    receipt.setSignature("signature");
     boolean thrown = false;
     try {
-      fileReaderService.read(file);
+      fileReaderService.read(invalidFile);
     } catch (IOException e) {
       thrown = true;
     }
@@ -56,10 +61,9 @@ public class FileReaderServiceTests {
 
   @Test
   public void validFileIsAccepted() {
-    final MultipartFile file = new MockMultipartFile("validFile", VALID_FILE.getBytes());
     boolean thrown = true;
     try {
-      fileReaderService.read(file);
+      fileReaderService.read(validFile);
     } catch (IOException e) {
       thrown = false;
     }

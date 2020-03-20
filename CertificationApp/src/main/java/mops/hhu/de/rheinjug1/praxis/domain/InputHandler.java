@@ -6,12 +6,14 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @RequestMapping
 @SuppressWarnings("PMD.ConfusingTernary")
+@Component
 public class InputHandler {
 
   private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
@@ -102,5 +104,9 @@ public class InputHandler {
       }
     }
     return false;
+  }
+
+  public void resetSignatures() {
+    signatures.clear();
   }
 }
