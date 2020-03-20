@@ -90,6 +90,7 @@ dependencies {
     compile "io.vavr:vavr:0.9.3"
     implementation 'io.minio:minio:6.0.13'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.8'
 }
 
 test {
