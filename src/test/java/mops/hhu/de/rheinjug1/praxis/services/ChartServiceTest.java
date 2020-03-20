@@ -1,17 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
-import mops.hhu.de.rheinjug1.praxis.database.entities.SignatureRecord;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
@@ -37,7 +33,8 @@ public class ChartServiceTest {
     this.eventRepository = spy(EventRepository.class);
     this.signatureRepository = mock(SignatureRepository.class);
     this.chartService =
-        new ChartService(meetupServiceMock, eventRepository, signatureRepository, new FormatService());
+        new ChartService(
+            meetupServiceMock, eventRepository, signatureRepository, new FormatService());
   }
 
   @Test
@@ -49,5 +46,4 @@ public class ChartServiceTest {
     // Assert
     assertThat(numberOfTalks).isEqualTo(sampleData.size());
   }
-
 }

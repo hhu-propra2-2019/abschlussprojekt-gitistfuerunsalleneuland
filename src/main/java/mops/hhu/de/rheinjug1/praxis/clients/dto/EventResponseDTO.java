@@ -10,7 +10,11 @@ import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.services.FormatService;
 
-@SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields","PMD.UseLocaleWithCaseConversions"})
+@SuppressWarnings({
+  "PMD.FieldNamingConventions",
+  "PMD.TooManyFields",
+  "PMD.UseLocaleWithCaseConversions"
+})
 @ToString
 @Setter
 @NoArgsConstructor

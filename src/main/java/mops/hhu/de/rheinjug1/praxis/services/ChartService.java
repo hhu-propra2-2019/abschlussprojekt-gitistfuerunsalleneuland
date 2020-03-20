@@ -21,21 +21,21 @@ public class ChartService {
   FormatService formatService;
 
   public int getNumberOfReceiptsByMeetupType(final MeetupType meetupType) {
-    return signatureRepository.countSignatureByMeetupType(meetupType.databaseRepresentation());}
+    return signatureRepository.countSignatureByMeetupType(meetupType.databaseRepresentation());
+  }
 
+  public Chart getXEventsChart(final int events) {
+    final List<Event> xEvents = meetupService.getLastXEvents(events);
 
-    public Chart getXEventsChart(final int events) {
-      final List<Event> xEvents = meetupService.getLastXEvents(events);
+    final List<String> dates =
+        xEvents.stream()
+            .map(i -> i.getZonedDateTime())
+            .map(i -> formatService.toLocalDateString(i))
+            .collect(Collectors.toList());
 
-      final List<String> dates =
-              xEvents.stream()
-                      .map(i -> i.getZonedDateTime())
-                      .map(i -> formatService.toLocalDateString(i))
-                      .collect(Collectors.toList());
+    final List<Integer> participants =
+        xEvents.stream().map(i -> meetupService.getSubmissionCount(i)).collect(Collectors.toList());
 
-      final List<Integer> participants =
-              xEvents.stream().map(i -> meetupService.getSubmissionCount(i)).collect(Collectors.toList());
-
-      return new Chart(dates, participants);
+    return new Chart(dates, participants);
   }
 }
