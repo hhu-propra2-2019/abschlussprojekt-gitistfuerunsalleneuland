@@ -19,7 +19,8 @@ class ReceiptPrintServiceTest {
   @Test
   void writeYml() throws IOException {
 
-    final Receipt receipt = Receipt.builder()
+    final Receipt receipt =
+        Receipt.builder()
             .meetupId(12_345L)
             .name("testName")
             .email("testEmail")

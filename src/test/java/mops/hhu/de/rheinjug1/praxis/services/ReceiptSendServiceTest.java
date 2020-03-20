@@ -23,7 +23,8 @@ class ReceiptSendServiceTest {
 
   @BeforeEach
   void init() {
-    receipt =  Receipt.builder()
+    receipt =
+        Receipt.builder()
             .name("TestName")
             .email("TestEmail")
             .meetupId(1L)

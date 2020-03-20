@@ -64,7 +64,7 @@ class ReceiptCreationAndStorageServiceTest {
 
     final Receipt expectedReceipt =
         Receipt.builder()
-                .meetupId(meetupId)
+            .meetupId(meetupId)
             .name(name)
             .email(email)
             .meetupTitle(meetupTitle)

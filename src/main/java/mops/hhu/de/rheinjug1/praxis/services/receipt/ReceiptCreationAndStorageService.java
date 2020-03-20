@@ -50,12 +50,12 @@ public class ReceiptCreationAndStorageService {
       signatureRepository.save(signature);
     }
     return Receipt.builder()
-            .name(studentName)
-            .email(studentEmail)
-            .meetupId(meetUpId)
-            .meetupTitle(meetUpTitle)
-            .meetupType(meetupType)
-            .signature(signatureString)
-            .build();
+        .name(studentName)
+        .email(studentEmail)
+        .meetupId(meetUpId)
+        .meetupTitle(meetUpTitle)
+        .meetupType(meetupType)
+        .signature(signatureString)
+        .build();
   }
 }
