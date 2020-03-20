@@ -7,6 +7,7 @@ import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.A
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.util.Optional;
 import javax.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
@@ -59,12 +60,12 @@ public class SubmissionUserController {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
-    final Submission submission =
+    final Optional<Submission> submission =
         submissionService.getAcceptedSubmissionIfAuthorized(submissionId, account);
 
     try {
       final Receipt receipt =
-          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
+          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission.get());
       receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException

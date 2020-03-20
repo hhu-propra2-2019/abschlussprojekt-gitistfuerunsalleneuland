@@ -96,8 +96,8 @@ public class SubmissionServiceTest {
             .build();
     when(submissionRepository.findById(0L)).thenReturn(Optional.ofNullable(testSubmission));
 
-    final Submission actualSubmission =
+    final Optional<Submission> actualSubmission =
         submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
-    assertEquals(testSubmission, actualSubmission);
+    assertEquals(testSubmission, actualSubmission.get());
   }
 }

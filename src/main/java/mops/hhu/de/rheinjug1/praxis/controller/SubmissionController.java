@@ -12,11 +12,12 @@ import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptSendService;
-import mops.hhu.de.rheinjug1.praxis.services.ReceiptService;
-import mops.hhu.de.rheinjug1.praxis.services.SubmissionService;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptCreationAndStorageService;
+import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptSendService;
+import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class SubmissionController {
 
   private final SubmissionService submissionService;
 
-  private final ReceiptService receiptService;
+  private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
 
   private final ReceiptSendService receiptSendService;
 
@@ -69,7 +70,7 @@ public class SubmissionController {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
-        ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE, submissionService.getAllSubmissionsByUser(account));
+        ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE, submissionService.getAllSubmissionsWithInfosByUser(account));
 
     return "mySubmissions";
   }
@@ -79,7 +80,7 @@ public class SubmissionController {
   public String createReceipt(
       final KeycloakAuthenticationToken token,
       final Model model,
-      @PathVariable("submissionId") final Long submissionId) {
+      @PathVariable("submissionId") final Long submissionId) throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
@@ -91,7 +92,7 @@ public class SubmissionController {
 
     final Submission submission = acceptedSubmissionOptional.get();
     try {
-      final Receipt receipt = receiptService.createReceiptAndSaveSignatureInDatabase(submission);
+      final Receipt receipt = receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
       receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException

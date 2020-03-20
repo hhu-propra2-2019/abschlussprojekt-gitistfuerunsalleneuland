@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.xmlpull.v1.XmlPullParserException;
 
-@Disabled
 @SpringBootTest
-public class UploadServiceTest {
+public class MinIoMinIoUploadServiceTest {
 
   static MinioClient minioClient;
 
@@ -24,6 +23,7 @@ public class UploadServiceTest {
     minioClient = new MinioClient("http://localhost:9000/", "minio", "minio123");
   }
 
+  @Disabled
   @Test
   void bucketExistenceTest()
       throws MinioException, InvalidKeyException, NoSuchAlgorithmException, IOException,
@@ -31,6 +31,7 @@ public class UploadServiceTest {
     assertThat(minioClient.bucketExists("rheinjug")).isTrue();
   }
 
+  @Disabled
   @Test
   void uploadTestfile() throws Exception {
     minioClient = new MinioClient("http://localhost:9000/", "minio", "minio123");

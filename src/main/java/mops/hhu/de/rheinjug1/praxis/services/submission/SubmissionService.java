@@ -38,7 +38,7 @@ public class SubmissionService {
     return arrayList;
   }
 
-  public Submission getAcceptedSubmissionIfAuthorized(
+  public Optional<Submission> getAcceptedSubmissionIfAuthorized(
       final Long submissionId, final Account account)
       throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
 
@@ -55,7 +55,7 @@ public class SubmissionService {
       throw new UnauthorizedSubmissionAccessException(submissionId);
     }
 
-    return submission;
+    return Optional.of(submission);
   }
 
   private boolean nameAndEmailAreEqual(final Submission submission, final Account account) {

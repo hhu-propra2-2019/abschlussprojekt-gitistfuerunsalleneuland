@@ -18,7 +18,7 @@ public class ChartService {
   @Autowired MeetupService meetupService;
   @Autowired EventRepository eventRepository;
   @Autowired SignatureRepository signatureRepository;
-  FormatService formatService;
+  TimeFormatService formatService;
 
   public int getNumberOfReceiptsByMeetupType(final MeetupType meetupType) {
     return signatureRepository.countSignatureByMeetupType(meetupType.databaseRepresentation());
@@ -29,8 +29,7 @@ public class ChartService {
 
     final List<String> dates =
         xEvents.stream()
-            .map(i -> i.getZonedDateTime())
-            .map(i -> formatService.toLocalDateString(i))
+            .map(i -> formatService.getGermanDateString(i))
             .collect(Collectors.toList());
 
     final List<Integer> participants =

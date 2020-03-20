@@ -34,7 +34,7 @@ public class ChartServiceTest {
     this.signatureRepository = mock(SignatureRepository.class);
     this.chartService =
         new ChartService(
-            meetupServiceMock, eventRepository, signatureRepository, new FormatService());
+            meetupServiceMock, eventRepository, signatureRepository, new TimeFormatService());
   }
 
   @Test
