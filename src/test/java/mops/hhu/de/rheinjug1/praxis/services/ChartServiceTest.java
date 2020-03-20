@@ -50,30 +50,4 @@ public class ChartServiceTest {
     assertThat(numberOfTalks).isEqualTo(sampleData.size());
   }
 
-  @Test
-  void testCountingReceiptsByMeetupType() {
-    final Iterable<SignatureRecord> sampleReceipts =
-        Arrays.asList(
-            new SignatureRecord("", 1L),
-            new SignatureRecord("", 2L),
-            new SignatureRecord("", 2L),
-            new SignatureRecord("", 3L));
-    doReturn(Optional.of(sampleData.get(0))).when(eventRepository).findById(1L);
-    doReturn(Optional.of(sampleData.get(1))).when(eventRepository).findById(2L);
-    doReturn(Optional.of(sampleData.get(2))).when(eventRepository).findById(3L);
-    doReturn(sampleReceipts).when(signatureRepository).findAll();
-
-    assertThat(chartService.getNumberOfReceiptsByMeetupType(MeetupType.RHEINJUG)).isEqualTo(3);
-    assertThat(chartService.getNumberOfReceiptsByMeetupType(MeetupType.ENTWICKELBAR)).isEqualTo(1);
-  }
-
-  @Test
-  void testEmptyReceiptsRepository() {
-    final Iterable<SignatureRecord> sampleReceipts = new LinkedList<>();
-    doReturn(Optional.of(sampleData.get(0))).when(eventRepository).findById(Mockito.anyLong());
-    doReturn(sampleReceipts).when(signatureRepository).findAll();
-
-    assertThat(chartService.getNumberOfReceiptsByMeetupType(MeetupType.RHEINJUG)).isEqualTo(0);
-    assertThat(chartService.getNumberOfReceiptsByMeetupType(MeetupType.ENTWICKELBAR)).isEqualTo(0);
-  }
 }
