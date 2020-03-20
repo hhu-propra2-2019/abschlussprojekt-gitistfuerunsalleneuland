@@ -10,8 +10,12 @@ import org.junit.jupiter.api.Test;
 public class ReceiptReadServiceTest {
 
   private static final String TEST_FILE_CONTENT =
-      "!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: testEmail, meetupId: 12345,\n"
-          + "  meetupTitle: testMeetupTitle, meetupType: ENTWICKELBAR, name: testName, signature: testSignature}\n";
+      "email: testEmail\n"
+          + "meetupId: 12345\n"
+          + "meetupTitle: testMeetupTitle\n"
+          + "meetupType: ENTWICKELBAR\n"
+          + "name: testName\n"
+          + "signature: testSignature\n";
 
   @Test
   void readYml() throws IOException {

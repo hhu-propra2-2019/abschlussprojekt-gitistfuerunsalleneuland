@@ -65,7 +65,8 @@ public class SubmissionUserController {
 
     try {
       final Receipt receipt =
-          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission.get());
+          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(
+              submission.get());
       receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException

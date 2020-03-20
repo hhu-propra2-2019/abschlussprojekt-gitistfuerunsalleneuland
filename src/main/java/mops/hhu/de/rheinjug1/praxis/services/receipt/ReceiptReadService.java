@@ -13,11 +13,7 @@ public class ReceiptReadService {
   public Receipt read(final String path) throws IOException {
     try (Reader fileReader = new FileReader(path)) {
       final Yaml yaml = new Yaml();
-      return (Receipt) yaml.load(fileReader);
-
-    } catch (IOException e) {
-      e.printStackTrace();
+      return yaml.loadAs(fileReader, Receipt.class);
     }
-    throw new IOException();
   }
 }

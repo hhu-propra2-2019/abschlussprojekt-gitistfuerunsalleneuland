@@ -10,7 +10,6 @@ import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
-import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionService;

@@ -24,7 +24,7 @@ public class ReceiptSendService {
 
     final String fileName =
         String.format(
-            "%s%d-Quittung.txt", receipt.getMeetupType().getLabel(), receipt.getMeetupId());
+            "%s%d-Quittung.yml", receipt.getMeetupType().getLabel(), receipt.getMeetupId());
 
     mailService.sendMailWithAttachment(to, mailSubject, mailText, path, fileName);
   }

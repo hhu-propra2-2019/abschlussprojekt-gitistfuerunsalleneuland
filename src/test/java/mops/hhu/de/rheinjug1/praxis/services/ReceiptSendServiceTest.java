@@ -1,12 +1,12 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import javax.mail.MessagingException;
-import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptSendService;
 import org.junit.jupiter.api.BeforeEach;

@@ -70,7 +70,8 @@ public class SubmissionController {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
-        ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE, submissionService.getAllSubmissionsWithInfosByUser(account));
+        ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE,
+        submissionService.getAllSubmissionsWithInfosByUser(account));
 
     return "mySubmissions";
   }
@@ -80,7 +81,8 @@ public class SubmissionController {
   public String createReceipt(
       final KeycloakAuthenticationToken token,
       final Model model,
-      @PathVariable("submissionId") final Long submissionId) throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
+      @PathVariable("submissionId") final Long submissionId)
+      throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
@@ -92,7 +94,8 @@ public class SubmissionController {
 
     final Submission submission = acceptedSubmissionOptional.get();
     try {
-      final Receipt receipt = receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
+      final Receipt receipt =
+          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
       receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException
