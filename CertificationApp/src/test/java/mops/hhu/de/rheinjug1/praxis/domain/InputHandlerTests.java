@@ -27,25 +27,23 @@ public class InputHandlerTests {
   private final MultipartFile validRheinjugFile =
       new MockMultipartFile(
           "validFile",
-          ("Name: file\r\n"
-                  + "Veranstaltungs-ID: 123\r\n"
-                  + "Titel: abc\r\n"
-                  + "Typ: Rheinjug\r\n"
-                  + "signature\r\n")
+          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId: 1, meetupTitle: Titel,\r\n"
+                  + "  meetupType: RHEINJUG, name: TestName, signature: OEUIc5654eut}\r\n"
+                  + "")
               .getBytes());
   private final MultipartFile validEntwickelbarFile =
       new MockMultipartFile(
           "validFile",
-          ("Name: file\r\n"
-                  + "Veranstaltungs-ID: 123\r\n"
-                  + "Titel: abc\r\n"
-                  + "Typ: Entwickelbar\r\n"
-                  + "signature\r\n")
+          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId: 1, meetupTitle: Titel,\r\n"
+                  + "  meetupType: ENTWICKELBAR, name: TestName, signature: OEUIc5654eut}\r\n"
+                  + "")
               .getBytes());
   private final MultipartFile invalidFile =
       new MockMultipartFile(
           "validFile",
-          ("Name:\r\n" + "Veranstaltungs-ID:\r\n" + "Titel:\r\n" + "Typ:\r\n").getBytes());
+          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId:, meetupTitle: Titel,\r\n"
+                  + "  meetupType: ENTWICKELBAR, name: TestName, signature: OEUIc5654eut}")
+              .getBytes());
 
   @AfterEach
   public void resetHandler() {

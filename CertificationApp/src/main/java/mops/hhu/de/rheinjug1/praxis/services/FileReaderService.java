@@ -15,9 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileReaderService {
 
   private static final String format =
-      "Name: \\w+\r\nVeranstaltungs-ID: \\d+\r\nTitel: \\w+\r\nTyp: \\w+\r\n.+\r\n";
-  private static final String meetUpPrefix = "Veranstaltungs-ID: ";
-  private static final String typePrefix = "Typ: ";
+      "!!mops\\.hhu\\.de\\.rheinjug1\\.praxis\\.models\\.Receipt \\{email: \\w+, meetupId: \\d+, meetupTitle: \\w+,\r\n\\s+meetupType: \\w+, name: \\w+, signature: .+\\}\r\n";
+  private static final String meetUpPrefix = "meetupId: ";
+  private static final String typePrefix = "meetupType: ";
+  private static final String signaturePrefix = "signature: ";
 
   public Receipt read(final MultipartFile receiptFile) throws IOException {
     if (receiptFile == null) {
@@ -35,8 +36,9 @@ public class FileReaderService {
     }
   }
 
-  private Receipt stringToReceipt(final String receiptString) {
+  private Receipt stringToReceipt(final String rawReceiptString) {
     final Receipt receipt = new Receipt();
+    final String receiptString = cut(rawReceiptString);
     final List<String> lines = receiptString.lines().collect(toList());
     for (String line : lines) {
       if (line.contains(meetUpPrefix)) {
@@ -45,11 +47,16 @@ public class FileReaderService {
       } else if (line.contains(typePrefix)) {
         line = line.substring(line.indexOf(typePrefix) + typePrefix.length());
         receipt.setType(line);
-      } else if (!line.contains(":") && !"".equals(line)) {
+      } else if (line.contains(signaturePrefix)) {
+        line = line.substring(line.indexOf(signaturePrefix) + signaturePrefix.length());
         receipt.setSignature(line);
       }
     }
     return receipt;
+  }
+
+  private String cut(final String receiptString) {
+    return receiptString.replaceAll(",", "\r\n").replaceAll("[-+^,}{]", "");
   }
 
   private boolean isCorrectFormat(final String receiptString) throws IOException {

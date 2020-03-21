@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,25 +17,26 @@ public class FileReaderServiceTests {
   private final MultipartFile validFile =
       new MockMultipartFile(
           "validFile",
-          ("Name: file\r\n"
-                  + "Veranstaltungs-ID: 123\r\n"
-                  + "Titel: abc\r\n"
-                  + "Typ: Rheinjug\r\n"
-                  + "signature\r\n")
+          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId: 1, meetupTitle: Titel,\r\n"
+                  + "  meetupType: ENTWICKELBAR, name: TestName, signature: OEUIc5654eut}\r\n"
+                  + "")
               .getBytes());
   private final MultipartFile invalidFile =
       new MockMultipartFile(
-          "validFile",
-          ("Name:\r\n" + "Veranstaltungs-ID:\r\n" + "Titel:\r\n" + "Typ:\r\n").getBytes());
+          "invalidFile",
+          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId: , meetupTitle: Titel,\r\n"
+                  + "  meetupType: ENTWICKELBAR, name: TestName, signature: OEUIc5654eut}\r\n"
+                  + "")
+              .getBytes());
   private final Receipt receipt = new Receipt();
 
   @Autowired private FileReaderService fileReaderService;
 
-  @Before
+  @BeforeEach
   public void setReceipt() {
-    receipt.setMeetupId(123);
-    receipt.setType("Rheinjug");
-    receipt.setSignature("signature");
+    receipt.setMeetupId(1);
+    receipt.setType("ENTWICKELBAR");
+    receipt.setSignature("OEUIc5654eut");
   }
 
   @Test

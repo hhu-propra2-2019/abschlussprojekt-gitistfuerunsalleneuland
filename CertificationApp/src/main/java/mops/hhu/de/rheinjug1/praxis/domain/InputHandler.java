@@ -17,10 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class InputHandler {
 
   private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
-  private static final String ENTWICKELBAR = "Entwickelbar";
+  private static final String ENTWICKELBAR = "ENTWICKELBAR";
   private static final String FEHLERHAFTE_QUITTUNG = "Fehlerhafte Quittung";
   private static final String DOPPELT = "Doppelt";
-  private static final String RHEINJUG = "Rheinjug";
+  private static final String RHEINJUG = "RHEINJUG";
   private static final String VALIDE = "Valide";
   private static final String EMPTY = "Empty";
 
@@ -94,8 +94,9 @@ public class InputHandler {
         return VALIDE;
       }
     } catch (IOException e) {
-      if(firstRheinjugFile.isEmpty())
+      if (firstRheinjugFile.isEmpty()) {
         return EMPTY;
+      }
       return FEHLERHAFTE_QUITTUNG;
     }
   }
