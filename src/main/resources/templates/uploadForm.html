@@ -3,6 +3,10 @@
       th:replace="~{base :: html(content=~{:: mycontent})}">
 <body>
 <div id="content" th:fragment="mycontent">
+    <div class="error" th:if="${upload_error != ''}">
+            <span th:text="${upload_error}">
+            </span>
+    </div>
     <div>
         <form method="POST" enctype="multipart/form-data"
               th:action="@{/upload/{meetup_id}(meetup_id=${meetup_id})}">
@@ -13,12 +17,14 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Hochladen"/></td>
+                    <td>
+                        <button type="submit" name="submit" id="uploadButton" value="Hochladen" class="bt
+                        n">hochladen
+                        </button>
+                    </td>
                 </tr>
             </table>
         </form>
-    </div>
-    <div>
     </div>
 </div>
 </body>
