@@ -14,9 +14,8 @@ public class Receipt {
   private long meetupId;
   private String type; // sollte ein enum sein
   private String signature;
-  private String error;
 
   public Receipt cloneThisReceipt() {
-    return new Receipt(name, keycloakId, meetupId, type, signature, error);
+    return new Receipt(name, keycloakId, meetupId, type, signature);
   }
 }

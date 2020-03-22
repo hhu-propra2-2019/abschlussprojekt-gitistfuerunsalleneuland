@@ -5,24 +5,27 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @RequestMapping
 @SuppressWarnings("PMD.ConfusingTernary")
+@Component
 public class InputHandler {
 
   private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
-  private static final String ENTWICKELBAR = "Entwickelbar";
+  private static final String ENTWICKELBAR = "ENTWICKELBAR";
   private static final String FEHLERHAFTE_QUITTUNG = "Fehlerhafte Quittung";
   private static final String DOPPELT = "Doppelt";
-  private static final String RHEINJUG = "Rheinjug";
+  private static final String RHEINJUG = "RHEINJUG";
   private static final String VALIDE = "Valide";
   private static final String EMPTY = "Empty";
 
-  private final FileReaderService fileReaderService = new FileReaderService();
+  private final ReceiptReaderInterface fileReaderService = new FileReaderService();
 
   @Setter private String matrikelNummer;
 
@@ -92,8 +95,9 @@ public class InputHandler {
         return VALIDE;
       }
     } catch (IOException e) {
-      if(firstRheinjugFile.isEmpty())
+      if (firstRheinjugFile.isEmpty()) {
         return EMPTY;
+      }
       return FEHLERHAFTE_QUITTUNG;
     }
   }
@@ -105,5 +109,9 @@ public class InputHandler {
       }
     }
     return false;
+  }
+
+  public void resetSignatures() {
+    signatures.clear();
   }
 }
