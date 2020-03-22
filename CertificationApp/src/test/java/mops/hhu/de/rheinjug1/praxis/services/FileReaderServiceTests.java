@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
+import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class FileReaderServiceTests {
               .getBytes());
   private final Receipt receipt = new Receipt();
 
-  @Autowired private FileReaderService fileReaderService;
+  @Autowired private ReceiptReaderInterface fileReaderService;
 
   @BeforeEach
   public void setReceipt() {

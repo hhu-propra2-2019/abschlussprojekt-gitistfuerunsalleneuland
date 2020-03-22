@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String EMPTY = "Empty";
 
-  private final FileReaderService fileReaderService = new FileReaderService();
+  private final ReceiptReaderInterface fileReaderService = new FileReaderService();
 
   @Setter private String matrikelNummer;
 

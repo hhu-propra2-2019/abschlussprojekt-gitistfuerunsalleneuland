@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.*;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
+import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @SuppressWarnings({"PMD.AvoidReassigningLoopVariables", "PMD.FieldNamingConventions"})
-public class FileReaderService {
+public class FileReaderService implements ReceiptReaderInterface {
 
   private static final String format =
       "!!mops\\.hhu\\.de\\.rheinjug1\\.praxis\\.models\\.Receipt \\{email: \\w+, meetupId: \\d+, meetupTitle: \\w+,\r\n\\s+meetupType: \\w+, name: \\w+, signature: .+\\}\r\n";
@@ -20,6 +21,7 @@ public class FileReaderService {
   private static final String typePrefix = "meetupType: ";
   private static final String signaturePrefix = "signature: ";
 
+  @Override
   public Receipt read(final MultipartFile receiptFile) throws IOException {
     if (receiptFile == null) {
       throw new IOException();
@@ -67,10 +69,5 @@ public class FileReaderService {
     } else {
       throw new IOException();
     }
-  }
-
-  public boolean verify(final Receipt receipt) {
-    // Mit Signatur abgleichen
-    return true;
   }
 }
