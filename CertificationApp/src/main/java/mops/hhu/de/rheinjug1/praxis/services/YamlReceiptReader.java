@@ -17,15 +17,14 @@ public class YamlReceiptReader implements ReceiptReaderInterface {
     if (receiptFile == null) {
       return null;
     }
-    final Yaml yaml = new Yaml();
-    File tempFile = File.createTempFile("receipt", ".tmp");
-    receiptFile.transferTo(tempFile);
-    final Reader fileReader = new FileReader(tempFile.getAbsolutePath());
-    final Receipt receipt = yaml.loadAs(fileReader, Receipt.class);
-    if ("".equals(receipt.getSignature())) {
-      throw new IOException();
-    } else {
-      return receipt;
+    try (InputStream inputStream = receiptFile.getInputStream()) {
+      final Yaml yaml = new Yaml();
+      final Receipt receipt = yaml.loadAs(inputStream, Receipt.class);
+      if ("".equals(receipt.getSignature())) {
+        throw new IOException();
+      } else {
+        return receipt;
+      }
     }
   }
 }
