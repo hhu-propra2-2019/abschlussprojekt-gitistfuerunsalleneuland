@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import javax.mail.MessagingException;
-import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
@@ -20,25 +19,42 @@ import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptCreationAndStorageSe
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionAccessService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
 @Controller
-@AllArgsConstructor
 @RequestMapping("/user/submissions")
 public class SubmissionUserController {
+
+  @Value("${submission.template.path}")
+  private String submissionTemplatePath;
 
   private final SubmissionAccessService submissionAccessService;
   private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
   private final ReceiptSendService receiptSendService;
   private final SubmissionEventInfoService submissionEventInfoService;
+
+  @Autowired
+  public SubmissionUserController(
+      final SubmissionAccessService submissionAccessService,
+      final ReceiptCreationAndStorageService receiptCreationAndStorageService,
+      final ReceiptSendService receiptSendService,
+      final SubmissionEventInfoService submissionEventInfoService) {
+    this.submissionAccessService = submissionAccessService;
+    this.receiptCreationAndStorageService = receiptCreationAndStorageService;
+    this.receiptSendService = receiptSendService;
+    this.submissionEventInfoService = submissionEventInfoService;
+  }
 
   @GetMapping
   @Secured("ROLE_studentin")
@@ -51,6 +67,21 @@ public class SubmissionUserController {
         submissionEventInfoService.getAllSubmissionsWithInfosByUser(account));
 
     return "user/mySubmissions";
+  }
+
+  @GetMapping("/download/template")
+  @Secured("ROLE_studentin")
+  @ResponseBody
+  public ResponseEntity<Resource> downloadTemplate(
+      final KeycloakAuthenticationToken token, final Model model) {
+    final Account account = createAccountFromPrincipal(token);
+
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+    final Resource file = new FileSystemResource(submissionTemplatePath);
+    return ResponseEntity.ok()
+        .header(
+            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+        .body(file);
   }
 
   @PostMapping(value = "/create-receipt/{submissionId}")

@@ -4,38 +4,28 @@ import io.minio.errors.MinioException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import lombok.AllArgsConstructor;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.DuplicateSubmissionException;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.services.minio.MinIoDownloadService;
 import mops.hhu.de.rheinjug1.praxis.services.minio.MinIoUploadService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
 @Service
+@AllArgsConstructor
 public class SubmissionUploadService {
 
   private final SubmissionRepository submissionRepository;
+  private final MeetupService meetupService;
   private final MinIoUploadService minIoUploadService;
   private final MinIoDownloadService minIoDownloadService;
-  private final EventRepository eventRepository;
-
-  @Autowired
-  public SubmissionUploadService(
-      final SubmissionRepository submissionRepository,
-      final MinIoUploadService minIoUploadService,
-      final MinIoDownloadService minIoDownloadService,
-      final EventRepository eventRepository) {
-    this.submissionRepository = submissionRepository;
-    this.minIoUploadService = minIoUploadService;
-    this.minIoDownloadService = minIoDownloadService;
-    this.eventRepository = eventRepository;
-  }
 
   public void uploadToMinIoAndSaveSubmission(
       final Long meetupId, final MultipartFile file, final Account account)
@@ -62,15 +52,16 @@ public class SubmissionUploadService {
     return String.format("Zusammenfassung-%d-%s.txt", meetupId, sanitizedEmail);
   }
 
-  public void checkUploadable(final Long meetupId, final Account account)
+  public String checkUploadableAndReturnTitle(final Long meetupId, final Account account)
       throws EventNotFoundException, DuplicateSubmissionException {
-    if (!eventRepository.existsById(meetupId)) {
-      throw new EventNotFoundException(meetupId);
-    }
+
+    final Event event = meetupService.getEventIfExistent(meetupId);
 
     if (existsByMeetupIdAndEmail(meetupId, account.getEmail())) {
       throw new DuplicateSubmissionException(meetupId, account.getEmail());
     }
+
+    return event.getName();
   }
 
   private boolean existsByMeetupIdAndEmail(final Long meetupId, final String email) {
