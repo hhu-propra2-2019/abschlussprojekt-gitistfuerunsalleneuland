@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{base :: html(content=~{:: mycontent})}">
+<head>
+    <meta charset="utf-8">
+</head>
 <body>
-<div id="content" th:fragment="mycontent">
-    <div>
-        <form method="POST" enctype="multipart/form-data"
-              th:action="@{/upload/{meetup_id}(meetup_id=${meetup_id})}">
-            <table>
-                <tr>
-                    <td>Zusammenfassung:</td>
-                    <td><input type="file" name="file"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="Hochladen"/></td>
-                </tr>
-            </table>
-        </form>
-    </div>
-    <div>
-    </div>
+
+<div id="content" class="container mt-3" th:fragment="mycontent">
+    <h2>Zusammenfassung einriechen!</h2>
+    <p>Wenn du deine Zusammenfassung zur Veranstaltung (Namen einfügen) fertig hast, kannst du sie hier hochladen. Sie wird dann von einem Korrektor überprüft und du erfärst dann, ob du deine Quittung erhälst.</p>
+    <form action=enctype="multipart/form-data"
+          th:action="@{/upload/{meetup_id}(meetup_id=${meetup_id})}" method="POST">
+        <h1>Hier Datei einfügen:</h1>
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="file" name="file">
+            <label class="custom-file-label" for="file" data-browse="Durchsuchen">Datei aussuchen</label>
+        </div>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary" value="Hochladen">Zusammenfassung hochladen</button>
+        </div>
+    </form>
+    <script>
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
 </div>
+
 </body>
 </html>
+
+
+
