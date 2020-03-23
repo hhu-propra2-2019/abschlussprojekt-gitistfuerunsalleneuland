@@ -80,7 +80,7 @@ public class RheinjugController {
     return "redirect:/";
   }
 
-  @GetMapping("/admin/statistics")
+  @GetMapping("/statistics")
   @Secured("ROLE_orga")
   public String getStatistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
