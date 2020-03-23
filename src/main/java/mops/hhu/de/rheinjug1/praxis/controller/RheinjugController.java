@@ -15,7 +15,6 @@ import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfoDateComparator;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
-import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptCreationAndStorageService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -31,14 +30,17 @@ public class RheinjugController {
   private final Counter authenticatedAccess;
   private final MeetupService meetupService;
   private final Counter publicAccess;
-  @Autowired private ChartService chartService;
-  @Autowired private ReceiptCreationAndStorageService receiptCreationAndStorageService;
+  private final ChartService chartService;
 
   @Autowired
-  public RheinjugController(final MeterRegistry registry, final MeetupService meetupService) {
+  public RheinjugController(
+      final MeterRegistry registry,
+      final MeetupService meetupService,
+      final ChartService chartService) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
     this.meetupService = meetupService;
+    this.chartService = chartService;
   }
 
   @GetMapping("/")
