@@ -15,6 +15,7 @@ import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfoDateComparator;
 import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.MeetupService;
+import mops.hhu.de.rheinjug1.praxis.services.SubmissionEventInfoService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -31,12 +32,17 @@ public class RheinjugController {
   private final MeetupService meetupService;
   private final Counter publicAccess;
   @Autowired private ChartService chartService;
+  private final SubmissionEventInfoService submissionEventInfoService;
 
   @Autowired
-  public RheinjugController(final MeterRegistry registry, final MeetupService meetupService) {
+  public RheinjugController(
+      final MeterRegistry registry,
+      final MeetupService meetupService,
+      final SubmissionEventInfoService submissionEventInfoService) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
     this.meetupService = meetupService;
+    this.submissionEventInfoService = submissionEventInfoService;
   }
 
   @GetMapping("/")
@@ -59,7 +65,7 @@ public class RheinjugController {
     final Account account = createAccountFromPrincipal(token);
 
     final List<SubmissionEventInfo> submissionEventInfos =
-        meetupService.getAllEventsWithInfosByEmail(account);
+        submissionEventInfoService.getAllEventsWithInfosByEmail(account);
     submissionEventInfos.sort(new SubmissionEventInfoDateComparator());
 
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);

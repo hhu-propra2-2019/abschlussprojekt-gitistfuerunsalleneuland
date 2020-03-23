@@ -2,34 +2,23 @@ package mops.hhu.de.rheinjug1.praxis.services.submission;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionEventInfoRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
-import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SubmissionService {
+public class SubmissionAccessService {
 
   private final SubmissionRepository submissionRepository;
-  private final SubmissionEventInfoRepository submissionEventInfoRepository;
 
   @Autowired
-  public SubmissionService(
-      final SubmissionRepository submissionRepository,
-      final SubmissionEventInfoRepository submissionEventInfoRepository) {
+  public SubmissionAccessService(final SubmissionRepository submissionRepository) {
     this.submissionRepository = submissionRepository;
-    this.submissionEventInfoRepository = submissionEventInfoRepository;
-  }
-
-  public List<SubmissionEventInfo> getAllSubmissionsWithInfosByUser(final Account account) {
-    return submissionEventInfoRepository.getSubmissionInfoListByEmail(account.getEmail());
   }
 
   public List<Submission> getAllSubmissions() {
@@ -51,16 +40,11 @@ public class SubmissionService {
 
     final Submission submission = acceptedSubmissionOptional.get();
 
-    if (!nameAndEmailAreEqual(submission, account)) {
+    if (!submission.isFromUser(account)) {
       throw new UnauthorizedSubmissionAccessException(submissionId);
     }
 
     return submission;
-  }
-
-  private boolean nameAndEmailAreEqual(final Submission submission, final Account account) {
-    return Objects.equals(submission.getName(), account.getName())
-        && Objects.equals(submission.getEmail(), account.getEmail());
   }
 
   public void accept(final Long submissionId) throws SubmissionNotFoundException {

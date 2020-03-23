@@ -12,8 +12,6 @@ import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionEventInfoRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
-import mops.hhu.de.rheinjug1.praxis.models.Account;
-import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -42,10 +40,6 @@ public class MeetupService {
     final List<Event> allEvents = eventRepository.findAll();
     updateExistingEvents(meetupEvents, allEvents);
     insertNonExistingEvents(meetupEvents, allEvents);
-  }
-
-  public List<SubmissionEventInfo> getAllEventsWithInfosByEmail(final Account account) {
-    return submissionEventInfoRepository.getAllEventsWithUserInfosByEmail(account.getEmail());
   }
 
   private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {

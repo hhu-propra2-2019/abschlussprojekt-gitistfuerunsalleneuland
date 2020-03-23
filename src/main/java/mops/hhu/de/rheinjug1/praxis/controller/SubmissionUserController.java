@@ -11,11 +11,14 @@ import javax.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
+import mops.hhu.de.rheinjug1.praxis.services.SubmissionEventInfoService;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptCreationAndStorageService;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptSendService;
-import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionService;
+import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionAccessService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -32,9 +35,10 @@ import org.springframework.web.client.HttpServerErrorException;
 @RequestMapping("/user/submissions")
 public class SubmissionUserController {
 
-  private final SubmissionService submissionService;
+  private final SubmissionAccessService submissionAccessService;
   private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
   private final ReceiptSendService receiptSendService;
+  private final SubmissionEventInfoService submissionEventInfoService;
 
   @GetMapping
   @Secured("ROLE_studentin")
@@ -44,7 +48,7 @@ public class SubmissionUserController {
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
         ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE,
-        submissionService.getAllSubmissionsWithInfosByUser(account));
+        submissionEventInfoService.getAllSubmissionsWithInfosByUser(account));
 
     return "user/mySubmissions";
   }
@@ -55,12 +59,12 @@ public class SubmissionUserController {
       final KeycloakAuthenticationToken token,
       final Model model,
       @PathVariable("submissionId") final Long submissionId)
-      throws Throwable {
+      throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
     final Submission submission =
-        submissionService.getAcceptedSubmissionIfAuthorized(submissionId, account);
+        submissionAccessService.getAcceptedSubmissionIfAuthorized(submissionId, account);
 
     try {
       final Receipt receipt =
