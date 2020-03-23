@@ -2,11 +2,11 @@
 
 = Zusammenfassung
 
-Veranstaltungstitel: hier bitte Veranstaltungstitel einfügen
+*Veranstaltungstitel:* hier bitte Veranstaltungstitel einfügen
 
-Vortragende/r: hier bitte Namen der/des Votragenden einfügen
+*Vortragende/r:* hier bitte Namen der/des Votragenden einfügen
 
-Autor: hier bitte eigenen Namen einfügen
+*Autor:* hier bitte eigenen Namen einfügen
 
 == hier bitte Überschrift einfügen
 
