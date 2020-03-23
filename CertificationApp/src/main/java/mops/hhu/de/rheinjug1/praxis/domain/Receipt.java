@@ -9,15 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Receipt {
 
-	private String email;
+  private String email;
   private String name;
-  private long keycloakId;
   private long meetupId;
   private String meetupTitle;
   private String meetupType;
   private String signature;
 
   public Receipt cloneThisReceipt() {
-    return new Receipt(email, name, keycloakId, meetupId, meetupType, meetupTitle, signature);
+    return new Receipt(email, name, meetupId, meetupType, meetupTitle, signature);
   }
 }
