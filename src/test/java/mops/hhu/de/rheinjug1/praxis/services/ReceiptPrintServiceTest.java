@@ -1,6 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,7 +30,6 @@ class ReceiptPrintServiceTest {
     final String path = receiptPrintService.printReceiptAndReturnPath(receipt);
 
     final String expectedMailText = FileUtils.readStringFromFile("mail/testEmailAttachment.txt");
-
     final String actualMailText = new String(Base64.decode(Files.readString(Paths.get(path))));
 
     assertThat(actualMailText).isEqualTo(expectedMailText);
