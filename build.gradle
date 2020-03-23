@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.4.RELEASE'
+        springBootVersion = '2.2.5.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -61,6 +61,7 @@ configurations {
 
 dependencies {
 
+    implementation 'com.google.code.gson:gson:2.8.6'                         //gson to convert java.util.List to JSON String
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -84,11 +85,14 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testCompile 'com.tngtech.archunit:archunit:0.13.0'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'mysql:mysql-connector-java'
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
     implementation "mops:styleguide:2.1.0"
     compile "io.vavr:vavr:0.9.3"
     implementation 'io.minio:minio:6.0.13'
+    
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.8'
 }

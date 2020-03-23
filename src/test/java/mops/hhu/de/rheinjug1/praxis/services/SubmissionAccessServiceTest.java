@@ -93,6 +93,7 @@ public class SubmissionAccessServiceTest {
             .accepted(false)
             .build();
     when(submissionRepository.findById(0L)).thenReturn(Optional.ofNullable(testSubmission));
+
     final Submission actualSubmission =
         submissionAccessService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
     assertEquals(testSubmission, actualSubmission);

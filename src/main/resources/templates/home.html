@@ -4,10 +4,10 @@
 <body>
 
 <div id="content" th:fragment="mycontent">
+
     <div class="container">
         <h3>Willkommen bei Java in der Praxis!</h3>
-        <p class="mt-5">Über diese Seite besteht die Möglichkeit sich für verschiedene Projekte von Rheinjug und
-            Entwickelbar
+        <p class="mt-5">Über diese Seite besteht die Möglichkeit sich für verschiedene Projekte von Rheinjug und Entwickelbar
             anzumelden und sich so im Bereich der Informatik weiterzubilden. .... </p>
     </div>
     <div class="container">
@@ -29,21 +29,39 @@
         </div>
     </div>
 
-    <div class="container mt-5">
-        <h4>Kommende Veranstaltungen</h4>
-        <table>
-            <thead>
-            <th>Name</th>
-            <th>Datum</th>
-            <th>Uhrzeit</th>
-            <th>Dauer</th>
-            </thead>
-            <tbody>
-            <tr th:each="event : ${events}">
-                <td><a th:href="@{${event.link}}"><span th:text="${event.name}">default</span></a></td>
-                <td th:text="${@timeFormatService.getGermanDateString(event)}">01.01.2000</td>
-                <td th:text="${@timeFormatService.getGermanTimeString(event)}">12:00</td>
-                <td th:text="${event.duration}">0:00</td>
+    <div class="container my-3">
+        <div class="row my-4">
+            <div class="col">
+                <h4>Kommende Veranstaltungen</h4>
+            </div>
+            <div class="col">
+                <div class="float-right">
+                    <a href="/update">  <!-- Hardcoding -->
+                        <button type="button" class="btn btn-default" title="Veranstaltungen updaten">
+                            <i class="fas fa-redo-alt"></i>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table class="w3-table">
+            <tbody th:each="event : ${events}">
+            <tr>
+                <div class="card">
+                    <span class="card-header">
+                        <a th:text="${event.name}" class="collapsed d-block" data-toggle="collapse" th:attr="data-target='#demo' + ${event.id}" aria-expanded="true" aria-controls="collapse-collapsed" id="heading-collapsed">
+                            <i th:class="fa fa-chevron-down pull-right"></i>
+                            Collapsible Group Item #1
+                        </a>
+                    </span>
+                    <div th:id="'demo' + ${event.id}" class="collapse" aria-labelledby="heading-collapsed">
+                        <div class="card-body"><h5>Datum</h5><div th:text="${@timeFormatService.getGermanDateString(event)}">1</div></div>
+                        <div class="card-body"><h5>Uhrzeit</h5><div th:text="${@timeFormatService.getGermanTimeString(event)}">1</div></div>
+                        <div class="card-body"><h5>Wie lang?:</h5><div th:text="${event.duration} + 'h'">2</div></div>
+                        <div class="card-body"><h5>Bei meetup anmelden:</h5><a th:href="@{${event.link}}"><div th:text="${event.link}">Link</div></a></div>
+                        <div class="card-body" th:utext="${event.description}">3</div>
+                    </div>
+                </div>
             </tr>
             </tbody>
         </table>

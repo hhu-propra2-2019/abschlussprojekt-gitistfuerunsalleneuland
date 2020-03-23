@@ -13,6 +13,9 @@ public interface SubmissionRepository extends CrudRepository<Submission, Long> {
   @Query("SELECT * FROM rheinjug1.submission subm WHERE subm.email = :email")
   List<Submission> findAllByEmail(@Param("email") final String email);
 
+  @Query("SELECT COUNT(*) FROM rheinjug1.submission WHERE submission.meetup_id = :id")
+  int countSubmissionByMeetupId(@Param("id") Long id);
+
   @Query(
       "SELECT * FROM rheinjug1.submission subm WHERE subm.email = :email AND subm.meetup_id = :meetupId")
   List<Submission> findAllByMeetupIdAndEmail(final Long meetupId, final String email);
