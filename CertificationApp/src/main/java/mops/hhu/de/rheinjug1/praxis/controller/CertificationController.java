@@ -44,18 +44,18 @@ public class CertificationController {
   }
 
   @GetMapping("/")
-  public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
+  public String home(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute("account", createAccountFromPrincipal(token));
     }
     model.addAttribute("input", new InputHandler());
     // model.addAttribute("receiptList", new VerifiedReceiptList());
     publicAccess.increment();
-    return "uebersicht";
+    return "home";
   }
 
   @PostMapping("/")
-  @Secured({"ROLE_student", "ROLE_orga"})
+  @Secured({"ROLE_studentin", "ROLE_orga"})
   public String submitReceipt(
       final KeycloakAuthenticationToken token, final Model model, final InputHandler input) {
     if (token != null) {
@@ -71,7 +71,7 @@ public class CertificationController {
       certificationService.createCertification(input);
       // und sowas wie mailservice.send
     }
-    return "uebersicht";
+    return "home";
   }
 
   @GetMapping("/logout")
