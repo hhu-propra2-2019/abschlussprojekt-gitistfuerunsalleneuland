@@ -7,10 +7,5 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @Table("receipt")
 public class ReceiptEntity {
-  @Id private Long id;
-  private int used;
-
-  public boolean isUsed() {
-    return used == 1;
-  }
+  @Id private Long signature;
 }
