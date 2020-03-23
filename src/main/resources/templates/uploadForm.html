@@ -9,7 +9,7 @@
 <div id="content" class="container mt-3" th:fragment="mycontent">
     <h2>Zusammenfassung einriechen!</h2>
     <p>Wenn du deine Zusammenfassung zur Veranstaltung (Namen einfügen) fertig hast, kannst du sie hier hochladen. Sie wird dann von einem Korrektor überprüft und du erfärst dann, ob du deine Quittung erhälst.</p>
-    <form action=enctype="multipart/form-data"
+    <form enctype="multipart/form-data"
           th:action="@{/upload/{meetup_id}(meetup_id=${meetup_id})}" method="POST">
         <h1>Hier Datei einfügen:</h1>
         <div class="custom-file mb-3">
