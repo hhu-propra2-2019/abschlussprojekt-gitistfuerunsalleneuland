@@ -1,8 +1,10 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import mops.hhu.de.rheinjug1.praxis.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +19,7 @@ public class FileReaderServiceTests {
   private final MultipartFile validFile =
       new MockMultipartFile(
           "validFile",
-          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId: 1, meetupTitle: Titel,\r\n"
-                  + "  meetupType: ENTWICKELBAR, name: TestName, signature: OEUIc5654eut}\r\n"
-                  + "")
+          ("meetupId: 12345\n" + "meetupType: ENTWICKELBAR\n" + "signature: OEUIc5654eut\n")
               .getBytes());
   private final MultipartFile invalidFile =
       new MockMultipartFile(
@@ -30,20 +30,19 @@ public class FileReaderServiceTests {
               .getBytes());
   private final Receipt receipt = new Receipt();
 
-  @Autowired private FileReaderService fileReaderService;
+  @Autowired private YamlReceiptReader fileReaderService;
 
   @BeforeEach
   public void setReceipt() {
-    receipt.setMeetupId(1);
-    receipt.setMeetupType("ENTWICKELBAR");
+    receipt.setMeetupId(12345);
+    receipt.setMeetupType(MeetupType.ENTWICKELBAR);
     receipt.setSignature("OEUIc5654eut");
   }
 
   @Test
   public void validFileGenereatesCorrectReceipt() {
     try {
-      assertEquals(
-          "read file didn't equal expected receipt", receipt, fileReaderService.read(validFile));
+      assertThat(fileReaderService.read(validFile)).isEqualTo(receipt);
     } catch (IOException e) {
       fail();
     }

@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.*;
+import mops.hhu.de.rheinjug1.praxis.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileReaderService implements ReceiptReaderInterface {
 
   private static final String format =
-      "!!mops\\.hhu\\.de\\.rheinjug1\\.praxis\\.models\\.Receipt \\{email: \\w+, meetupId: \\d+, meetupTitle: \\w+,\r\n\\s+meetupType: \\w+, name: \\w+, signature: .+\\}\r\n";
+      "email: w+\n"
+          + "meetupId: \\d+\n"
+          + "meetupTitle: \\w+\n"
+          + "meetupType: \\w+\n"
+          + "name: \\w+\n"
+          + "signature: .+\n";
+  //   "!!mops\\.hhu\\.de\\.rheinjug1\\.praxis\\.models\\.Receipt \\{email: \\w+, meetupId: \\d+,
+  // meetupTitle: \\w+,\r\n\\s+meetupType: \\w+, name: \\w+, signature: .+\\}\r\n";
   private static final String meetUpPrefix = "meetupId: ";
   private static final String typePrefix = "meetupType: ";
   private static final String signaturePrefix = "signature: ";
@@ -48,7 +56,7 @@ public class FileReaderService implements ReceiptReaderInterface {
         receipt.setMeetupId(Long.parseLong(line));
       } else if (line.contains(typePrefix)) {
         line = line.substring(line.indexOf(typePrefix) + typePrefix.length());
-        receipt.setMeetupType(line);
+        receipt.setMeetupType(MeetupType.valueOf(line));
       } else if (line.contains(signaturePrefix)) {
         line = line.substring(line.indexOf(signaturePrefix) + signaturePrefix.length());
         receipt.setSignature(line);

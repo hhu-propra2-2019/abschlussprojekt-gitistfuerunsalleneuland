@@ -8,7 +8,6 @@ import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
 import mops.hhu.de.rheinjug1.praxis.services.CertificationService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +54,7 @@ public class CertificationController {
   }
 
   @PostMapping("/")
-  @Secured({"ROLE_student", "ROLE_orga"})
+  // @Secured({"ROLE_student", "ROLE_orga"})
   public String submitReceipt(
       final KeycloakAuthenticationToken token, final Model model, final InputHandler input) {
     if (token != null) {

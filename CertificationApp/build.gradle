@@ -81,7 +81,7 @@ dependencies {
     implementation 'org.keycloak.bom:keycloak-adapter-bom:3.3.0.Final'
     testCompile 'junit:junit:4.12'
     compile 'junit:junit:4.12'    
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.8'
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.13'
 }
 
 test {

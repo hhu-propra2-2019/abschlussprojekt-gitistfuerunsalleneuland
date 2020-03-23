@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
-import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
+import mops.hhu.de.rheinjug1.praxis.services.YamlReceiptReader;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,8 +25,8 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String EMPTY = "Empty";
 
-  private final ReceiptReaderInterface fileReaderService =
-      new FileReaderService(); // YamlReceiptReader();
+  private final ReceiptReaderInterface fileReaderService = new YamlReceiptReader();
+  // new FileReaderService()
 
   @Setter private String matrikelNummer;
 
