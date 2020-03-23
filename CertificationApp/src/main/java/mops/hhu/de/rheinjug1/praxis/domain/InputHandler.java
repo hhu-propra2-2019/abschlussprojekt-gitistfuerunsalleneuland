@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
-import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
+import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping
 @SuppressWarnings("PMD.ConfusingTernary")
 @Component
+@RequiredArgsConstructor
 public class InputHandler {
 
   private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
@@ -25,8 +27,9 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String EMPTY = "Empty";
 
-  private final ReceiptReaderInterface fileReaderService = new FileReaderService();
-
+  private final ReceiptReaderInterface fileReaderService;
+  private final ReceiptVerificationInterface verificationService;
+  
   @Setter private String matrikelNummer;
 
   private List<String> signatures = new ArrayList(3);
@@ -86,7 +89,7 @@ public class InputHandler {
   private String getUploadMessage(final MultipartFile firstRheinjugFile, final String type) {
     try {
       newReceipt = fileReaderService.read(firstRheinjugFile);
-      if (!newReceipt.getType().equals(type)) {
+      if (!newReceipt.getMeetupType().equals(type)) {
         return FALSCHE_VERANSTALTUNG;
       } else if (isDuplicateSignature(newReceipt.getSignature())) {
         return DOPPELT;
@@ -114,4 +117,14 @@ public class InputHandler {
   public void resetSignatures() {
     signatures.clear();
   }
+
+public boolean verifyRheinjug() {
+	return (verificationService.verify(firstRheinjugReceipt) &&
+			verificationService.verify(seccondRheinjugReceipt) &&
+			verificationService.verify(thirdRheinjugReceipt));
+}
+
+public boolean verifyEntwickelbar() {
+	return verificationService.verify(entwickelbarReceipt);
+}
 }

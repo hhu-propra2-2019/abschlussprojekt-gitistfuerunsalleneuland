@@ -48,7 +48,7 @@ public class FileReaderService implements ReceiptReaderInterface {
         receipt.setMeetupId(Long.parseLong(line));
       } else if (line.contains(typePrefix)) {
         line = line.substring(line.indexOf(typePrefix) + typePrefix.length());
-        receipt.setType(line);
+        receipt.setMeetupType(line);
       } else if (line.contains(signaturePrefix)) {
         line = line.substring(line.indexOf(signaturePrefix) + signaturePrefix.length());
         receipt.setSignature(line);

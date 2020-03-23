@@ -36,7 +36,7 @@ public class FileReaderServiceTests {
   @BeforeEach
   public void setReceipt() {
     receipt.setMeetupId(1);
-    receipt.setType("ENTWICKELBAR");
+    receipt.setMeetupType("ENTWICKELBAR");
     receipt.setSignature("OEUIc5654eut");
   }
 
