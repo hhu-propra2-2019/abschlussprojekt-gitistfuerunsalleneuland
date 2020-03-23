@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @RequestMapping
-@SuppressWarnings("PMD.ConfusingTernary")
+@SuppressWarnings({"PMD.UnusedImports", "PMD.ConfusingTernary"})
 @Component
 public class InputHandler {
 
@@ -24,7 +25,8 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String EMPTY = "Empty";
 
-  private final FileReaderService fileReaderService = new FileReaderService();
+  private final ReceiptReaderInterface fileReaderService =
+      new FileReaderService(); // YamlReceiptReader();
 
   @Setter private String matrikelNummer;
 
@@ -85,7 +87,7 @@ public class InputHandler {
   private String getUploadMessage(final MultipartFile firstRheinjugFile, final String type) {
     try {
       newReceipt = fileReaderService.read(firstRheinjugFile);
-      if (!newReceipt.getType().equals(type)) {
+      if (!newReceipt.getMeetupType().equals(type)) {
         return FALSCHE_VERANSTALTUNG;
       } else if (isDuplicateSignature(newReceipt.getSignature())) {
         return DOPPELT;

@@ -10,12 +10,14 @@ import lombok.NoArgsConstructor;
 public class Receipt {
 
   private String name;
+  private String email;
   private long keycloakId;
   private long meetupId;
-  private String type; // sollte ein enum sein
+  private String meetupTitle;
+  private String meetupType; // sollte ein enum sein
   private String signature;
 
   public Receipt cloneThisReceipt() {
-    return new Receipt(name, keycloakId, meetupId, type, signature);
+    return new Receipt(name, email, keycloakId, meetupId, meetupTitle, meetupType, signature);
   }
 }
