@@ -4,9 +4,13 @@ import static mops.hhu.de.rheinjug1.praxis.models.Account.createAccountFromPrinc
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_ATTRIBUTE;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfo;
+import mops.hhu.de.rheinjug1.praxis.models.SubmissionEventInfoDateComparator;
+import mops.hhu.de.rheinjug1.praxis.services.SubmissionEventInfoService;
 import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionAccessService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -23,13 +27,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SubmissionAdminController {
 
   private final SubmissionAccessService submissionAccessService;
+  private final SubmissionEventInfoService submissionEventInfoService;
 
   @GetMapping
   @Secured("ROLE_orga")
   public String getAllSubmissions(final KeycloakAuthenticationToken token, final Model model) {
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-    model.addAttribute(ALL_SUBMISSIONS_ATTRIBUTE, submissionAccessService.getAllSubmissions());
+    final List<SubmissionEventInfo> submissionEventInfos =
+        submissionEventInfoService.getAllSubmissionsWithInfos();
+    submissionEventInfos.sort(new SubmissionEventInfoDateComparator());
+    model.addAttribute(ALL_SUBMISSIONS_ATTRIBUTE, submissionEventInfos);
     return "/admin/allSubmissions";
   }
 

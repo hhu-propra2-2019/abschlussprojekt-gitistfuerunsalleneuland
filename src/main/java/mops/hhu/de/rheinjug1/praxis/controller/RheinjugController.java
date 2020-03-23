@@ -65,7 +65,7 @@ public class RheinjugController {
     final Account account = createAccountFromPrincipal(token);
 
     final List<SubmissionEventInfo> submissionEventInfos =
-        submissionEventInfoService.getAllEventsWithInfosByEmail(account);
+        submissionEventInfoService.getAllEventsWithInfosByUser(account);
     submissionEventInfos.sort(new SubmissionEventInfoDateComparator());
 
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);

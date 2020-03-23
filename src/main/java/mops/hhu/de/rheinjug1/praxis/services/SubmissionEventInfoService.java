@@ -22,7 +22,11 @@ public class SubmissionEventInfoService {
     return submissionEventInfoRepository.getSubmissionInfoListByEmail(account.getEmail());
   }
 
-  public List<SubmissionEventInfo> getAllEventsWithInfosByEmail(final Account account) {
+  public List<SubmissionEventInfo> getAllEventsWithInfosByUser(final Account account) {
     return submissionEventInfoRepository.getAllEventsWithUserInfosByEmail(account.getEmail());
+  }
+
+  public List<SubmissionEventInfo> getAllSubmissionsWithInfos() {
+    return submissionEventInfoRepository.getAllSubmissionsWithInfos();
   }
 }

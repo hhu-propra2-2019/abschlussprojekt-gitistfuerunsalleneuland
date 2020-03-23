@@ -22,7 +22,7 @@
             <tbody>
             <tr th:each="submissionInfo : ${all_submissions_from_user}">
                 <td><a th:href="@{${submissionInfo.eventLink}}"><span
-                        th:text="${submissionInfo.eventName}"></span></a>
+                        th:text="${submissionInfo.eventTitle}"></span></a>
                 </td>
                 <td><span th:text="${submissionInfo.meetupType.getLabel()}"></span></td>
                 <td><a th:href="@{${submissionInfo.minIoLink}}"><span>Download</span></a>
