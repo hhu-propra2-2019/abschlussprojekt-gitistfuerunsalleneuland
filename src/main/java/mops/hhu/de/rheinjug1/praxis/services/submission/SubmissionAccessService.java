@@ -1,7 +1,5 @@
 package mops.hhu.de.rheinjug1.praxis.services.submission;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
@@ -19,12 +17,6 @@ public class SubmissionAccessService {
   @Autowired
   public SubmissionAccessService(final SubmissionRepository submissionRepository) {
     this.submissionRepository = submissionRepository;
-  }
-
-  public List<Submission> getAllSubmissions() {
-    final ArrayList<Submission> arrayList = new ArrayList<>();
-    submissionRepository.findAll().forEach(arrayList::add);
-    return arrayList;
   }
 
   public Submission getAcceptedSubmissionIfAuthorized(

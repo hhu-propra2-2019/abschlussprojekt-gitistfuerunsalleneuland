@@ -12,12 +12,13 @@ public class SubmissionEventInfoRowMapper implements RowMapper<SubmissionEventIn
     return SubmissionEventInfo.builder()
         .id(rs.getLong("id"))
         .meetupId(rs.getLong("meetup_id"))
-        .eventName(rs.getString("name"))
+        .eventTitle(rs.getString("meetup_title"))
         .minIoLink(rs.getString("min_io_link"))
         .eventLink(rs.getString("link"))
         .eventDateTime(rs.getString("zoned_date_time"))
         .meetupType(MeetupType.valueOf(rs.getString("meetup_type")))
         .accepted(rs.getBoolean("accepted"))
+        .name(rs.getString("name"))
         .build();
   }
 }
