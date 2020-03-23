@@ -41,7 +41,7 @@ public class SubmissionUploadController {
 
     submissionUploadService.checkUploadable(meetupId, account);
 
-    model.addAttribute("event",event);
+    model.addAttribute("event", event);
     model.addAttribute(MEETUP_ID_ATTRIBUTE, meetupId);
     return "uploadForm";
   }
