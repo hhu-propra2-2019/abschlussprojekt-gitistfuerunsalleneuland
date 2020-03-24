@@ -2,6 +2,7 @@ package mops.hhu.de.rheinjug1.praxis.adapters.mail;
 
 import javax.mail.MessagingException;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.MailService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
