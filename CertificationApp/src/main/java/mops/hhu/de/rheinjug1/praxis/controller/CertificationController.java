@@ -25,14 +25,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
 
 @Controller
 @RequestMapping("/rheinjug1")
 @SuppressWarnings({
-  "PMD.UnusedPrivateField",
-  "PMD.SingularField",
-  "PMD.UnusedImports",
-  "PMD.AvoidDuplicateLiterals"
+        "PMD.UnusedPrivateField",
+        "PMD.SingularField",
+        "PMD.UnusedImports",
+        "PMD.AvoidDuplicateLiterals"
 })
 public class CertificationController {
 
@@ -41,31 +45,24 @@ public class CertificationController {
   private final CertificationService certificationService = new CertificationService();
   private final ReceiptReaderInterface fileReaderService = new FileReaderService();
   private final ReceiptVerificationInterface verificationService = new VerificationService();
-
+    
   public CertificationController(final MeterRegistry registry) {
-    authenticatedAccess = registry.counter("access.authenticated");
-    publicAccess = registry.counter("access.public");
-  }
-
-  private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
-    final KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-    return new Account(
-        principal.getName(),
-        principal.getKeycloakSecurityContext().getIdToken().getEmail(),
-        null,
-        token.getAccount().getRoles());
-  }
+        authenticatedAccess = registry.counter("access.authenticated");
+        publicAccess = registry.counter("access.public");
+    }
 
   @GetMapping("/")
-  public String uebersicht(final KeycloakAuthenticationToken token, final Model model) {
-    if (token != null) {
-      model.addAttribute("account", createAccountFromPrincipal(token));
-    }
-    model.addAttribute("input", new InputHandler(fileReaderService, verificationService));
-    publicAccess.increment();
-    return "uebersicht";
+  @Secured({"ROLE_studentin", "ROLE_orga"})
+  public String home(final KeycloakAuthenticationToken token, final Model model) {
+      if (token != null) {
+          final Account account = Account.createAccountFromPrincipal(token);
+          model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+      }
+      model.addAttribute(INPUT_ATTRIBUTE, new InputHandler(fileReaderService, verificationService));
+      publicAccess.increment();
+      return "home";
   }
-
+  
   @PostMapping("/")
   @Secured({"ROLE_student", "ROLE_orga"})
   public String submitReceipt(
@@ -73,7 +70,7 @@ public class CertificationController {
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
     if (token != null) {
-      model.addAttribute("account", createAccountFromPrincipal(token));
+      model.addAttribute("account", Account.createAccountFromPrincipal(token));
     }
 
     model.addAttribute("input", input);
@@ -87,13 +84,13 @@ public class CertificationController {
       if (input.verifyEntwickelbar()) {
         certificationService.createCertification(input);
       }
+        }
+    return "home";
     }
-    return "uebersicht";
-  }
 
-  @GetMapping("/logout")
-  public String logout(final HttpServletRequest request) throws ServletException {
-    request.logout();
-    return "redirect:/";
-  }
+    @GetMapping("/logout")
+    public String logout(final HttpServletRequest request) throws ServletException {
+        request.logout();
+        return "redirect:/";
+    }
 }

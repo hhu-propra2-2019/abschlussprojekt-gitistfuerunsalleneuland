@@ -65,15 +65,24 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-    testImplementation 'org.springframework.security:spring-security-test'
-    testCompile 'com.tngtech.archunit:archunit:0.13.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    testImplementation 'org.springframework.security:spring-security-test'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.2.5.RELEASE'
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.4.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.2.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter'
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
+    testCompile('org.junit.jupiter:junit-jupiter-params:5.2.0')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+    testCompile "org.mockito:mockito-core:2.+"
+    testCompile('org.mockito:mockito-junit-jupiter:2.18.3')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    implementation 'org.keycloak:keycloak-spring-boot-starter:9.0.0'
+    implementation 'org.keycloak.bom:keycloak-adapter-bom:3.3.0.Final'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompile 'com.tngtech.archunit:archunit:0.13.0'
     runtimeOnly 'mysql:mysql-connector-java'
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
     implementation "mops:styleguide:2.1.0"
@@ -81,6 +90,8 @@ dependencies {
     implementation 'org.keycloak.bom:keycloak-adapter-bom:3.3.0.Final'
     testCompile 'junit:junit:4.12'
     compile 'junit:junit:4.12'
+    compile "io.vavr:vavr:0.9.3"
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.8'
 }
 

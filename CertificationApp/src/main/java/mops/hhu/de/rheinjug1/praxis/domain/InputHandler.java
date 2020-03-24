@@ -30,7 +30,7 @@ public class InputHandler {
   private static final String FEHLERHAFTE_QUITTUNG = "Fehlerhafte Quittung";
   private static final String DOPPELT = "Doppelt";
   private static final String VALIDE = "Valide";
-  private static final String EMPTY = "Empty";
+  private static final String KEINE_DATEI = "Keine Datei";
 
   private final ReceiptReaderInterface fileReaderService;
   private final ReceiptVerificationInterface verificationService;
@@ -105,7 +105,7 @@ public class InputHandler {
       }
     } catch (IOException e) {
       if (firstRheinjugFile.isEmpty()) {
-        return EMPTY;
+        return KEINE_DATEI;
       }
       return FEHLERHAFTE_QUITTUNG;
     }
