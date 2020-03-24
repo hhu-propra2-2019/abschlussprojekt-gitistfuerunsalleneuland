@@ -3,6 +3,13 @@
       th:replace="~{base :: html(content=~{:: mycontent})}">
 <body>
 <div id="content" th:fragment="mycontent">
+    <div>
+        <p>
+            Hier kannst du deine Zusammenfassung für <span class="font-weight-bold" th:text="${meetup_title}"></span>
+            hochladen. <br>
+            Bitte verwende dafür folgende Vorlage: <a href="/user/submissions/download/template"><span>Download</span></a>
+        </p>
+    </div>
     <div class="container-fluid" th:if="${upload_error != ''}">
             <span class="alert-danger" th:text="${upload_error}">
             </span>
@@ -12,7 +19,7 @@
               th:action="@{/upload/{meetup_id}(meetup_id=${meetup_id})}">
             <table>
                 <tr>
-                    <td><input class="icono-file" type="file" name="file" />Datei auswählen</td>
+                    <td><input class="form-control-file" type="file" name="file"/>Datei auswählen</td>
                 </tr>
                 <tr>
                     <td>
