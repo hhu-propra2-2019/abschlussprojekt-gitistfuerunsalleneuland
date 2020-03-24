@@ -22,11 +22,11 @@ public class ChartServiceTest {
   void init() {
     final String time = "12.03.2020";
     sampleData.add(
-        ChartData.builder().datetime(time).submissions(1).accepted(1).receipts(1).build());
+        ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
     sampleData.add(
-        ChartData.builder().datetime(time).submissions(1).accepted(1).receipts(1).build());
+        ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
     sampleData.add(
-        ChartData.builder().datetime(time).submissions(1).accepted(1).receipts(1).build());
+        ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
     this.chartDataRepositorymock = mock(ChartDataRepository.class);
     final SignatureRepository signatureRepository = mock(SignatureRepository.class);
     this.chartService = new ChartService(signatureRepository, chartDataRepositorymock);
@@ -35,7 +35,7 @@ public class ChartServiceTest {
   @Test
   void testNumberOfDataPoints() {
     // Arrange
-    when(chartDataRepositorymock.getAllLimited()).thenReturn(sampleData);
+    when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
     // Act
     final int numberOfTalks = chartService.getXEventsChart(2).getTalksLength();
     // Assert

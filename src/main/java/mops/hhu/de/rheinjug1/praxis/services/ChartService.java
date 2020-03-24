@@ -22,9 +22,9 @@ public class ChartService {
   }
 
   public Chart getXEventsChart(final int limit) {
-    final List<ChartData> chartData = chartDataRepository.getAllLimited();
+    final List<ChartData> chartData = chartDataRepository.getAll();
     final int n = chartData.size();
-    Collections.sort(chartData);
-    return new Chart(chartData.subList(n - limit, n));
+    Collections.sort(chartData);      //Sort ChartData after date asc
+    return new Chart(chartData.subList(n - limit, n));    //get the last "limit" dates
   }
 }

@@ -12,7 +12,7 @@ public class ChartDataRowMapper implements RowMapper<ChartData> {
   @Override
   public ChartData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
     return ChartData.builder()
-        .datetime(timeFormatService.extractDate(rs.getString("zoned_date_time")))
+        .date(timeFormatService.extractDate(rs.getString("zoned_date_time")))
         .submissions(rs.getInt("submissions"))
         .accepted(rs.getInt("accepted"))
         .receipts(rs.getInt("receipts"))

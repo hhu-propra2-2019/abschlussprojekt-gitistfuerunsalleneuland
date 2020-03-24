@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Chart {
+public class Chart {    //contains the ChartData and represents them as JSON String
 
   private final List<ChartData> chartData = new ArrayList<>();
   private final Gson gson = new Gson();
@@ -15,7 +15,7 @@ public class Chart {
 
   public String getDates() {
     final List<String> dates =
-        chartData.stream().map(i -> i.getDatetime()).collect(Collectors.toList());
+        chartData.stream().map(i -> i.getDate()).collect(Collectors.toList());
     return gson.toJson(dates);
   }
 

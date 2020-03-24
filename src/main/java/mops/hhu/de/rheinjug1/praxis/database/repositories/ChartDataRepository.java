@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ChartDataRepository {
+public class ChartDataRepository {    //interface to the view rheinjug1.data_chart needed for statisticts view
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -18,7 +18,7 @@ public class ChartDataRepository {
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  public List<ChartData> getAllLimited() {
+  public List<ChartData> getAll() {
     final MapSqlParameterSource paramSource = new MapSqlParameterSource();
     final String query = "SELECT * FROM rheinjug1.chart_data";
     final ChartDataRowMapper chartDataRowMapper = new ChartDataRowMapper();

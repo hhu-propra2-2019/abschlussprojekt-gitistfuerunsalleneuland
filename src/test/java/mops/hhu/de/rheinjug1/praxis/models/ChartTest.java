@@ -91,6 +91,6 @@ public class ChartTest {
   }
 
   private ChartData chartDataBuild(final String date, final Integer participants) {
-    return ChartData.builder().datetime(date).submissions(participants).build();
+    return ChartData.builder().date(date).submissions(participants).build();
   }
 }
