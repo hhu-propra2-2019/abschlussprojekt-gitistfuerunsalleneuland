@@ -7,9 +7,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.event.Event;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.receipt.SignatureRepository;
-import mops.hhu.de.rheinjug1.praxis.hex.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

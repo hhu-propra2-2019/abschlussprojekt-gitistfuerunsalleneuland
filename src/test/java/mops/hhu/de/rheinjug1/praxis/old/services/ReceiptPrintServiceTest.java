@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import mops.hhu.de.rheinjug1.praxis.hex.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.receipt.Receipt;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.receipt.ReceiptPrintService;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptPrintService;
 import org.junit.jupiter.api.Test;
 
 class ReceiptPrintServiceTest {

@@ -7,12 +7,12 @@ import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
 import java.util.Optional;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.submission.Submission;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.submission.SubmissionRepository;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.submission.exception.SubmissionNotFoundException;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.submission.exception.UnauthorizedSubmissionAccessException;
-import mops.hhu.de.rheinjug1.praxis.hex.domain.Account;
-import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionService;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.SubmissionNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.UnauthorizedSubmissionAccessException;
+import mops.hhu.de.rheinjug1.praxis.domain.Account;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
