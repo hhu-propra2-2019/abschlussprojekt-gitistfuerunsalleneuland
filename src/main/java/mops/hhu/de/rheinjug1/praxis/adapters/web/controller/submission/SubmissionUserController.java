@@ -6,7 +6,6 @@ import java.security.cert.CertificateException;
 import java.util.Optional;
 import javax.mail.MessagingException;
 import lombok.AllArgsConstructor;
-import mops.hhu.de.rheinjug1.praxis.adapters.auth.AccountImpl;
 import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;

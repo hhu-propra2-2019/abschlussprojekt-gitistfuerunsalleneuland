@@ -5,12 +5,8 @@ import static org.mockito.Mockito.*;
 import java.io.IOException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
 import mops.hhu.de.rheinjug1.praxis.adapters.mail.MailServiceImpl;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptPrintService;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptSendService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

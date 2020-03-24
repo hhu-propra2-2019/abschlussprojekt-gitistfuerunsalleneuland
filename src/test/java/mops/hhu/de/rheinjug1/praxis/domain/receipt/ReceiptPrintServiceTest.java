@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptPrintService;
 import org.junit.jupiter.api.Test;
 
 class ReceiptPrintServiceTest {

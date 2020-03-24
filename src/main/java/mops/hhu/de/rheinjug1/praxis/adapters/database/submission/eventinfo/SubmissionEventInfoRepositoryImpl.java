@@ -1,7 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.database.submission.eventinfo;
 
 import java.util.List;
-
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,8 @@ public class SubmissionEventInfoRepositoryImpl implements SubmissionEventInfoRep
     this.jdbcTemplate = jdbcTemplate;
   }
 
-  @Override public List<SubmissionEventInfo> getSubmissionInfoListByEmail(final String email) {
+  @Override
+  public List<SubmissionEventInfo> getSubmissionInfoListByEmail(final String email) {
     final MapSqlParameterSource paramSource = new MapSqlParameterSource();
     paramSource.addValue("email", email);
 
@@ -30,7 +30,8 @@ public class SubmissionEventInfoRepositoryImpl implements SubmissionEventInfoRep
     return jdbcTemplate.query(query, paramSource, rowMapper);
   }
 
-  @Override public List<SubmissionEventInfo> getAllEventsWithUserInfosByEmail(final String email) {
+  @Override
+  public List<SubmissionEventInfo> getAllEventsWithUserInfosByEmail(final String email) {
     final MapSqlParameterSource paramSource = new MapSqlParameterSource();
     paramSource.addValue("email", email);
 

@@ -8,7 +8,6 @@ import io.minio.errors.MinioException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
 import mops.hhu.de.rheinjug1.praxis.domain.submission.DownloadService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

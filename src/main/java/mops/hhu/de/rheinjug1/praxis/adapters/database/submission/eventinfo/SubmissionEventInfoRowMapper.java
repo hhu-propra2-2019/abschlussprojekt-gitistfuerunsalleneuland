@@ -1,11 +1,10 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.database.submission.eventinfo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.jdbc.core.RowMapper;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class SubmissionEventInfoRowMapper implements RowMapper<SubmissionEventInfo> {
 

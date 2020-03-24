@@ -3,7 +3,6 @@ package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
 

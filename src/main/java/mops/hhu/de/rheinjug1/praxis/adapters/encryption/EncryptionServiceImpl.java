@@ -22,7 +22,8 @@ public class EncryptionServiceImpl implements EncryptionService {
     this.keyService = keyService;
   }
 
-  @Override public String sign(
+  @Override
+  public String sign(
       final MeetupType meetupType, final long meetupId, final String name, final String email)
       throws NoSuchAlgorithmException, IOException, InvalidKeyException, KeyStoreException,
           UnrecoverableEntryException, CertificateException, SignatureException {
@@ -40,7 +41,7 @@ public class EncryptionServiceImpl implements EncryptionService {
   }
 
   private String createHashValue(
-          final MeetupType meetupType, final long meetupId, final String name, final String email) {
+      final MeetupType meetupType, final long meetupId, final String name, final String email) {
     return meetupType.getLabel() + meetupId + name + email;
   }
 }

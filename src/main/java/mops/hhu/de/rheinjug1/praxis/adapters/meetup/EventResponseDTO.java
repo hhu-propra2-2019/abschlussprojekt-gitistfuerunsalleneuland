@@ -1,17 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.meetup;
 
-import static mops.hhu.de.rheinjug1.praxis.enums.MeetupType.*;
-
-import java.time.*;
-
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.adapters.meetup.dto.FeeResponseDTO;
 import mops.hhu.de.rheinjug1.praxis.adapters.meetup.dto.GroupResponseDTO;
 import mops.hhu.de.rheinjug1.praxis.adapters.meetup.dto.VenueResponseDTO;
 import mops.hhu.de.rheinjug1.praxis.annotations.DTO;
-import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
-import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings({
   "PMD.FieldNamingConventions",

@@ -4,7 +4,6 @@ import io.minio.errors.MinioException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
@@ -26,7 +25,8 @@ public class UploadServiceImpl implements UploadService {
   private final MinIoDownloadService minIoDownloadService;
   private final EventRepository eventRepository;
 
-  @Override public void uploadAndSaveSubmission(
+  @Override
+  public void uploadAndSaveSubmission(
       final Long meetupId, final MultipartFile file, final Account account)
       throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
           IOException, InterruptedException {
@@ -46,8 +46,9 @@ public class UploadServiceImpl implements UploadService {
     submissionRepository.save(newSubmission);
   }
 
-  //TODO: Diese Methode macht nichts ausser evtl eine Exception zu werfen...
-  @Override public void checkUploadable(final Long meetupId, final Account account)
+  // TODO: Diese Methode macht nichts ausser evtl eine Exception zu werfen...
+  @Override
+  public void checkUploadable(final Long meetupId, final Account account)
       throws EventNotFoundException, DuplicateSubmissionException {
     if (!eventRepository.existsById(meetupId)) {
       throw new EventNotFoundException(meetupId);

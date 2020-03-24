@@ -7,16 +7,14 @@ import io.micrometer.core.instrument.MeterRegistry;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-
+import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
+import mops.hhu.de.rheinjug1.praxis.domain.chart.ChartService;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
+import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoComparator;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.domain.Account;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDateComparator;
-import mops.hhu.de.rheinjug1.praxis.domain.chart.ChartService;
-import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -37,10 +35,10 @@ public class RheinjugController {
 
   @Autowired
   public RheinjugController(
-          final MeterRegistry registry,
-          final MeetupService meetupService,
-          final ChartService chartService,
-          final AccountFactory accountFactory) {
+      final MeterRegistry registry,
+      final MeetupService meetupService,
+      final ChartService chartService,
+      final AccountFactory accountFactory) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
     this.meetupService = meetupService;
@@ -63,9 +61,10 @@ public class RheinjugController {
 
   @GetMapping("/events")
   @Secured({"ROLE_orga", "ROLE_studentin"})
-  public String showAllEvents(final KeycloakAuthenticationToken token,
-                              final SubmissionEventInfoComparator comparator,
-                              final Model model) {
+  public String showAllEvents(
+      final KeycloakAuthenticationToken token,
+      final SubmissionEventInfoComparator comparator,
+      final Model model) {
 
     final Account account = accountFactory.createFromToken(token);
 

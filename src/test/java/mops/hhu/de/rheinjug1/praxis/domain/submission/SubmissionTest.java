@@ -4,7 +4,6 @@ import static mops.hhu.de.rheinjug1.praxis.domain.submission.Submission.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import org.junit.jupiter.api.Test;
 
 class SubmissionTest {

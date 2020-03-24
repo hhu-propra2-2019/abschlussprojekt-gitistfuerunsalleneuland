@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,10 +35,10 @@ public class MinIoUploadService {
   }
 
   private void uploadFile(final String name, final String localFilePath)
-          throws InvalidKeyException, NoSuchAlgorithmException, MinioException, IOException,
+      throws InvalidKeyException, NoSuchAlgorithmException, MinioException, IOException,
           XmlPullParserException {
     final MinioClient minioClient =
-            new MinioClient(this.minioUrl, this.minioAccessKey, this.minioSecretKey);
+        new MinioClient(this.minioUrl, this.minioAccessKey, this.minioSecretKey);
 
     if (!minioClient.bucketExists(this.minioBucket)) {
       minioClient.makeBucket(this.minioBucket);

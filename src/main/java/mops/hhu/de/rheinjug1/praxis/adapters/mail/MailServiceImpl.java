@@ -3,7 +3,6 @@ package mops.hhu.de.rheinjug1.praxis.adapters.mail;
 import java.io.File;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.MailService;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,7 +17,8 @@ public class MailServiceImpl implements MailService {
     this.mailSender = mailSender;
   }
 
-  @Override public void sendMailWithAttachment(
+  @Override
+  public void sendMailWithAttachment(
       final String to,
       final String subject,
       final String text,

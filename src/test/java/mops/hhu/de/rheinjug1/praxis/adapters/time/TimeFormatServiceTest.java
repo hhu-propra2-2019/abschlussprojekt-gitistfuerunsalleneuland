@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
 import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import org.junit.jupiter.api.Test;
 

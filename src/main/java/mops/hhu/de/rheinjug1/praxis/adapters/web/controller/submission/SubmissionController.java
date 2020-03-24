@@ -5,7 +5,6 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import javax.mail.MessagingException;
 import lombok.AllArgsConstructor;
-import mops.hhu.de.rheinjug1.praxis.adapters.auth.AccountImpl;
 import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
@@ -41,7 +40,8 @@ public class SubmissionController {
 
     final Account account = accountFactory.createFromToken(token);
     model.addAttribute(ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE, account);
-    model.addAttribute(ThymeleafAttributesHelper.ALL_SUBMISSIONS_ATTRIBUTE, submissionService.getAllSubmissions());
+    model.addAttribute(
+        ThymeleafAttributesHelper.ALL_SUBMISSIONS_ATTRIBUTE, submissionService.getAllSubmissions());
     return "allSubmissions";
   }
 

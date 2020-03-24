@@ -1,12 +1,11 @@
 package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.mail.MessagingException;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor

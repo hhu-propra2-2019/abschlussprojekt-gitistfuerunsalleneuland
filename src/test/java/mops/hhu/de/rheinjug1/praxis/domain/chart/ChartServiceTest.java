@@ -7,9 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import mops.hhu.de.rheinjug1.praxis.adapters.time.TimeFormatServiceImpl;
-import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;

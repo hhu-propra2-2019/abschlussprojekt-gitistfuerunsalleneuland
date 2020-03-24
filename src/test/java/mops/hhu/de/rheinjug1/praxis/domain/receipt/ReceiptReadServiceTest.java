@@ -3,8 +3,6 @@ package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.*;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptReadService;
 import org.junit.jupiter.api.Test;
 
 public class ReceiptReadServiceTest {
