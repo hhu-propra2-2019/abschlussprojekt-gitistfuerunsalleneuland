@@ -1,7 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Disabled
 class ReceiptPrintServiceTest {
 
   @Test

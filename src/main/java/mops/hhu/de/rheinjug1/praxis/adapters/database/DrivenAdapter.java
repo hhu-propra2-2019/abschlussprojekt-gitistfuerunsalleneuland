@@ -1,5 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.database;
 
+import javafx.util.Builder;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +9,11 @@ import static java.util.stream.Collectors.toList;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 public abstract class DrivenAdapter<Entity, DTO> {
-    protected Entity entity;
-    protected DTO dto;
+    protected Builder<Entity> entityBuilder;
+    protected Builder<DTO> dtoBuilder;
 
     protected Entity toEntity(DTO dto) {
+        Entity entity = entityBuilder.build();
         copyProperties(dto, entity);
         return entity;
     }
@@ -29,6 +32,7 @@ public abstract class DrivenAdapter<Entity, DTO> {
     }
 
     protected DTO toDTO(Entity entity) {
+        DTO dto = dtoBuilder.build();
         copyProperties(entity, dto);
         return dto;
     }

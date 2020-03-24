@@ -19,5 +19,4 @@ public class Event {
   String link;
   String description;
   MeetupType meetupType;
-
 }

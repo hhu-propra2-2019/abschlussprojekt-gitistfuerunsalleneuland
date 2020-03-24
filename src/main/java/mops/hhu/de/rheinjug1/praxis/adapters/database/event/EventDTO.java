@@ -4,9 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 import mops.hhu.de.rheinjug1.praxis.annotations.DB;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Component;
 
 @DB
 @Value
@@ -20,5 +18,4 @@ public class EventDTO {
   String link;
   String description;
   MeetupType meetupType;
-
 }
