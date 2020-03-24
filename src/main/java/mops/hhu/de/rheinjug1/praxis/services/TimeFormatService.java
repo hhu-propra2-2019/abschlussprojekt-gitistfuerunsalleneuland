@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +21,7 @@ public class TimeFormatService {
 
   private static final LocalDateTime NOW = LocalDateTime.now();
   private static final String DATABASE_DATE_TIME_PATTERN = "HH:mm - dd.MM.yyyy";
+  private static final String DATEPATTERN = "dd.MM.yyyy";
 
   public String format(final Duration duration) {
     final Calendar cal = Calendar.getInstance();
@@ -53,15 +55,20 @@ public class TimeFormatService {
   }
 
   public String getGermanDateString(final SubmissionEventInfo submissionEventInfo) {
-    return getLocalDateTime(submissionEventInfo.getEventDateTime()).toString("dd.MM.yyyy");
-  }
-
-  public String getGermanDateString(final Event event) {
-    return getLocalDateTime(event.getZonedDateTime()).toString("dd.MM.yyyy");
+    return getLocalDateTime(submissionEventInfo.getEventDateTime()).toString(DATEPATTERN);
   }
 
   public String getGermanTimeString(final Event event) {
     return getLocalDateTime(event.getZonedDateTime()).toString("HH:mm");
+  }
+
+  public String extractDate(final String zonedDateTime) {
+    return getLocalDateTime(zonedDateTime).toString(DATEPATTERN);
+  }
+
+  public LocalDate getLocalDate(final String localDateString) {
+    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATEPATTERN);
+    return LocalDate.parse(localDateString, dateTimeFormatter);
   }
 
   public LocalDateTime getLocalDateTime(final String dateTimeString) {
