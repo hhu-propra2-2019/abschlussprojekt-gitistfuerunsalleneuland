@@ -13,6 +13,8 @@ import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnusedPrivateMethod"})
 @EnableScheduling
-@Component
+@Service
 @AllArgsConstructor
 public class MeetupServiceImpl implements MeetupService {
 
@@ -47,8 +49,8 @@ public class MeetupServiceImpl implements MeetupService {
   }
 
   @Override
-  public List<SubmissionEventInfo> getAllEventsWithInfosByEmail(final Account account) {
-    return submissionEventInfoDomainRepository.getAllEventsWithUserInfosByEmail(account.getEmail());
+  public List<SubmissionEventInfo> getAllEventsWithInfosByUser(final Account account) {
+    return submissionEventInfoDomainRepository.getAllEventsWithInfosByUser(account);
   }
 
   @Override

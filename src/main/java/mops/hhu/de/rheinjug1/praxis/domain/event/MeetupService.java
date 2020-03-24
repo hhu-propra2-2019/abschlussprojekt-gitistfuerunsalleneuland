@@ -9,7 +9,7 @@ public interface MeetupService {
   @Scheduled(cron = "0 0 8 * * ?")
   void update();
 
-  List<SubmissionEventInfo> getAllEventsWithInfosByEmail(Account account);
+  List<SubmissionEventInfo> getAllEventsWithInfosByUser(Account account);
 
   int getSubmissionCount(Event event);
 

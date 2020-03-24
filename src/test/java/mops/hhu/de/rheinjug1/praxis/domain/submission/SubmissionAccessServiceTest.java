@@ -7,19 +7,10 @@ import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
 import java.util.Optional;
-<<<<<<< HEAD:src/test/java/mops/hhu/de/rheinjug1/praxis/domain/submission/SubmissionServiceTest.java
 import mops.hhu.de.rheinjug1.praxis.adapters.auth.AccountImpl;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.UnauthorizedSubmissionAccessException;
-=======
-import mops.hhu.de.rheinjug1.praxis.database.entities.Submission;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.SubmissionRepository;
-import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
-import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
-import mops.hhu.de.rheinjug1.praxis.models.Account;
-import mops.hhu.de.rheinjug1.praxis.services.submission.SubmissionAccessService;
->>>>>>> master:src/test/java/mops/hhu/de/rheinjug1/praxis/domain/receipt/SubmissionAccessServiceTest.java
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +28,12 @@ public class SubmissionAccessServiceTest {
   @Test
   public void an_existent_submission_gets_accepted() throws SubmissionNotFoundException {
     final Optional<Submission> submissionOptional =
-        Optional.of(new Submission(0L, "", "", "", false, ""));
+        Optional.of(Submission.builder()
+                .meetupId(0L)
+                .email("")
+                .name("")
+                .minIoLink("")
+                .build());
 
     when(submissionRepository.findById(0L)).thenReturn(submissionOptional);
     submissionAccessService.accept(0L);
@@ -101,14 +97,8 @@ public class SubmissionAccessServiceTest {
             .build();
     when(submissionRepository.findById(0L)).thenReturn(Optional.ofNullable(testSubmission));
 
-<<<<<<< HEAD:src/test/java/mops/hhu/de/rheinjug1/praxis/domain/submission/SubmissionServiceTest.java
-    final Optional<Submission> actualSubmission =
-        submissionService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
-    assertEquals(testSubmission, actualSubmission.get());
-=======
     final Submission actualSubmission =
         submissionAccessService.getAcceptedSubmissionIfAuthorized(0L, TEST_ACCOUNT);
     assertEquals(testSubmission, actualSubmission);
->>>>>>> master:src/test/java/mops/hhu/de/rheinjug1/praxis/domain/receipt/SubmissionAccessServiceTest.java
   }
 }

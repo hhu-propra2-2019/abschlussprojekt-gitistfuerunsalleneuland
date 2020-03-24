@@ -11,8 +11,8 @@ import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionAccessService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
-import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
-import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.SubmissionNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.UnauthorizedSubmissionAccessException;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -80,29 +80,20 @@ public class SubmissionUserController {
   @PostMapping(value = "/create-receipt/{submissionId}")
   @Secured("ROLE_studentin")
   public String createReceipt(
-      final KeycloakAuthenticationToken token,
-      final Model model,
-      @PathVariable("submissionId") final Long submissionId)
-<<<<<<< HEAD:src/main/java/mops/hhu/de/rheinjug1/praxis/adapters/web/controller/submission/SubmissionUserController.java
-      throws Throwable {
-    final Account account = accountFactory.createFromPrincipal(token);
-    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-
-    final Optional<Submission> submission =
-        submissionService.getAcceptedSubmissionIfAuthorized(submissionId, account);
-=======
+          final KeycloakAuthenticationToken token,
+          final Model model,
+          @PathVariable("submissionId") final Long submissionId)
       throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
-    final Account account = createAccountFromPrincipal(token);
+
+    final Account account = accountFactory.createFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
     final Submission submission =
         submissionAccessService.getAcceptedSubmissionIfAuthorized(submissionId, account);
->>>>>>> master:src/main/java/mops/hhu/de/rheinjug1/praxis/controller/SubmissionUserController.java
 
     try {
       final Receipt receipt =
-          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(
-              submission.get());
+          receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
       receiptSendService.sendReceipt(receipt, account.getEmail());
     } catch (final UnrecoverableEntryException
         | NoSuchAlgorithmException
