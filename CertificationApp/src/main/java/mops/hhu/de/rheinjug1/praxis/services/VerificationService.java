@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -33,21 +34,23 @@ public class VerificationService implements ReceiptVerificationInterface {
     final MeetupType meetupType = receipt.getMeetupType();
     final String email = receipt.getEmail();
     final byte[] signature = Base64.decode(receipt.getSignature());
-    final String hash = hash(meetupType, meetupId, name, email);
-    return isVerified(signature, publicKey, hash);
+    final String hashValue = createHashValue(meetupType, meetupId, name, email);
+    return isVerified(signature, publicKey, hashValue);
   }
 
-  private String hash(
+  private String createHashValue(
       final MeetupType meetupType, final long meetupId, final String name, final String email) {
     return meetupType.getLabel() + meetupId + name + email;
   }
 
-  private boolean isVerified(final byte[] signature, final PublicKey publicKey, final String hash)
+  private boolean isVerified(
+      final byte[] signaturetoVerify, final PublicKey publicKey, final String hashValue)
       throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 
-    final Signature sig = Signature.getInstance("SHA256withRSA");
-    sig.initVerify(publicKey);
-    sig.update(hash.getBytes());
-    return sig.verify(signature);
+    final Signature sign = Signature.getInstance("SHA256withRSA");
+    sign.initVerify(publicKey);
+    final byte[] hashValueBytes = hashValue.getBytes(StandardCharsets.UTF_8);
+    sign.update(hashValueBytes);
+    return sign.verify(signaturetoVerify);
   }
 }

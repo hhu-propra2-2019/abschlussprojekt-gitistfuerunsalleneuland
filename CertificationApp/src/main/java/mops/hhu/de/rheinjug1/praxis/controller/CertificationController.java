@@ -51,15 +51,15 @@ public class CertificationController {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
   }
-  
+
   private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
-	    final KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-	    return new Account(
-	        principal.getName(),
-	        principal.getKeycloakSecurityContext().getIdToken().getEmail(),
-	        null,
-	        token.getAccount().getRoles());
-	  } 
+    final KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
+    return new Account(
+        principal.getName(),
+        principal.getKeycloakSecurityContext().getIdToken().getEmail(),
+        null,
+        token.getAccount().getRoles());
+  }
 
   @GetMapping("/")
   @Secured({"ROLE_studentin", "ROLE_orga"})
@@ -68,9 +68,7 @@ public class CertificationController {
       final Account account = createAccountFromPrincipal(token);
       model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
-    model.addAttribute(
-        INPUT_ATTRIBUTE,
-        new InputHandler());
+    model.addAttribute(INPUT_ATTRIBUTE, new InputHandler());
     authenticatedAccess.increment();
     return "home";
   }
@@ -81,12 +79,13 @@ public class CertificationController {
       final KeycloakAuthenticationToken token, final Model model, final InputHandler inputHandler)
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
-	  
+
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
       certificationService.createCertification(inputHandler);
     }
     // und sowas wie mailservice.send
-    if (inputHandler.isEntwickelbarUploadOkForCertification() && inputHandler.verifyEntwickelbar()) {
+    if (inputHandler.isEntwickelbarUploadOkForCertification()
+        && inputHandler.verifyEntwickelbar()) {
       certificationService.createCertification(inputHandler);
     }
 

@@ -59,21 +59,21 @@ public class InputHandler {
   }
 
   public void setSecondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
-	    secondRheinjugReceiptUploadMessage = getUploadMessage(seccondRheinjugFile, MeetupType.RHEINJUG);
+    secondRheinjugReceiptUploadMessage = getUploadMessage(seccondRheinjugFile, MeetupType.RHEINJUG);
     if (secondRheinjugReceiptUploadMessage.equals(VALIDE)) {
       secondRheinjugReceipt = newReceipt.cloneThisReceipt();
     }
   }
 
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
-	    thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, MeetupType.RHEINJUG);
+    thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, MeetupType.RHEINJUG);
     if (thirdRheinjugReceiptUploadMessage.equals(VALIDE)) {
       thirdRheinjugReceipt = newReceipt.cloneThisReceipt();
     }
   }
 
   public void setEntwickelbarReceipt(final MultipartFile entwickelbarFile) {
-	    entwickelbarReceiptUploadMessage = getUploadMessage(entwickelbarFile, MeetupType.ENTWICKELBAR);
+    entwickelbarReceiptUploadMessage = getUploadMessage(entwickelbarFile, MeetupType.ENTWICKELBAR);
     if (entwickelbarReceiptUploadMessage.equals(VALIDE)) {
       entwickelbarReceipt = newReceipt.cloneThisReceipt();
     }
@@ -93,7 +93,7 @@ public class InputHandler {
 
   private String getUploadMessage(final MultipartFile uploadedFile, final MeetupType type) {
     if (uploadedFile == null || uploadedFile.isEmpty()) {
-    	newReceipt = new Receipt();
+      newReceipt = new Receipt();
       return KEINE_DATEI;
     }
     try {

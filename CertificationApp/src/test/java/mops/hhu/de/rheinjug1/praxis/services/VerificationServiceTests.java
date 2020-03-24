@@ -1,7 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +17,7 @@ import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,43 +27,52 @@ public class VerificationServiceTests {
 
   @Autowired private KeyService keyService;
   @Autowired private VerificationService verificationService;
-  Receipt receipt;
 
-  @Before
-  public void setUp() {
+  static Receipt validReceipt;
+  static Receipt invalidReceipt;
 
-    try {
-      final String hash = "ENTWICKELBAR" + 1 + "name" + "email";
+  @BeforeEach
+  public void setUp()
+      throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
+          UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException {
 
-      final KeyPair pair = keyService.getKeyPairFromKeyStore();
-      final PrivateKey privateKey = pair.getPrivate();
+    final String hash = MeetupType.ENTWICKELBAR.getLabel() + 1 + "name" + "email";
+    final KeyPair pair = keyService.getKeyPairFromKeyStore();
+    final PrivateKey privateKey = pair.getPrivate();
+    final Signature sign = Signature.getInstance("SHA256withRSA");
+    sign.initSign(privateKey);
+    sign.update(hash.getBytes(StandardCharsets.UTF_8));
 
-      final Signature sign = Signature.getInstance("SHA256withRSA");
-      sign.initSign(privateKey);
-      sign.update(hash.getBytes(StandardCharsets.UTF_8));
-      receipt =
-          new Receipt(
-              "name",
-              "email",
-              (long) 1,
-              "meetupTitle",
-              MeetupType.ENTWICKELBAR,
-              Base64.toBase64String(sign.sign()));
-    } catch (InvalidKeyException
-        | KeyStoreException
-        | NoSuchAlgorithmException
-        | CertificateException
-        | UnrecoverableEntryException
-        | SignatureException
-        | IOException e) {
-      fail("Encryption-Error");
-    }
+    validReceipt =
+        new Receipt(
+            "name",
+            "email",
+            (long) 1,
+            "meetupTitle",
+            MeetupType.ENTWICKELBAR,
+            Base64.toBase64String(sign.sign()));
+
+    invalidReceipt =
+        new Receipt(
+            "name",
+            "falseEmail",
+            (long) 1,
+            "meetupTitle",
+            MeetupType.ENTWICKELBAR,
+            Base64.toBase64String(sign.sign()));
   }
 
   @Test
-  public void doesVerificationWork()
+  public void verifyValidReceipt()
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
-    assertTrue("Verifcation failed", verificationService.isSignatureValid(receipt));
+    assertTrue("Verification worked", verificationService.isSignatureValid(validReceipt));
+  }
+
+  @Test
+  public void verifyInvalidReceipt()
+      throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
+          UnrecoverableEntryException, SignatureException, IOException {
+    assertFalse("Verification did not work", verificationService.isSignatureValid(invalidReceipt));
   }
 }
