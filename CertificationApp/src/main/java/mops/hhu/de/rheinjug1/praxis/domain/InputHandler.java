@@ -40,14 +40,14 @@ public class InputHandler {
   private List<String> signatures = new ArrayList(3);
 
   private Receipt firstRheinjugReceipt;
-  private Receipt seccondRheinjugReceipt;
+  private Receipt secondRheinjugReceipt;
   private Receipt thirdRheinjugReceipt;
   private Receipt entwickelbarReceipt;
 
   private Receipt newReceipt;
 
   private String firstRheinjugReceiptUploadMessage = "Erste Rheinjug Quittung";
-  private String seccondRheinjugReceiptUploadMessage = "Zweite Rheinjug Quittung";
+  private String secondRheinjugReceiptUploadMessage = "Zweite Rheinjug Quittung";
   private String thirdRheinjugReceiptUploadMessage = "Dritte Rheinjug Quittung";
   private String entwickelbarReceiptUploadMessage = "Entwickelbar Quittung";
 
@@ -58,11 +58,11 @@ public class InputHandler {
     }
   }
 
-  public void setSeccondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
-    seccondRheinjugReceiptUploadMessage =
-        getUploadMessage(seccondRheinjugFile, MeetupType.RHEINJUG);
-    if (seccondRheinjugReceiptUploadMessage.equals(VALIDE)) {
-      seccondRheinjugReceipt = newReceipt.cloneThisReceipt();
+
+  public void setSecondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
+    secondRheinjugReceiptUploadMessage = getUploadMessage(seccondRheinjugFile, MeetupType.RHEINJUG);
+    if (secondRheinjugReceiptUploadMessage.equals(VALIDE)) {
+      secondRheinjugReceipt = newReceipt.cloneThisReceipt();
     }
   }
 
@@ -82,7 +82,7 @@ public class InputHandler {
 
   public boolean areRheinjugUploadsOkForCertification() {
     return firstRheinjugReceiptUploadMessage.equals(VALIDE)
-        && seccondRheinjugReceiptUploadMessage.equals(VALIDE)
+        && secondRheinjugReceiptUploadMessage.equals(VALIDE)
         && thirdRheinjugReceiptUploadMessage.equals(VALIDE);
     // &&signatures sind nicht in der Datenbank
   }
@@ -92,9 +92,12 @@ public class InputHandler {
     // &&signature ist nicht in der Datenbank
   }
 
-  private String getUploadMessage(final MultipartFile firstRheinjugFile, final MeetupType type) {
-    try {
-      newReceipt = fileReaderService.read(firstRheinjugFile);
+  private String getUploadMessage(final MultipartFile uploadedFile, final MeetupType type) {
+	if (uploadedFile.isEmpty()) {
+	      return KEINE_DATEI;
+	    }
+	try {
+      newReceipt = fileReaderService.read(uploadedFile);
       if (!newReceipt.getMeetupType().equals(type)) {
         return FALSCHE_VERANSTALTUNG;
       } else if (isDuplicateSignature(newReceipt.getSignature())) {
@@ -104,9 +107,7 @@ public class InputHandler {
         return VALIDE;
       }
     } catch (IOException e) {
-      if (firstRheinjugFile.isEmpty()) {
-        return KEINE_DATEI;
-      }
+
       return FEHLERHAFTE_QUITTUNG;
     }
   }
@@ -128,7 +129,7 @@ public class InputHandler {
       throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException {
     return (verificationService.isSignatureValid(firstRheinjugReceipt)
-        && verificationService.isSignatureValid(seccondRheinjugReceipt)
+        && verificationService.isSignatureValid(secondRheinjugReceipt)
         && verificationService.isSignatureValid(thirdRheinjugReceipt));
   }
 

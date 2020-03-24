@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.controller;
+package mops.hhu.de.rheinjug1.praxis.domain;
 
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-class Account {
+public class Account {
   private String name;
   private String email;
   private String image;
@@ -19,10 +19,9 @@ class Account {
   public static Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
     final KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
     return new Account(
-            principal.getName(),
-            principal.getKeycloakSecurityContext().getIdToken().getEmail(),
-            null,
-            token.getAccount().getRoles());
+        principal.getName(),
+        principal.getKeycloakSecurityContext().getIdToken().getEmail(),
+        null,
+        token.getAccount().getRoles());
   }
-
 }

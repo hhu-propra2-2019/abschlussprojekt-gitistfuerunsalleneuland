@@ -1,5 +1,9 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
+import static mops.hhu.de.rheinjug1.praxis.domain.Account.createAccountFromPrincipal;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
+
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.io.IOException;
@@ -11,6 +15,9 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
@@ -33,10 +40,10 @@ import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.I
 @Controller
 @RequestMapping("/rheinjug1")
 @SuppressWarnings({
-        "PMD.UnusedPrivateField",
-        "PMD.SingularField",
-        "PMD.UnusedImports",
-        "PMD.AvoidDuplicateLiterals"
+  "PMD.UnusedPrivateField",
+  "PMD.SingularField",
+  "PMD.UnusedImports",
+  "PMD.AvoidDuplicateLiterals"
 })
 public class CertificationController {
 
@@ -45,23 +52,23 @@ public class CertificationController {
   private final CertificationService certificationService = new CertificationService();
   private final ReceiptReaderInterface fileReaderService = new FileReaderService();
   private final ReceiptVerificationInterface verificationService = new VerificationService();
-    
+
   public CertificationController(final MeterRegistry registry) {
-        authenticatedAccess = registry.counter("access.authenticated");
-        publicAccess = registry.counter("access.public");
-    }
+    authenticatedAccess = registry.counter("access.authenticated");
+    publicAccess = registry.counter("access.public");
+  }
 
   @GetMapping("/")
   @Secured({"ROLE_studentin", "ROLE_orga"})
   public String home(final KeycloakAuthenticationToken token, final Model model) {
-      if (token != null) {
-          final Account account = Account.createAccountFromPrincipal(token);
-          model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-      }
-      model.addAttribute(INPUT_ATTRIBUTE, new InputHandler(fileReaderService, verificationService));
-      publicAccess.increment();
-      return "home";
-  }
+	  if (token != null) {
+	      final Account account = createAccountFromPrincipal(token);
+	      model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+	    }
+	    model.addAttribute(INPUT_ATTRIBUTE, new InputHandler(fileReaderService, verificationService));
+	    authenticatedAccess.increment();
+	    return "home";
+	  }
   
   @PostMapping("/")
   @Secured({"ROLE_student", "ROLE_orga"})
@@ -69,11 +76,10 @@ public class CertificationController {
       final KeycloakAuthenticationToken token, final Model model, final InputHandler input)
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
-    if (token != null) {
-      model.addAttribute("account", Account.createAccountFromPrincipal(token));
-    }
 
-    model.addAttribute("input", input);
+	  final Account account = createAccountFromPrincipal(token);
+	  model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+
     if (input.areRheinjugUploadsOkForCertification()) {
       if (input.verifyRheinjug()) {
         certificationService.createCertification(input);
@@ -85,12 +91,16 @@ public class CertificationController {
         certificationService.createCertification(input);
       }
         }
-    return "home";
-    }
 
-    @GetMapping("/logout")
-    public String logout(final HttpServletRequest request) throws ServletException {
-        request.logout();
-        return "redirect:/";
-    }
+    model.addAttribute(INPUT_ATTRIBUTE, input);
+    authenticatedAccess.increment();
+    return "home";
+}
+
+
+  @GetMapping("/logout")
+  public String logout(final HttpServletRequest request) throws ServletException {
+    request.logout();
+    return "redirect:/";
+  }
 }
