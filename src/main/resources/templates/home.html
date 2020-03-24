@@ -118,7 +118,6 @@
             </div>
         </div>
 
-
 			<div th:each="event : ${events}" class="my-2" id="allEvents">
 				<div class="card">
 					<div class="card-body">
@@ -162,26 +161,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- <div class="container mt-5">
-        <h4>Kommende Veranstaltungen</h4>
-        <table>
-            <thead>
-            <th>Name</th>
-            <th>Datum</th>
-            <th>Uhrzeit</th>
-            <th>Dauer</th>
-            </thead>
-            <tbody>
-            <tr th:each="event : ${events}">
-                <td><a th:href="@{${event.link}}"><span th:text="${event.name}">default</span></a></td>
-                <td th:text="${@timeFormatService.getGermanDateString(event)}">01.01.2000</td>
-                <td th:text="${@timeFormatService.getGermanTimeString(event)}">12:00</td>
-                <td th:text="${event.duration}">0:00</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>  -->
 		<footer class="page-footer mt-4">
 			<div class="container text-center border-top">
 				<p class="font-weight-light mt-2">Erstellt von: Team GitIstFürUnsAlleNeuland</p>

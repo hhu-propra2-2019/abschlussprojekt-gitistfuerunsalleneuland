@@ -40,7 +40,7 @@ public class SubmissionUploadService {
   public void uploadToMinIoAndSaveSubmission(
       final Long meetupId, final MultipartFile file, final Account account)
       throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
-          IOException, InterruptedException {
+          IOException {
 
     final String fileName = generateFileName(meetupId, account.getEmail());
 

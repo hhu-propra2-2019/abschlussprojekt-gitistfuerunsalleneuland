@@ -9,7 +9,11 @@ import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
 import mops.hhu.de.rheinjug1.praxis.services.TimeFormatService;
 
-@SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
+@SuppressWarnings({
+  "PMD.FieldNamingConventions",
+  "PMD.TooManyFields",
+  "PMD.UseLocaleWithCaseConversions"
+})
 @ToString
 @Setter
 @NoArgsConstructor
@@ -48,7 +52,7 @@ public class EventResponseDTO {
         .zonedDateTime(formatTime(timeFormatService))
         .link(link)
         .description(description)
-        .meetupType(name.contains("Entwickelbar") ? ENTWICKELBAR : RHEINJUG)
+        .meetupType(name.toLowerCase().contains("entwickelbar") ? ENTWICKELBAR : RHEINJUG)
         .build();
   }
 

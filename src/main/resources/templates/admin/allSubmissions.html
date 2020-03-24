@@ -7,14 +7,17 @@
         <h4>Alle Zusammenfassungen</h4>
         <table class="table">
             <thead class="thead-dark">
-            <th scope="col">Meetup Id</th>
+            <th scope="col">Meetup</th>
+            <th scope="col">MinIo Link</th>
             <th scope="col">Name</th>
             <th scope="col">Status</th>
             <th scope="col">Aktion</th>
             </thead>
             <tbody>
             <tr th:each="submission : ${all_submissions}">
-                <td><a th:href="@{${submission.minIoLink}}"><span th:text="${submission.meetupId}"></span></a>
+                <td><a th:href="@{${submission.eventLink}}"><span th:text="${submission.eventTitle}"></span></a>
+                </td>
+                <td><a th:href="@{${submission.minIoLink}}"><span>Ansehen</span></a>
                 </td>
                 <td><span th:text="${submission.name}"></span></td>
                 <td><span th:text="${submission.accepted}? 'Akzeptiert': 'Ausstehend'"></span></td>

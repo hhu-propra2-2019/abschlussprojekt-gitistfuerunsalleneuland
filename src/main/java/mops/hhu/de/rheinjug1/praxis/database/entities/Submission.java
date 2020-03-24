@@ -2,6 +2,7 @@ package mops.hhu.de.rheinjug1.praxis.database.entities;
 
 import java.util.Optional;
 import lombok.*;
+import mops.hhu.de.rheinjug1.praxis.models.Account;
 import org.springframework.data.annotation.Id;
 
 @Getter
@@ -27,6 +28,10 @@ public class Submission {
     this.name = name;
     this.minIoLink = Optional.ofNullable(minIoLink).orElse("");
     this.accepted = accepted;
+  }
+
+  public boolean isFromUser(final Account account) {
+    return name.equals(account.getName()) && email.equals(account.getEmail());
   }
 
   public void accept() {
