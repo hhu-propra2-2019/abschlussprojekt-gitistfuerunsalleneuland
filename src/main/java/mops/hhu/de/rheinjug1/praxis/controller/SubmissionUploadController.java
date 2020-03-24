@@ -43,13 +43,15 @@ public class SubmissionUploadController {
     final Account account = createAccountFromPrincipal(token);
     final Event event = eventRepository.findById(meetupId).get();
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-
     model.addAttribute(UPLOAD_ERROR_ATTRIBUTE, uploadError);
 
-    submissionUploadService.checkUploadable(meetupId, account);
+    final String meetupTitle =
+        submissionUploadService.checkUploadableAndReturnTitle(meetupId, account);
 
     model.addAttribute("event", event);
     model.addAttribute(MEETUP_ID_ATTRIBUTE, meetupId);
+    model.addAttribute(MEETUP_TITLE_ATTRIBUTE, meetupTitle);
+
     return "uploadForm";
   }
 
