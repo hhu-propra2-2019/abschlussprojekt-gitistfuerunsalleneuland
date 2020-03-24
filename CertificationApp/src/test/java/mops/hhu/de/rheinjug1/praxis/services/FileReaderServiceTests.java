@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,8 +36,8 @@ public class FileReaderServiceTests {
 
   @BeforeEach
   public void setReceipt() {
-    receipt.setMeetupId(1);
-    receipt.setMeetupType("ENTWICKELBAR");
+    receipt.setMeetupId((long) 1);
+    receipt.setMeetupType(MeetupType.ENTWICKELBAR);
     receipt.setSignature("OEUIc5654eut");
   }
 
