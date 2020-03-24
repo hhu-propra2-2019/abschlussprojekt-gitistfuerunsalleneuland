@@ -1,6 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,13 +8,11 @@ import java.nio.file.Paths;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
+import mops.hhu.de.rheinjug1.praxis.utils.FileUtils;
+import org.bouncycastle.util.encoders.Base64;
 import org.junit.jupiter.api.Test;
 
 class ReceiptPrintServiceTest {
-
-  private static final String TEST_FILE_CONTENT =
-      "!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: testEmail, meetupId: 12345,\n"
-          + "  meetupTitle: testMeetupTitle, meetupType: ENTWICKELBAR, name: testName, signature: testSignature}\n";
 
   @Test
   void writeYml() throws IOException {
@@ -29,8 +27,11 @@ class ReceiptPrintServiceTest {
             .meetupType(MeetupType.ENTWICKELBAR)
             .build();
     final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
-    final String path = receiptPrintService.printReceipt(receipt);
+    final String path = receiptPrintService.printReceiptAndReturnPath(receipt);
 
-    assertThat(Files.readString(Paths.get(path))).isEqualTo(TEST_FILE_CONTENT);
+    final String expectedMailText = FileUtils.readStringFromFile("mail/testEmailAttachment.txt");
+    final String actualMailText = new String(Base64.decode(Files.readString(Paths.get(path))));
+
+    assertThat(actualMailText).isEqualTo(expectedMailText);
   }
 }
