@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

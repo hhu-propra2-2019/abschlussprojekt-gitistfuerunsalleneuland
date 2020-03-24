@@ -4,6 +4,7 @@ import io.minio.errors.MinioException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
+import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.UploadService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.DuplicateSubmissionException;
@@ -24,13 +25,14 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping("/upload")
 public class SubmissionUploadController {
   private final UploadService uploadService;
+  private final AccountFactory accountFactory;
 
   @GetMapping("/{meetupId}")
   @Secured("ROLE_studentin")
   public String showUploadForm(
       final KeycloakAuthenticationToken token, final Model model, @PathVariable final Long meetupId)
       throws EventNotFoundException, DuplicateSubmissionException {
-    final Account account = new AccountImpl(token);
+    final Account account = accountFactory.createFromToken(token);
     model.addAttribute(ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE, account);
 
     uploadService.checkUploadable(meetupId, account);
@@ -46,7 +48,7 @@ public class SubmissionUploadController {
       final Model model,
       @RequestParam("file") final MultipartFile file,
       @PathVariable("meetupId") final Long meetupId) {
-    final Account account = new AccountImpl(token);
+    final Account account = accountFactory.createFromToken(token);
     model.addAttribute(ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE, account);
 
     try {

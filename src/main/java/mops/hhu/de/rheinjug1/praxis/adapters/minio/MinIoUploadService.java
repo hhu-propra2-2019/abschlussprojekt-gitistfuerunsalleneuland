@@ -27,23 +27,23 @@ public class MinIoUploadService {
   @Value("${spring.minio.secret-key}")
   private String minioSecretKey;
 
-  private void uploadFile(final String name, final String localFilePath)
-      throws InvalidKeyException, NoSuchAlgorithmException, MinioException, IOException,
-          XmlPullParserException {
-    final MinioClient minioClient =
-        new MinioClient(this.minioUrl, this.minioAccessKey, this.minioSecretKey);
-
-    if (!minioClient.bucketExists(this.minioBucket)) {
-      minioClient.makeBucket(this.minioBucket);
-    }
-    minioClient.putObject(this.minioBucket, name, localFilePath, null, null, null, null);
-  }
-
-  public void transferMultipartFileToMinIo(final MultipartFile file, final String filename)
+  void transferMultipartFileToMinIo(final MultipartFile file, final String filename)
       throws IOException, MinioException, XmlPullParserException, NoSuchAlgorithmException,
           InvalidKeyException {
     final File tempFile = File.createTempFile("temp", null);
     file.transferTo(tempFile);
     uploadFile(filename, tempFile.getPath());
+  }
+
+  private void uploadFile(final String name, final String localFilePath)
+          throws InvalidKeyException, NoSuchAlgorithmException, MinioException, IOException,
+          XmlPullParserException {
+    final MinioClient minioClient =
+            new MinioClient(this.minioUrl, this.minioAccessKey, this.minioSecretKey);
+
+    if (!minioClient.bucketExists(this.minioBucket)) {
+      minioClient.makeBucket(this.minioBucket);
+    }
+    minioClient.putObject(this.minioBucket, name, localFilePath, null, null, null, null);
   }
 }

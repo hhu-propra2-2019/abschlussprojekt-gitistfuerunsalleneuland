@@ -1,12 +1,19 @@
 package mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo;
 
-import java.util.Comparator;
 import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoComparator;
 import org.joda.time.LocalDateTime;
+import org.springframework.stereotype.Component;
 
-public class SubmissionEventInfoDateComparator implements Comparator<SubmissionEventInfo> {
+@Component
+public class SubmissionEventInfoDateComparator implements SubmissionEventInfoComparator {
 
-  private final TimeFormatService timeFormatService = new TimeFormatService();
+  private final TimeFormatService timeFormatService;
+
+  public SubmissionEventInfoDateComparator(TimeFormatService timeFormatService) {
+    this.timeFormatService = timeFormatService;
+  }
 
   @Override
   public int compare(final SubmissionEventInfo s1, final SubmissionEventInfo s2) {

@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.domain.submission;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
 import java.util.Optional;
+
+import mops.hhu.de.rheinjug1.praxis.adapters.auth.AccountImpl;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.SubmissionNotFoundException;
@@ -25,7 +27,7 @@ public class SubmissionServiceTest {
   @MockBean private SubmissionRepository submissionRepository;
 
   private static final Account TEST_ACCOUNT =
-      new Account("testName", "testEmail", "", new HashSet<>());
+      new AccountImpl("testName", "testEmail", "", new HashSet<>());
 
   @Test
   public void an_existent_submission_gets_accepted() throws SubmissionNotFoundException {

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.adapters.auth.AccountImpl;
 import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
+import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptCreationAndStorageService;
@@ -34,12 +35,13 @@ public class SubmissionUserController {
   private final SubmissionService submissionService;
   private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
   private final ReceiptSendService receiptSendService;
+  private final AccountFactory accountFactory;
 
   @GetMapping
   @Secured("ROLE_studentin")
   public String showMySubmissions(final KeycloakAuthenticationToken token, final Model model) {
 
-    final Account account = new AccountImplImpl(token);
+    final Account account = accountFactory.createFromToken(token);
     model.addAttribute(ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
         ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE,
@@ -55,7 +57,7 @@ public class SubmissionUserController {
       final Model model,
       @PathVariable("submissionId") final Long submissionId)
       throws Throwable {
-    final Account account = new AccountImplImpl(token);
+    final Account account = accountFactory.createFromToken(token);
     model.addAttribute(ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE, account);
 
     final Optional<Submission> submission =

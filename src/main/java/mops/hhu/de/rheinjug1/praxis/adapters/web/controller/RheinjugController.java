@@ -7,7 +7,10 @@ import io.micrometer.core.instrument.MeterRegistry;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+
+import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoComparator;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
@@ -30,23 +33,26 @@ public class RheinjugController {
   private final MeetupService meetupService;
   private final Counter publicAccess;
   private final ChartService chartService;
+  private final AccountFactory accountFactory;
 
   @Autowired
   public RheinjugController(
-      final MeterRegistry registry,
-      final MeetupService meetupService,
-      final ChartService chartService) {
+          final MeterRegistry registry,
+          final MeetupService meetupService,
+          final ChartService chartService,
+          final AccountFactory accountFactory) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
     this.meetupService = meetupService;
     this.chartService = chartService;
+    this.accountFactory = accountFactory;
   }
 
   @GetMapping("/")
   @Secured({"ROLE_orga", "ROLE_studentin"})
   public String home(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      final Account account = new Account(token);
+      final Account account = accountFactory.createFromToken(token);
       model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
     final List<Event> upcoming = meetupService.getEventsByStatus("upcoming");
@@ -57,13 +63,15 @@ public class RheinjugController {
 
   @GetMapping("/events")
   @Secured({"ROLE_orga", "ROLE_studentin"})
-  public String showAllEvents(final KeycloakAuthenticationToken token, final Model model) {
+  public String showAllEvents(final KeycloakAuthenticationToken token,
+                              final SubmissionEventInfoComparator comparator,
+                              final Model model) {
 
-    final Account account = new Account(token);
+    final Account account = accountFactory.createFromToken(token);
 
     final List<SubmissionEventInfo> submissionEventInfos =
         meetupService.getAllEventsWithInfosByEmail(account);
-    submissionEventInfos.sort(new SubmissionEventInfoDateComparator());
+    submissionEventInfos.sort(comparator);
 
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute("eventsWithInfos", submissionEventInfos);
@@ -81,7 +89,7 @@ public class RheinjugController {
   @Secured("ROLE_orga")
   public String getStatistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      model.addAttribute(ACCOUNT_ATTRIBUTE, new Account(token));
+      model.addAttribute(ACCOUNT_ATTRIBUTE, accountFactory.createFromToken(token));
     }
     model.addAttribute("chart", chartService.getXEventsChart(6));
     model.addAttribute(

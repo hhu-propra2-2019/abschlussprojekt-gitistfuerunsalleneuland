@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.old.models;
+package mops.hhu.de.rheinjug1.praxis.domain.chart;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

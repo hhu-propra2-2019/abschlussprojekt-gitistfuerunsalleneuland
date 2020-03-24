@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.domain.chart;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -7,7 +7,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import mops.hhu.de.rheinjug1.praxis.adapters.time.TimeFormatServiceImpl;
+import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
+import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +35,7 @@ public class ChartServiceTest {
     this.meetupServiceMock = mock(MeetupService.class);
     final SignatureRepository signatureRepository = mock(SignatureRepository.class);
     this.chartService =
-        new ChartService(meetupServiceMock, signatureRepository, new TimeFormatService());
+        new ChartService(meetupServiceMock, signatureRepository, new TimeFormatServiceImpl());
   }
 
   @Test

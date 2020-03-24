@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.old.database.entities;
+package mops.hhu.de.rheinjug1.praxis.domain.submission;
 
 import static mops.hhu.de.rheinjug1.praxis.domain.submission.Submission.builder;
 import static org.assertj.core.api.Assertions.assertThat;
