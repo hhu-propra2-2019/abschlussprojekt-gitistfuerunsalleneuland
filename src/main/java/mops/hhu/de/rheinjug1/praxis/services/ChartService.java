@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
@@ -16,6 +17,7 @@ public class ChartService {
   private final MeetupService meetupService;
   private final SignatureRepository signatureRepository;
   private final TimeFormatService timeFormatService;
+  private static final int DEFAULT_NUMBER_DATAPOINTS = 6;
 
   public int getNumberOfReceiptsByMeetupType(final MeetupType meetupType) {
     return signatureRepository.countSignatureByMeetupType(meetupType.databaseRepresentation());
@@ -33,5 +35,24 @@ public class ChartService {
         xEvents.stream().map(i -> meetupService.getSubmissionCount(i)).collect(Collectors.toList());
 
     return new Chart(dates, participants);
+  }
+
+  public Chart getXEventsChart(final Optional<String> datapoints) {
+    final int numberDatapoints = getNumberDatapoints(datapoints);
+    if (numberDatapoints < 0) {
+      return getXEventsChart(meetupService.getNumberPastEvents());
+    }
+    return getXEventsChart(numberDatapoints);
+  }
+
+  private int getNumberDatapoints(final Optional<String> datapoints) {
+    if (datapoints.isPresent()) {
+      try {
+        return Integer.parseInt(datapoints.get());
+      } catch (NumberFormatException e) {
+        return DEFAULT_NUMBER_DATAPOINTS;
+      }
+    }
+    return DEFAULT_NUMBER_DATAPOINTS;
   }
 }

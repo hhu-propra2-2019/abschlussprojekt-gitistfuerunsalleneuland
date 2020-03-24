@@ -17,7 +17,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnusedPrivateMethod"})
+@SuppressWarnings({
+  "PMD.UnusedPrivateField",
+  "PMD.UnusedPrivateMethod",
+  "PMD.AvoidDuplicateLiterals"
+})
 @EnableScheduling
 @Component
 @AllArgsConstructor
@@ -79,10 +83,14 @@ public class MeetupService {
   public List<Event> getLastXEvents(final int x) {
     final List<Event> pastEvents = getEventsByStatus("past");
     final int n = pastEvents.size();
-    if (n < x) {
+    if (n <= x) {
       return pastEvents;
     }
     return pastEvents.subList(n - x, n);
+  }
+
+  public int getNumberPastEvents() {
+    return getEventsByStatus("past").size();
   }
 
   public Event getEventIfExistent(final Long meetUpId) throws EventNotFoundException {
