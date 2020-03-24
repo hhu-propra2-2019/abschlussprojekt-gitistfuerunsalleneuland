@@ -1,10 +1,5 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.meetup;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
@@ -13,11 +8,17 @@ import mops.hhu.de.rheinjug1.praxis.domain.event.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnusedPrivateMethod"})
 @EnableScheduling
@@ -28,7 +29,7 @@ public class MeetupServiceImpl implements MeetupService {
   private final MeetupClient meetupClient;
   private final EventRepository eventRepository;
   final JdbcAggregateTemplate jdbcAggregateTemplate;
-  private final SubmissionEventInfoRepository submissionEventInfoRepository;
+  private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
   final SubmissionRepository submissionRepository;
 
   @PostConstruct
@@ -47,16 +48,16 @@ public class MeetupServiceImpl implements MeetupService {
 
   @Override
   public List<SubmissionEventInfo> getAllEventsWithInfosByEmail(final Account account) {
-    return submissionEventInfoRepository.getAllEventsWithUserInfosByEmail(account.getEmail());
-  }
-
-  private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
-    meetupEvents.stream().filter(allEvents::contains).forEach(eventRepository::save);
+    return submissionEventInfoDomainRepository.getAllEventsWithUserInfosByEmail(account.getEmail());
   }
 
   @Override
   public int getSubmissionCount(final Event event) {
     return submissionRepository.countSubmissionByMeetupId(event.getId());
+  }
+
+  private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
+    meetupEvents.stream().filter(allEvents::contains).forEach(eventRepository::save);
   }
 
   private void insertNonExistingEvents(
@@ -105,5 +106,10 @@ public class MeetupServiceImpl implements MeetupService {
     }
 
     return eventOptional.get();
+  }
+
+  public String getEventTitleIfExistent(final Long meetUpId) throws EventNotFoundException {
+
+    return getEventIfExistent(meetUpId).getName();
   }
 }

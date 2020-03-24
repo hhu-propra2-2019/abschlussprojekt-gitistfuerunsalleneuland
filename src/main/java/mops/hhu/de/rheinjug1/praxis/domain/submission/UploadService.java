@@ -15,7 +15,6 @@ public interface UploadService {
       throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
           IOException, InterruptedException;
 
-  // TODO: Diese Methode macht nichts ausser evtl eine Exception zu werfen...
-  void checkUploadable(Long meetupId, Account account)
+  String checkUploadableAndReturnTitle(Long meetupId, Account account)
       throws EventNotFoundException, DuplicateSubmissionException;
 }

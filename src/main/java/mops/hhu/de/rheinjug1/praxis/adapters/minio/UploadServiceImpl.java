@@ -6,8 +6,10 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
+import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.UploadService;
@@ -21,6 +23,7 @@ import org.xmlpull.v1.XmlPullParserException;
 public class UploadServiceImpl implements UploadService {
 
   private final SubmissionRepository submissionRepository;
+  private final MeetupService meetupService;
   private final MinIoUploadService minIoUploadService;
   private final MinIoDownloadService minIoDownloadService;
   private final EventRepository eventRepository;
@@ -29,7 +32,7 @@ public class UploadServiceImpl implements UploadService {
   public void uploadAndSaveSubmission(
       final Long meetupId, final MultipartFile file, final Account account)
       throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
-          IOException, InterruptedException {
+          IOException {
 
     final String fileName = generateFileName(meetupId, account.getEmail());
 
@@ -46,22 +49,22 @@ public class UploadServiceImpl implements UploadService {
     submissionRepository.save(newSubmission);
   }
 
-  // TODO: Diese Methode macht nichts ausser evtl eine Exception zu werfen...
+  private static String generateFileName(final Long meetupId, final String email) {
+    final String sanitizedEmail = email.replace("@", "_")
+            .replace(".", "_");
+    return String.format("Zusammenfassung-%d-%s.txt", meetupId, sanitizedEmail);
+  }
+
   @Override
-  public void checkUploadable(final Long meetupId, final Account account)
+  public String checkUploadableAndReturnTitle(final Long meetupId, final Account account)
       throws EventNotFoundException, DuplicateSubmissionException {
-    if (!eventRepository.existsById(meetupId)) {
-      throw new EventNotFoundException(meetupId);
-    }
+
+    final Event event = meetupService.getEventIfExistent(meetupId);
 
     if (existsByMeetupIdAndEmail(meetupId, account.getEmail())) {
       throw new DuplicateSubmissionException(meetupId, account.getEmail());
     }
-  }
-
-  private static String generateFileName(final Long meetupId, final String email) {
-    final String sanitizedEmail = email.replace("@", "_").replace(".", "_");
-    return String.format("Zusammenfassung-%d-%s.txt", meetupId, sanitizedEmail);
+    return event.getName();
   }
 
   private boolean existsByMeetupIdAndEmail(final Long meetupId, final String email) {

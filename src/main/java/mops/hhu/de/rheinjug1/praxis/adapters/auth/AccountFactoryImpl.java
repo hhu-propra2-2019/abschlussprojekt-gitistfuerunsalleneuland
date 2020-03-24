@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountFactoryImpl implements mops.hhu.de.rheinjug1.praxis.domain.AccountFactory {
   @Override
-  public Account createFromToken(final KeycloakAuthenticationToken token) {
+  public Account createFromPrincipal(final KeycloakAuthenticationToken token) {
     final KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
     return AccountImpl.builder()
         .name(principal.getName())

@@ -6,8 +6,12 @@ import java.time.ZonedDateTime;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import org.joda.time.LocalDateTime;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 public interface TimeFormatService {
+  String getDatabaseDateTimePattern();
+
   String format(Duration duration);
 
   String toLocalEventTimeString(ZonedDateTime utcTime, ZoneId zoneId);
@@ -22,7 +26,11 @@ public interface TimeFormatService {
 
   String getGermanDateString(Event event);
 
+  String getGermanDateTimeString(Event event);
+
   String getGermanTimeString(Event event);
 
   LocalDateTime getLocalDateTime(String dateTimeString);
+
+  String getKeepAcceptedSubmissionsExpirationDate();
 }

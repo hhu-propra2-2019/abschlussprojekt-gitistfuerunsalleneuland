@@ -1,11 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller.submission;
 
-import java.io.IOException;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.util.Optional;
-import javax.mail.MessagingException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
@@ -14,39 +9,72 @@ import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptCreationAndStorageService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionService;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionAccessService;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SubmissionNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.UnauthorizedSubmissionAccessException;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
+import java.util.Optional;
+
+import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE;
+
 @Controller
-@AllArgsConstructor
 @RequestMapping("/user/submissions")
+@RequiredArgsConstructor
 public class SubmissionUserController {
 
-  private final SubmissionService submissionService;
+  @Value("${submission.template.path}")
+  private String submissionTemplatePath;
+
+  private final SubmissionAccessService submissionAccessService;
   private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
   private final ReceiptSendService receiptSendService;
   private final AccountFactory accountFactory;
+  private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
 
   @GetMapping
   @Secured("ROLE_studentin")
   public String showMySubmissions(final KeycloakAuthenticationToken token, final Model model) {
 
-    final Account account = accountFactory.createFromToken(token);
-    model.addAttribute(ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE, account);
+    final Account account = accountFactory.createFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
-        ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE,
-        submissionService.getAllSubmissionsWithInfosByUser(account));
+        ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE,
+        submissionEventInfoDomainRepository.getAllSubmissionsWithInfosByUser(account));
 
     return "user/mySubmissions";
+  }
+
+  @GetMapping("/download/template")
+  @Secured("ROLE_studentin")
+  @ResponseBody
+  public ResponseEntity<Resource> downloadTemplate(
+      final KeycloakAuthenticationToken token, final Model model) {
+    final Account account = accountFactory.createFromPrincipal(token);
+
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+    final Resource file = new FileSystemResource(submissionTemplatePath);
+    return ResponseEntity.ok()
+        .header(
+            HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+        .body(file);
   }
 
   @PostMapping(value = "/create-receipt/{submissionId}")
@@ -55,12 +83,21 @@ public class SubmissionUserController {
       final KeycloakAuthenticationToken token,
       final Model model,
       @PathVariable("submissionId") final Long submissionId)
+<<<<<<< HEAD:src/main/java/mops/hhu/de/rheinjug1/praxis/adapters/web/controller/submission/SubmissionUserController.java
       throws Throwable {
-    final Account account = accountFactory.createFromToken(token);
-    model.addAttribute(ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE, account);
+    final Account account = accountFactory.createFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
     final Optional<Submission> submission =
         submissionService.getAcceptedSubmissionIfAuthorized(submissionId, account);
+=======
+      throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
+    final Account account = createAccountFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+
+    final Submission submission =
+        submissionAccessService.getAcceptedSubmissionIfAuthorized(submissionId, account);
+>>>>>>> master:src/main/java/mops/hhu/de/rheinjug1/praxis/controller/SubmissionUserController.java
 
     try {
       final Receipt receipt =

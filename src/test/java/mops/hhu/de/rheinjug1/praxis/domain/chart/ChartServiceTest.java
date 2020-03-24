@@ -23,7 +23,7 @@ public class ChartServiceTest {
 
   @BeforeEach
   void init() {
-    final String time = "12:30 - 12.03.2020";
+    final String time = "2020-03-12 12:30:00";
     sampleData.add(
         Event.builder().id(1).zonedDateTime(time).meetupType(MeetupType.RHEINJUG).build());
     sampleData.add(
@@ -33,7 +33,11 @@ public class ChartServiceTest {
     this.meetupServiceMock = mock(MeetupService.class);
     final SignatureRepository signatureRepository = mock(SignatureRepository.class);
     this.chartService =
+<<<<<<< HEAD:src/test/java/mops/hhu/de/rheinjug1/praxis/domain/chart/ChartServiceTest.java
         new ChartService(meetupServiceMock, signatureRepository, new TimeFormatServiceImpl());
+=======
+        new ChartService(meetupServiceMock, signatureRepository, new TimeFormatService());
+>>>>>>> master:src/test/java/mops/hhu/de/rheinjug1/praxis/services/ChartServiceTest.java
   }
 
   @Test

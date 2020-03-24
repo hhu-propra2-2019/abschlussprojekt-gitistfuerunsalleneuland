@@ -14,6 +14,7 @@ import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoComparator;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,29 +29,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class RheinjugController {
 
   private final Counter authenticatedAccess;
-  private final MeetupService meetupService;
   private final Counter publicAccess;
-  private final ChartService chartService;
+    private final MeetupService meetupService;
+    private final ChartService chartService;
   private final AccountFactory accountFactory;
+  private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
 
-  @Autowired
+    @Autowired
   public RheinjugController(
-      final MeterRegistry registry,
-      final MeetupService meetupService,
-      final ChartService chartService,
-      final AccountFactory accountFactory) {
+          final MeterRegistry registry,
+          final MeetupService meetupService,
+          final ChartService chartService,
+          final AccountFactory accountFactory,
+          final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
     this.meetupService = meetupService;
     this.chartService = chartService;
     this.accountFactory = accountFactory;
-  }
+    this.submissionEventInfoDomainRepository = submissionEventInfoDomainRepository;
+    }
 
   @GetMapping("/")
   @Secured({"ROLE_orga", "ROLE_studentin"})
   public String home(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      final Account account = accountFactory.createFromToken(token);
+      final Account account = accountFactory.createFromPrincipal(token);
       model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
     final List<Event> upcoming = meetupService.getEventsByStatus("upcoming");
@@ -66,11 +70,10 @@ public class RheinjugController {
       final SubmissionEventInfoComparator comparator,
       final Model model) {
 
-    final Account account = accountFactory.createFromToken(token);
+    final Account account = accountFactory.createFromPrincipal(token);
 
     final List<SubmissionEventInfo> submissionEventInfos =
-        meetupService.getAllEventsWithInfosByEmail(account);
-    submissionEventInfos.sort(comparator);
+            submissionEventInfoDomainRepository.getAllEventsWithInfosByUserSorted(account);
 
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute("eventsWithInfos", submissionEventInfos);
@@ -84,11 +87,11 @@ public class RheinjugController {
     return "redirect:/";
   }
 
-  @GetMapping("/admin/statistics")
+  @GetMapping("/statistics")
   @Secured("ROLE_orga")
   public String getStatistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
-      model.addAttribute(ACCOUNT_ATTRIBUTE, accountFactory.createFromToken(token));
+      model.addAttribute(ACCOUNT_ATTRIBUTE, accountFactory.createFromPrincipal(token));
     }
     model.addAttribute("chart", chartService.getXEventsChart(6));
     model.addAttribute(

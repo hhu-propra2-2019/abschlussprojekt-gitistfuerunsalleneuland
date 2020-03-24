@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.4.RELEASE'
+        springBootVersion = '2.2.5.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -94,6 +94,7 @@ dependencies {
     implementation 'io.minio:minio:6.0.13'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.13'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 }
 
 test {
