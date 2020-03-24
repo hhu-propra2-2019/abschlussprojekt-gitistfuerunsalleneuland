@@ -31,7 +31,7 @@ public class FormaterServiceTest {
   void formatDate() {
     final ZonedDateTime testDate = ZonedDateTime.of(2020, 3, 12, 12, 30, 0, 0, ZoneId.of("UTC"));
     final ZoneId testZone = ZoneId.of("UTC");
-    final String wantedFormatting = "12:30 - 12.03.2020";
+    final String wantedFormatting = "2020-03-12 12:30:00";
 
     assertThat(formater.toLocalEventTimeString(testDate, testZone)).isEqualTo(wantedFormatting);
   }
@@ -41,7 +41,7 @@ public class FormaterServiceTest {
     final ZonedDateTime testDate = ZonedDateTime.of(2020, 3, 12, 12, 30, 0, 0, ZoneId.of("UTC"));
     final ZoneId germanZone = ZoneId.of("Europe/Berlin");
     final String wantedFormatting =
-        "13:30 - 12.03.2020"; // Winterzeit (bzw. Normalzeit) bis 29.03.2020 +1:00
+        "2020-03-12 13:30:00"; // Winterzeit (bzw. Normalzeit) bis 29.03.2020 +1:00
 
     assertThat(formater.toLocalEventTimeString(testDate, germanZone)).isEqualTo(wantedFormatting);
   }
