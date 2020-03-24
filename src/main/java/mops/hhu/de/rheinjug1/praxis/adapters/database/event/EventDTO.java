@@ -1,12 +1,15 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.database.event;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Value;
+import mops.hhu.de.rheinjug1.praxis.annotations.DB;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.annotation.Id;
+import org.springframework.stereotype.Component;
 
-@Data
+@DB
+@Value
 @Builder
 public class EventDTO {
   @Id long id;

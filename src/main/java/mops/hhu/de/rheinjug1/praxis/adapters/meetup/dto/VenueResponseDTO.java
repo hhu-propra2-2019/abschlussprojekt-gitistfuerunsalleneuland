@@ -2,8 +2,10 @@ package mops.hhu.de.rheinjug1.praxis.adapters.meetup.dto;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mops.hhu.de.rheinjug1.praxis.annotations.DTO;
 
 @SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
+@DTO
 @Setter
 @NoArgsConstructor
 public class VenueResponseDTO {

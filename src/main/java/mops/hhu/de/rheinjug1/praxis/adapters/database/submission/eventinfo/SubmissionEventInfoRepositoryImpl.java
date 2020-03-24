@@ -1,6 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.database.submission.eventinfo;
 
-import mops.hhu.de.rheinjug1.praxis.adapters.database.DrivenAdapter;
+import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoComparator;
@@ -11,21 +11,15 @@ import java.util.List;
 
 import static java.util.stream.Collectors.*;
 
+@AllArgsConstructor
 @Repository
-public class SubmissionEventInfoRepositoryImpl extends DrivenAdapter<SubmissionEventInfo, SubmissionEventInfoDTO> implements SubmissionEventInfoRepository {
+public class SubmissionEventInfoRepositoryImpl implements SubmissionEventInfoRepository {
     private final SubmissionEventInfoBackendRepo submissionEventInfoBackendRepo;
     private final SubmissionEventInfoComparator comparator;
 
-    public SubmissionEventInfoRepositoryImpl(SubmissionEventInfoBackendRepo submissionEventInfoBackendRepo, SubmissionEventInfoComparator comparator) {
-        this.submissionEventInfoBackendRepo = submissionEventInfoBackendRepo;
-        this.comparator = comparator;
-        this.entity = SubmissionEventInfo.builder().build();
-        this.dto = SubmissionEventInfoDTO.builder().build();
-    }
-
     @Override
     public List<SubmissionEventInfo> getAllSubmissionsWithInfosByUser(final Account account) {
-        return toEntity(submissionEventInfoBackendRepo.getSubmissionInfoListByEmail(account.getEmail()));
+        return submissionEventInfoBackendRepo.getSubmissionInfoListByEmail(account.getEmail());
     }
 
     @Override
@@ -37,7 +31,7 @@ public class SubmissionEventInfoRepositoryImpl extends DrivenAdapter<SubmissionE
 
     @Override
     public List<SubmissionEventInfo> getAllEventsWithInfosByUser(final Account account) {
-        return toEntity(submissionEventInfoBackendRepo.getAllEventsWithUserInfosByEmail(account.getEmail()));
+        return submissionEventInfoBackendRepo.getAllEventsWithUserInfosByEmail(account.getEmail());
     }
 
     @Override
@@ -49,7 +43,7 @@ public class SubmissionEventInfoRepositoryImpl extends DrivenAdapter<SubmissionE
 
     @Override
     public List<SubmissionEventInfo> getAllSubmissionsWithInfos() {
-        return toEntity(submissionEventInfoBackendRepo.getAllSubmissionsWithInfos());
+        return submissionEventInfoBackendRepo.getAllSubmissionsWithInfos();
     }
 
     @Override

@@ -1,14 +1,17 @@
 package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import mops.hhu.de.rheinjug1.praxis.annotations.DB;
+import org.springframework.data.annotation.Id;
 
-@Data
+@DB
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignatureRecord {
 
-  private String signature;
+  @Id private String signature;
   private Long meetupId;
 }

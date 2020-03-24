@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mops.hhu.de.rheinjug1.praxis.annotations.DTO;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 
+@DTO
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
