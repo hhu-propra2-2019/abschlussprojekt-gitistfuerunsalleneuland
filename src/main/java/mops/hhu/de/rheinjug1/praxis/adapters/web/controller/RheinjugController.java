@@ -14,7 +14,7 @@ import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoComparator;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class RheinjugController {
     private final MeetupService meetupService;
     private final ChartService chartService;
   private final AccountFactory accountFactory;
-  private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
+  private final SubmissionEventInfoRepository submissionEventInfoRepository;
 
     @Autowired
   public RheinjugController(
@@ -41,13 +41,13 @@ public class RheinjugController {
           final MeetupService meetupService,
           final ChartService chartService,
           final AccountFactory accountFactory,
-          final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository) {
+          final SubmissionEventInfoRepository submissionEventInfoRepository) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
     this.meetupService = meetupService;
     this.chartService = chartService;
     this.accountFactory = accountFactory;
-    this.submissionEventInfoDomainRepository = submissionEventInfoDomainRepository;
+    this.submissionEventInfoRepository = submissionEventInfoRepository;
     }
 
   @GetMapping("/")
@@ -73,7 +73,7 @@ public class RheinjugController {
     final Account account = accountFactory.createFromPrincipal(token);
 
     final List<SubmissionEventInfo> submissionEventInfos =
-            submissionEventInfoDomainRepository.getAllEventsWithInfosByUserSorted(account);
+            submissionEventInfoRepository.getAllEventsWithInfosByUserSorted(account);
 
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute("eventsWithInfos", submissionEventInfos);

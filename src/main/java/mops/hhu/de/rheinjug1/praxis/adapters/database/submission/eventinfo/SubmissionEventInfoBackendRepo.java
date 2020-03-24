@@ -8,12 +8,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SubmissionEventInfoDbRepository {
+public class SubmissionEventInfoBackendRepo {
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
 
   @Autowired
-  public SubmissionEventInfoDbRepository(final NamedParameterJdbcTemplate jdbcTemplate) {
+  public SubmissionEventInfoBackendRepo(final NamedParameterJdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
 

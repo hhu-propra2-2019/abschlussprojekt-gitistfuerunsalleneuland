@@ -1,12 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.domain.event;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
-import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.CrudRepository;
+import java.util.Optional;
 
-public interface EventRepository extends CrudRepository<Event, Long> {
-
-  @Override
-  @Query("SELECT * FROM rheinjug1.event")
-  List<Event> findAll();
+@Repository
+public interface EventRepository {
+    List<Event> findAll();
+    void save(Event event);
+    Optional<Event> findById(Long meetUpId);
 }

@@ -1,16 +1,15 @@
-package mops.hhu.de.rheinjug1.praxis.domain.event;
+package mops.hhu.de.rheinjug1.praxis.adapters.database.event;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import mops.hhu.de.rheinjug1.praxis.annotations.DB;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.data.annotation.Id;
 
+@DB
 @Value
 @Builder
-public class Event {
+public class EventDTO {
   @Id long id;
   String duration;
   String name;

@@ -4,16 +4,15 @@ import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.adapters.database.event.EventBackendRepo;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoRepository;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -31,7 +30,7 @@ public class MeetupServiceImpl implements MeetupService {
   private final MeetupClient meetupClient;
   private final EventRepository eventRepository;
   final JdbcAggregateTemplate jdbcAggregateTemplate;
-  private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
+  private final SubmissionEventInfoRepository submissionEventInfoRepository;
   final SubmissionRepository submissionRepository;
 
   @PostConstruct
@@ -50,7 +49,7 @@ public class MeetupServiceImpl implements MeetupService {
 
   @Override
   public List<SubmissionEventInfo> getAllEventsWithInfosByUser(final Account account) {
-    return submissionEventInfoDomainRepository.getAllEventsWithInfosByUser(account);
+    return submissionEventInfoRepository.getAllEventsWithInfosByUser(account);
   }
 
   @Override

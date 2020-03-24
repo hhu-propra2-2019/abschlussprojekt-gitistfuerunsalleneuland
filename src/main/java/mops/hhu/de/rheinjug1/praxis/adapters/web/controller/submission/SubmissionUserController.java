@@ -1,7 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller.submission;
 
 import lombok.RequiredArgsConstructor;
-import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
@@ -10,7 +9,7 @@ import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptCreationAndStorageServ
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptSendService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionAccessService;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.SubmissionNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.UnauthorizedSubmissionAccessException;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -30,7 +29,6 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.util.Optional;
 
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE;
@@ -47,7 +45,7 @@ public class SubmissionUserController {
   private final ReceiptCreationAndStorageService receiptCreationAndStorageService;
   private final ReceiptSendService receiptSendService;
   private final AccountFactory accountFactory;
-  private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
+  private final SubmissionEventInfoRepository submissionEventInfoRepository;
 
   @GetMapping
   @Secured("ROLE_studentin")
@@ -57,7 +55,7 @@ public class SubmissionUserController {
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(
         ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE,
-        submissionEventInfoDomainRepository.getAllSubmissionsWithInfosByUser(account));
+        submissionEventInfoRepository.getAllSubmissionsWithInfosByUser(account));
 
     return "user/mySubmissions";
   }

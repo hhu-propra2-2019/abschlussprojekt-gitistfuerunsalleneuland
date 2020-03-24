@@ -10,6 +10,7 @@ import java.security.cert.CertificateException;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.adapters.database.event.EventBackendRepo;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
