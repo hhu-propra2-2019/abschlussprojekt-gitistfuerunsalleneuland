@@ -10,11 +10,12 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
+import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
+import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping
 @SuppressWarnings({"PMD.UnusedImports", "PMD.ConfusingTernary"})
 @Component
-@RequiredArgsConstructor
 public class InputHandler {
 
   private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
@@ -32,9 +32,8 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String KEINE_DATEI = "Keine Datei";
 
-  private final ReceiptReaderInterface fileReaderService;
-  private final ReceiptVerificationInterface verificationService;
-  private final ReceiptReaderInterface receiptReaderService;
+  private final ReceiptReaderInterface fileReaderService = new FileReaderService();
+  private final ReceiptVerificationInterface verificationService = new VerificationService();
 
   @Setter private String matrikelNummer;
 
@@ -53,7 +52,6 @@ public class InputHandler {
   private String entwickelbarReceiptUploadMessage = "Entwickelbar Quittung";
 
   public void setFirstRheinjugReceipt(final MultipartFile firstRheinjugFile) {
-	  System.out.println("1");
     firstRheinjugReceiptUploadMessage = getUploadMessage(firstRheinjugFile, MeetupType.RHEINJUG);
     if (firstRheinjugReceiptUploadMessage.equals(VALIDE)) {
       firstRheinjugReceipt = newReceipt.cloneThisReceipt();
@@ -61,7 +59,6 @@ public class InputHandler {
   }
 
   public void setSecondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
-	  System.out.println("2");
 	    secondRheinjugReceiptUploadMessage = getUploadMessage(seccondRheinjugFile, MeetupType.RHEINJUG);
     if (secondRheinjugReceiptUploadMessage.equals(VALIDE)) {
       secondRheinjugReceipt = newReceipt.cloneThisReceipt();
@@ -69,7 +66,6 @@ public class InputHandler {
   }
 
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
-	  System.out.println("3");
 	    thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, MeetupType.RHEINJUG);
     if (thirdRheinjugReceiptUploadMessage.equals(VALIDE)) {
       thirdRheinjugReceipt = newReceipt.cloneThisReceipt();
@@ -77,7 +73,6 @@ public class InputHandler {
   }
 
   public void setEntwickelbarReceipt(final MultipartFile entwickelbarFile) {
-	  System.out.println("4");
 	    entwickelbarReceiptUploadMessage = getUploadMessage(entwickelbarFile, MeetupType.ENTWICKELBAR);
     if (entwickelbarReceiptUploadMessage.equals(VALIDE)) {
       entwickelbarReceipt = newReceipt.cloneThisReceipt();
@@ -102,8 +97,7 @@ public class InputHandler {
       return KEINE_DATEI;
     }
     try {
-      newReceipt = receiptReaderService.read(uploadedFile);
-
+      newReceipt = fileReaderService.read(uploadedFile);
       if (!newReceipt.getMeetupType().equals(type)) {
         return FALSCHE_VERANSTALTUNG;
       } else if (isDuplicateSignature(newReceipt.getSignature())) {
@@ -113,7 +107,6 @@ public class InputHandler {
         return VALIDE;
       }
     } catch (IOException e) {
-
       return FEHLERHAFTE_QUITTUNG;
     }
   }

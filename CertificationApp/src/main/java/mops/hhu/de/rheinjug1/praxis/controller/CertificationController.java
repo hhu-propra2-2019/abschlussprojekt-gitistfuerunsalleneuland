@@ -22,6 +22,7 @@ import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import mops.hhu.de.rheinjug1.praxis.services.CertificationService;
 import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
 import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
+import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -50,6 +51,15 @@ public class CertificationController {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
   }
+  
+  private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
+	    final KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
+	    return new Account(
+	        principal.getName(),
+	        principal.getKeycloakSecurityContext().getIdToken().getEmail(),
+	        null,
+	        token.getAccount().getRoles());
+	  } 
 
   @GetMapping("/")
   @Secured({"ROLE_studentin", "ROLE_orga"})
@@ -60,7 +70,7 @@ public class CertificationController {
     }
     model.addAttribute(
         INPUT_ATTRIBUTE,
-        new InputHandler(fileReaderService, verificationService, fileReaderService));
+        new InputHandler());
     authenticatedAccess.increment();
     return "home";
   }
@@ -68,21 +78,21 @@ public class CertificationController {
   @PostMapping("/")
   @Secured({"ROLE_student", "ROLE_orga"})
   public String submitReceipt(
-      final KeycloakAuthenticationToken token, final Model model, final InputHandler input)
+      final KeycloakAuthenticationToken token, final Model model, final InputHandler inputHandler)
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
-
-    if (input.areRheinjugUploadsOkForCertification() && input.verifyRheinjug()) {
-      certificationService.createCertification(input);
+	  
+    if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
+      certificationService.createCertification(inputHandler);
     }
     // und sowas wie mailservice.send
-    if (input.isEntwickelbarUploadOkForCertification() && input.verifyEntwickelbar()) {
-      certificationService.createCertification(input);
+    if (inputHandler.isEntwickelbarUploadOkForCertification() && inputHandler.verifyEntwickelbar()) {
+      certificationService.createCertification(inputHandler);
     }
 
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-    model.addAttribute(INPUT_ATTRIBUTE, input);
+    model.addAttribute(INPUT_ATTRIBUTE, inputHandler);
     authenticatedAccess.increment();
     return "home";
   }

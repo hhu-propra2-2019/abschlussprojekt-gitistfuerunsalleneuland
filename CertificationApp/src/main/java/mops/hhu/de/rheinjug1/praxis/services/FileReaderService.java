@@ -30,15 +30,12 @@ public class FileReaderService implements ReceiptReaderInterface {
     if (receiptFile == null) {
       return null;
     }
-    System.out.println(receiptFile.getOriginalFilename());
     String base64ReceiptString = "";
     try (InputStream input = receiptFile.getInputStream();
         Scanner scanner = new Scanner(input).useDelimiter("\\A"); ) {
       base64ReceiptString = scanner.hasNext() ? scanner.next() : "";
-      System.out.println(base64ReceiptString);
       final byte[] receiptBytes = Base64.decode(base64ReceiptString);
       final String receiptString = receiptBytes.toString();
-      System.out.println(receiptString);
       if (isCorrectFormat(receiptString)) {
         return stringToReceipt(receiptString);
       } else {
