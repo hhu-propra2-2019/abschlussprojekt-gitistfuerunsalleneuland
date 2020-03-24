@@ -77,7 +77,7 @@ public class InputHandlerTests {
 
   @Test
   public void isSeccondUploadMessageFalscheVeranstaultung() {
-    handler.setSeccondRheinjugReceipt(validEntwickelbarFile);
+    handler.setSecondRheinjugReceipt(validEntwickelbarFile);
     assertEquals(
         WRONG_RECEIPT_TYPE_WASNT_RECOGNIZED,
         FALSCHE_VERANSTALTUNG,
@@ -86,18 +86,18 @@ public class InputHandlerTests {
 
   @Test
   public void isSeccondUploadMessageFehlerhafteQuittung() {
-    handler.setSeccondRheinjugReceipt(invalidFile);
+    handler.setSecondRheinjugReceipt(invalidFile);
     assertEquals(
         BAD_FILE_WASNT_RECOGNIZED,
         FEHLERHAFTE_QUITTUNG,
-        handler.getSeccondRheinjugReceiptUploadMessage());
+        handler.getSecondRheinjugReceiptUploadMessage());
   }
 
   @Test
   public void isSeccondUploadMessageValide() {
-    handler.setSeccondRheinjugReceipt(validRheinjugFile);
+    handler.setSecondRheinjugReceipt(validRheinjugFile);
     assertEquals(
-        VALID_FILE_WASNT_RECOGNIZED, VALIDE, handler.getSeccondRheinjugReceiptUploadMessage());
+        VALID_FILE_WASNT_RECOGNIZED, VALIDE, handler.getSecondRheinjugReceiptUploadMessage());
   }
 
   @Test
