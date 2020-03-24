@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
+import mops.hhu.de.rheinjug1.praxis.adapters.database.receipt.SignatureBackendRepo;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.stereotype.Component;

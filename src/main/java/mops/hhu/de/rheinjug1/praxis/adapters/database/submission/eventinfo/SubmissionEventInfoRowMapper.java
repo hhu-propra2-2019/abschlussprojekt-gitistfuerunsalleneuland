@@ -6,11 +6,11 @@ import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventI
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.jdbc.core.RowMapper;
 
-public class SubmissionEventInfoRowMapper implements RowMapper<SubmissionEventInfo> {
+public class SubmissionEventInfoRowMapper implements RowMapper<SubmissionEventInfoDTO> {
 
   @Override
-  public SubmissionEventInfo mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-    return SubmissionEventInfo.builder()
+  public SubmissionEventInfoDTO mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+    return SubmissionEventInfoDTO.builder()
         .id(rs.getLong("id"))
         .meetupId(rs.getLong("meetup_id"))
         .eventTitle(rs.getString("meetup_title"))

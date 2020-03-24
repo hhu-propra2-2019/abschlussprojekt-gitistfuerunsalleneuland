@@ -7,14 +7,12 @@ import lombok.ToString;
 import mops.hhu.de.rheinjug1.praxis.adapters.meetup.dto.FeeResponseDTO;
 import mops.hhu.de.rheinjug1.praxis.adapters.meetup.dto.GroupResponseDTO;
 import mops.hhu.de.rheinjug1.praxis.adapters.meetup.dto.VenueResponseDTO;
-import mops.hhu.de.rheinjug1.praxis.annotations.DTO;
 
 @SuppressWarnings({
   "PMD.FieldNamingConventions",
   "PMD.TooManyFields",
   "PMD.UseLocaleWithCaseConversions"
 })
-@DTO
 @ToString
 @Setter
 @Getter(AccessLevel.PACKAGE)

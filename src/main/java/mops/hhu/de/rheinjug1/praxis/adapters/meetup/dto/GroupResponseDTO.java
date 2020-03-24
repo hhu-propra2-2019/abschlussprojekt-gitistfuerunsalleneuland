@@ -1,12 +1,10 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.meetup.dto;
 
-import java.time.ZoneId;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mops.hhu.de.rheinjug1.praxis.annotations.DTO;
+import java.time.ZoneId;
 
 @SuppressWarnings({"PMD.FieldNamingConventions", "PMD.TooManyFields"})
-@DTO
 @NoArgsConstructor
 @Setter
 public class GroupResponseDTO {

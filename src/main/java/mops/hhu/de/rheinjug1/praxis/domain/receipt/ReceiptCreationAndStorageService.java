@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import lombok.AllArgsConstructor;
+import mops.hhu.de.rheinjug1.praxis.adapters.database.receipt.SignatureBackendRepo;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
