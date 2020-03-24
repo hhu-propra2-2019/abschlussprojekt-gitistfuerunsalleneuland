@@ -35,7 +35,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
   @Autowired
   public void configureGlobal(final AuthenticationManagerBuilder auth) {
     final KeycloakAuthenticationProvider keycloakAuthenticationProvider =
-            keycloakAuthenticationProvider();
+        keycloakAuthenticationProvider();
     keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
     auth.authenticationProvider(keycloakAuthenticationProvider);
   }
@@ -56,7 +56,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
   @Scope(scopeName = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
   public AccessToken getAccessToken() {
     final HttpServletRequest request =
-            ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
     return ((KeycloakPrincipal) request.getUserPrincipal()).getKeycloakSecurityContext().getToken();
   }
 
@@ -65,14 +65,14 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     super.configure(http);
     forceHTTPS(http);
     http.cors()
-            .and()
-            .csrf()
-            .disable()
-            .authorizeRequests()
-            .antMatchers("/actuator/**")
-            .hasRole("monitoring")
-            .anyRequest()
-            .permitAll();
+        .and()
+        .csrf()
+        .disable()
+        .authorizeRequests()
+        .antMatchers("/actuator/**")
+        .hasRole("monitoring")
+        .anyRequest()
+        .permitAll();
   }
 
   /**
@@ -83,8 +83,8 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
    */
   private void forceHTTPS(final HttpSecurity http) throws Exception {
     http.requiresChannel()
-            .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
-            .requiresSecure();
+        .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+        .requiresSecure();
   }
 
   /**

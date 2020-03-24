@@ -1,6 +1,5 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import java.io.*;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
@@ -13,7 +12,6 @@ import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
-
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +33,6 @@ public class VerificationService implements ReceiptVerificationInterface {
     final MeetupType meetupType = receipt.getMeetupType();
     final String email = receipt.getEmail();
     final byte[] signature = Base64.decode(receipt.getSignature());
-
     final String hash = hash(meetupType, meetupId, name, email);
     return isVerified(signature, publicKey, hash);
   }
@@ -48,7 +45,7 @@ public class VerificationService implements ReceiptVerificationInterface {
   private boolean isVerified(final byte[] signature, final PublicKey publicKey, final String hash)
       throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 
-    Signature sig = Signature.getInstance("SHA256withRSA");
+    final Signature sig = Signature.getInstance("SHA256withRSA");
     sig.initVerify(publicKey);
     sig.update(hash.getBytes());
     return sig.verify(signature);

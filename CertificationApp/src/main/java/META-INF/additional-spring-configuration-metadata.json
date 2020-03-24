@@ -23,5 +23,15 @@
     "name": "application.name",
     "type": "java.lang.String",
     "description": "A description for 'application.name'"
+  },
+  {
+    "name": "hhu_keycloak.token-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'hhu_keycloak.token-uri'"
+  },
+  {
+    "name": "multipart.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'multipart.enabled'"
   }
 ]}

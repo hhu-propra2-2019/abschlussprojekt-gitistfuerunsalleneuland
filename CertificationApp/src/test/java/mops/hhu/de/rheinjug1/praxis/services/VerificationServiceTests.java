@@ -14,7 +14,6 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
-
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.bouncycastle.util.encoders.Base64;
@@ -31,10 +30,10 @@ public class VerificationServiceTests {
   Receipt receipt;
 
   @Before
-  public void setup() {
+  public void setUp() {
 
     try {
-      String hash = "ENTWICKELBAR" + 1 + "name" + "email";
+      final String hash = "ENTWICKELBAR" + 1 + "name" + "email";
 
       final KeyPair pair = keyService.getKeyPairFromKeyStore();
       final PrivateKey privateKey = pair.getPrivate();
@@ -50,14 +49,21 @@ public class VerificationServiceTests {
               "meetupTitle",
               MeetupType.ENTWICKELBAR,
               Base64.toBase64String(sign.sign()));
-    } catch (InvalidKeyException | KeyStoreException | NoSuchAlgorithmException | CertificateException
-			| UnrecoverableEntryException | SignatureException | IOException e) {
+    } catch (InvalidKeyException
+        | KeyStoreException
+        | NoSuchAlgorithmException
+        | CertificateException
+        | UnrecoverableEntryException
+        | SignatureException
+        | IOException e) {
       fail("Encryption-Error");
     }
   }
-  
+
   @Test
-  public void doesVerificationWork() throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException, SignatureException, IOException {
-		assertTrue("Verifcation failed", verificationService.isSignatureValid(receipt));
+  public void doesVerificationWork()
+      throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
+          UnrecoverableEntryException, SignatureException, IOException {
+    assertTrue("Verifcation failed", verificationService.isSignatureValid(receipt));
   }
 }

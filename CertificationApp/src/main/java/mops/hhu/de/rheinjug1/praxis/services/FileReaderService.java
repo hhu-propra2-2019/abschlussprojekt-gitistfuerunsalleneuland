@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.*;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
+
+import org.bouncycastle.util.encoders.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,16 +23,22 @@ public class FileReaderService implements ReceiptReaderInterface {
   private static final String meetUpPrefix = "meetupId: ";
   private static final String typePrefix = "meetupType: ";
   private static final String signaturePrefix = "signature: ";
+  private static final String emailPrefix = "email: ";
 
   @Override
   public Receipt read(final MultipartFile receiptFile) throws IOException {
     if (receiptFile == null) {
-      throw new IOException();
+      return null;
     }
-    String receiptString = "";
+    System.out.println(receiptFile.getOriginalFilename());
+    String base64ReceiptString = "";
     try (InputStream input = receiptFile.getInputStream();
         Scanner scanner = new Scanner(input).useDelimiter("\\A"); ) {
-      receiptString = scanner.hasNext() ? scanner.next() : "";
+      base64ReceiptString = scanner.hasNext() ? scanner.next() : "";
+      System.out.println(base64ReceiptString);
+      final byte[] receiptBytes = Base64.decode(base64ReceiptString);
+      final String receiptString = receiptBytes.toString();
+      System.out.println(receiptString);
       if (isCorrectFormat(receiptString)) {
         return stringToReceipt(receiptString);
       } else {
@@ -48,10 +57,17 @@ public class FileReaderService implements ReceiptReaderInterface {
         receipt.setMeetupId(Long.parseLong(line));
       } else if (line.contains(typePrefix)) {
         line = line.substring(line.indexOf(typePrefix) + typePrefix.length());
-        receipt.setMeetupType(line);
+        if ("Rheinjug".equals(line)) {
+          receipt.setMeetupType(MeetupType.RHEINJUG);
+        } else if ("Entwickelbar".equals(line)) {
+          receipt.setMeetupType(MeetupType.ENTWICKELBAR);
+        }
       } else if (line.contains(signaturePrefix)) {
         line = line.substring(line.indexOf(signaturePrefix) + signaturePrefix.length());
         receipt.setSignature(line);
+      } else if (line.contains(emailPrefix)) {
+        line = line.substring(line.indexOf(emailPrefix) + emailPrefix.length());
+        receipt.setEmail(line);
       }
     }
     return receipt;
