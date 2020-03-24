@@ -37,7 +37,7 @@
                     <strong>Erfolgreich!</strong> Die Entwickelbar Quittung wurde erfolgreich hochgeladen und abgeschickt.
                 </div>
                 <div class="alert alert-danger alert-dismissible fade show" th:if="${input.getFirstRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
-                                                                                    ${input.getSeccondRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
+                                                                                    ${input.getSecondRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
                                                                                      ${input.getThirdRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
                                                                                       ${input.getEntwickelbarReceiptUploadMessage().equals('Fehlerhafte Quittung')}
                 ">
@@ -69,8 +69,8 @@
 
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input2" th:text="*{getSeccondRheinjugReceiptUploadMessage().equals('Keine Datei')} ? 'Zweite Rheinjug Quittung' : *{getSeccondRheinjugReceiptUploadMessage()}">Zweite Rheinjug Quittung</label>
-                                <input class="form-control" id="input2" th:field="*{seccondRheinjugReceipt}"
+                                <label for="input2" th:text="*{getSecondRheinjugReceiptUploadMessage().equals('Keine Datei')} ? 'Zweite Rheinjug Quittung' : *{getSecondRheinjugReceiptUploadMessage()}">Zweite Rheinjug Quittung</label>
+                                <input class="form-control" id="input2" th:field="*{secondRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>
