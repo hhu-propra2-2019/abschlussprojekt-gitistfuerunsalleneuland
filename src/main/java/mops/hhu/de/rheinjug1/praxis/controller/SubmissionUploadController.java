@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import lombok.AllArgsConstructor;
+import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.exceptions.DuplicateSubmissionException;
 import mops.hhu.de.rheinjug1.praxis.exceptions.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.models.Account;
@@ -27,6 +29,7 @@ import org.xmlpull.v1.XmlPullParserException;
 @RequestMapping("/upload")
 public class SubmissionUploadController {
   private final SubmissionUploadService submissionUploadService;
+  private final EventRepository eventRepository;
 
   @GetMapping("/{meetupId}")
   @Secured("ROLE_studentin")
@@ -38,12 +41,14 @@ public class SubmissionUploadController {
       throws EventNotFoundException, DuplicateSubmissionException {
 
     final Account account = createAccountFromPrincipal(token);
+    final Event event = eventRepository.findById(meetupId).get();
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(UPLOAD_ERROR_ATTRIBUTE, uploadError);
 
     final String meetupTitle =
         submissionUploadService.checkUploadableAndReturnTitle(meetupId, account);
 
+    model.addAttribute("event", event);
     model.addAttribute(MEETUP_ID_ATTRIBUTE, meetupId);
     model.addAttribute(MEETUP_TITLE_ATTRIBUTE, meetupTitle);
 
