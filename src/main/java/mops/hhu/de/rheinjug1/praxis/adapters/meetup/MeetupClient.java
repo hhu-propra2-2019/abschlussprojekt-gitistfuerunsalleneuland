@@ -27,10 +27,10 @@ public class MeetupClient {
   }
 
   public List<Event> getAllEvents() {
-    final ResponseEntity<EventMeetupDTO[]> response =
+    final ResponseEntity<EventResponseDTO[]> response =
         restTemplate.getForEntity(
-            meetupApiUrl + "/events?status=upcoming,past", EventMeetupDTO[].class);
-    final List<EventMeetupDTO> allEvents = Arrays.stream(response.getBody()).collect(toList());
+            meetupApiUrl + "/events?status=upcoming,past", EventResponseDTO[].class);
+    final List<EventResponseDTO> allEvents = Arrays.stream(response.getBody()).collect(toList());
     return allEvents.stream().map(eventFactory::createFromDTO).collect(toList());
   }
 }

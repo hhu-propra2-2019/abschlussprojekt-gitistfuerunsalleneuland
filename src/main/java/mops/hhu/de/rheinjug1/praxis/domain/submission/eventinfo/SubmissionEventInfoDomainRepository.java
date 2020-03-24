@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SubmissionEventInfoRepository {
+public interface SubmissionEventInfoDomainRepository {
   List<SubmissionEventInfo> getAllSubmissionsWithInfosByUser(final Account account);
   List<SubmissionEventInfo> getAllSubmissionsWithInfosByUserSorted(final Account account);
   List<SubmissionEventInfo> getAllEventsWithInfosByUser(final Account account);

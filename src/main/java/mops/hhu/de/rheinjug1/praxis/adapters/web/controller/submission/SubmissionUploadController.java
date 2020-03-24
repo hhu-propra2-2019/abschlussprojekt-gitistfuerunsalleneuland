@@ -7,7 +7,6 @@ import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
-import mops.hhu.de.rheinjug1.praxis.adapters.database.event.EventBackendRepo;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.UploadService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.DuplicateSubmissionException;

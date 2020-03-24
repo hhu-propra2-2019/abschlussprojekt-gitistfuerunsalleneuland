@@ -1,7 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.domain.event;
 
-import mops.hhu.de.rheinjug1.praxis.adapters.meetup.EventMeetupDTO;
+import mops.hhu.de.rheinjug1.praxis.adapters.meetup.EventResponseDTO;
 
 public interface EventFactory {
-  Event createFromDTO(EventMeetupDTO dto);
+  Event createFromDTO(EventResponseDTO dto);
 }

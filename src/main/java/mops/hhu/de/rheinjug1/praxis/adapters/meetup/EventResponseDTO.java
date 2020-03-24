@@ -18,7 +18,7 @@ import mops.hhu.de.rheinjug1.praxis.annotations.DTO;
 @ToString
 @Setter
 @Getter(AccessLevel.PACKAGE)
-public class EventMeetupDTO {
+public class EventResponseDTO {
   private long created;
   private long duration;
   private FeeResponseDTO fee;

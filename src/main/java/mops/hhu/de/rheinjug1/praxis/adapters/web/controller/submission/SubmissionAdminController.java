@@ -5,7 +5,7 @@ import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionAccessService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.SubmissionNotFoundException;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -28,7 +28,7 @@ public class SubmissionAdminController {
 
   private final AccountFactory accountFactory;
   private final SubmissionAccessService submissionAccessService;
-  private final SubmissionEventInfoRepository submissionEventInfoRepository;
+  private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
 
   @GetMapping
   @Secured("ROLE_orga")
@@ -36,7 +36,7 @@ public class SubmissionAdminController {
     final Account account = accountFactory.createFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     final List<SubmissionEventInfo> submissionEventInfos =
-        submissionEventInfoRepository.getAllSubmissionsWithInfosSorted();
+        submissionEventInfoDomainRepository.getAllSubmissionsWithInfosSorted();
     model.addAttribute(ALL_SUBMISSIONS_ATTRIBUTE, submissionEventInfos);
     return "/admin/allSubmissions";
   }

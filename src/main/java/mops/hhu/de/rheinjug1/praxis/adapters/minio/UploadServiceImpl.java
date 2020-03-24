@@ -1,10 +1,14 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.minio;
 
 import io.minio.errors.MinioException;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
+import mops.hhu.de.rheinjug1.praxis.domain.event.EventRepository;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionRepository;
@@ -14,10 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 @Service
 @AllArgsConstructor
 public class UploadServiceImpl implements UploadService {
@@ -26,6 +26,7 @@ public class UploadServiceImpl implements UploadService {
   private final MeetupService meetupService;
   private final MinIoUploadService minIoUploadService;
   private final MinIoDownloadService minIoDownloadService;
+  private final EventRepository eventRepository;
 
   @Override
   public void uploadAndSaveSubmission(

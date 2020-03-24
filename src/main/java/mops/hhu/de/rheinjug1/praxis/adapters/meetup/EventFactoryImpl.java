@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventFactoryImpl implements EventFactory {
   private final TimeFormatService timeFormatService;
-  private EventMeetupDTO dto;
+  private EventResponseDTO dto;
 
   public EventFactoryImpl(final TimeFormatService timeFormatService) {
     this.timeFormatService = timeFormatService;
   }
 
   @Override
-  public Event createFromDTO(final EventMeetupDTO dto) {
+  public Event createFromDTO(final EventResponseDTO dto) {
     this.dto = dto;
     return Event.builder()
         .id(Long.parseLong(dto.getId()))
