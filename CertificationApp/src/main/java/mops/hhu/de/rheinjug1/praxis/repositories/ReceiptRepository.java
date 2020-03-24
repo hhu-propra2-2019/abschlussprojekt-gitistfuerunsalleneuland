@@ -11,5 +11,4 @@ public interface ReceiptRepository extends CrudRepository<ReceiptEntity, Long> {
 
   @Query("SELECT * FROM rheinjug1.receipt WHERE receipt.id=:id")
   ReceiptEntity findReceiptEntityById(@Param("id") Long id);
-  
 }

@@ -2,6 +2,13 @@ package mops.hhu.de.rheinjug1.praxis.controller;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
@@ -10,7 +17,6 @@ import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import mops.hhu.de.rheinjug1.praxis.services.CertificationService;
 import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
 import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
-
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -35,7 +41,7 @@ public class CertificationController {
   private final CertificationService certificationService = new CertificationService();
   private final ReceiptReaderInterface fileReaderService = new FileReaderService();
   private final ReceiptVerificationInterface verificationService = new VerificationService();
-  
+
   public CertificationController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
@@ -63,22 +69,24 @@ public class CertificationController {
   @PostMapping("/")
   @Secured({"ROLE_student", "ROLE_orga"})
   public String submitReceipt(
-      final KeycloakAuthenticationToken token, final Model model, final InputHandler input) {
+      final KeycloakAuthenticationToken token, final Model model, final InputHandler input)
+      throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
+          UnrecoverableEntryException, SignatureException, IOException {
     if (token != null) {
       model.addAttribute("account", createAccountFromPrincipal(token));
     }
 
     model.addAttribute("input", input);
     if (input.areRheinjugUploadsOkForCertification()) {
-    	if (input.verifyRheinjug()) {
-    		certificationService.createCertification(input);
-    	}
+      if (input.verifyRheinjug()) {
+        certificationService.createCertification(input);
+      }
       // und sowas wie mailservice.send
     }
     if (input.isEntwickelbarUploadOkForCertification()) {
-    	if (input.verifyEntwickelbar()) {
-    		certificationService.createCertification(input);
-    	}
+      if (input.verifyEntwickelbar()) {
+        certificationService.createCertification(input);
+      }
     }
     return "uebersicht";
   }
