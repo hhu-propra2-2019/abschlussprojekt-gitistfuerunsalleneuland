@@ -21,7 +21,7 @@ public class ChartServiceTest {
 
   @BeforeEach
   void init() {
-    final String time = "12:30 - 12.03.2020";
+    final String time = "2020-03-12 12:30:00";
     sampleData.add(
         Event.builder().id(1).zonedDateTime(time).meetupType(MeetupType.RHEINJUG).build());
     sampleData.add(

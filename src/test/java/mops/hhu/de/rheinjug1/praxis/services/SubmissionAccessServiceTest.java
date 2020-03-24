@@ -30,7 +30,7 @@ public class SubmissionAccessServiceTest {
   @Test
   public void an_existent_submission_gets_accepted() throws SubmissionNotFoundException {
     final Optional<Submission> submissionOptional =
-        Optional.of(new Submission(0L, "", "", "", false));
+        Optional.of(new Submission(0L, "", "", "", false, ""));
 
     when(submissionRepository.findById(0L)).thenReturn(submissionOptional);
     submissionAccessService.accept(0L);
