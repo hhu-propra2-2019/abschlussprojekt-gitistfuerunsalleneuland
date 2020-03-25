@@ -85,12 +85,11 @@ public class CertificationController {
 	    System.out.println(account.getEmail());
 	  
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
-      certificationService.createCertification(inputHandler);
-      
+      certificationService.createCertification(certificationData);
     }
     if (inputHandler.isEntwickelbarUploadOkForCertification()
         && inputHandler.verifyEntwickelbar()) {
-      certificationService.createCertification(inputHandler);
+      certificationService.createCertification(certificationData);
     }
 
     

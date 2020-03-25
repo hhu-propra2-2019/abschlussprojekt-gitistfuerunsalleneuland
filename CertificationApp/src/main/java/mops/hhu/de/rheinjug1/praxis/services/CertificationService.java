@@ -1,11 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import mops.hhu.de.rheinjug1.praxis.domain.CertificationData;
-import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CertificationService {
 
-  public CertificationData createCertification(final InputHandler input) {
+  public CertificationData createCertification(CertificationData certificationData) {
+
     return new CertificationData();
   }
 }
