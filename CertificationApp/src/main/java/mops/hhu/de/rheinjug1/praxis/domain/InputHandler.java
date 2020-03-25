@@ -10,7 +10,7 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+@RequiredArgsConstructor
 @Getter
 @RequestMapping
 @SuppressWarnings({"PMD.UnusedImports", "PMD.ConfusingTernary"})
@@ -32,10 +33,8 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String KEINE_DATEI = "Keine Datei";
 
-  private final ReceiptReaderInterface fileReaderService = new FileReaderService();
-  private final ReceiptVerificationInterface verificationService = new VerificationService();
-
-  @Setter private String matrikelNummer;
+  private final ReceiptReaderInterface fileReaderService;// = new FileReaderService();
+  private final ReceiptVerificationInterface verificationService;// = new VerificationService();
 
   private List<String> signatures = new ArrayList(3);
 

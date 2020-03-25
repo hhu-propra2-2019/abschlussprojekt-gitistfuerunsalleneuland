@@ -3,6 +3,7 @@ package mops.hhu.de.rheinjug1.praxis.controller;
 import static mops.hhu.de.rheinjug1.praxis.domain.Account.createAccountFromPrincipal;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.CERTIFICATION_ATTRIBUTE;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -16,6 +17,7 @@ import java.security.cert.CertificateException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
+import mops.hhu.de.rheinjug1.praxis.domain.CertificationData;
 import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
@@ -24,6 +26,7 @@ import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
 import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,10 +45,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CertificationController {
 
   private final Counter authenticatedAccess;
-  private final Counter publicAccess;
-  private final CertificationService certificationService = new CertificationService();
-  private final ReceiptReaderInterface fileReaderService = new FileReaderService();
-  private final ReceiptVerificationInterface verificationService = new VerificationService();
+  @Autowired private final CertificationService certificationService;// = new CertificationService();
+  @Autowired private final ReceiptReaderInterface fileReaderService;// = new FileReaderService();
+  @Autowired private final ReceiptVerificationInterface verificationService;// = new VerificationService();
 
   public CertificationController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
@@ -68,7 +70,8 @@ public class CertificationController {
       final Account account = createAccountFromPrincipal(token);
       model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
-    model.addAttribute(INPUT_ATTRIBUTE, new InputHandler());
+    model.addAttribute(CERTIFICATION_ATTRIBUTE, new CertificationData());
+    model.addAttribute(INPUT_ATTRIBUTE, new InputHandler(fileReaderService, verificationService));
     authenticatedAccess.increment();
     return "home";
   }
@@ -76,10 +79,14 @@ public class CertificationController {
   @PostMapping("/")
   @Secured({"ROLE_student", "ROLE_orga"})
   public String submitReceipt(
-      final KeycloakAuthenticationToken token, final Model model, final InputHandler inputHandler)
+      final KeycloakAuthenticationToken token, final Model model, final InputHandler inputHandler, final CertificationData certificationData)
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
 
+	    final Account account = createAccountFromPrincipal(token);
+	    certificationData.setName(account.getName()); // vor- und nachname evtl. trennen
+	    System.out.println(account.getEmail());
+	  
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
       certificationService.createCertification(inputHandler);
     }
@@ -89,7 +96,7 @@ public class CertificationController {
       certificationService.createCertification(inputHandler);
     }
 
-    final Account account = createAccountFromPrincipal(token);
+    
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(INPUT_ATTRIBUTE, inputHandler);
     authenticatedAccess.increment();

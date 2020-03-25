@@ -8,4 +8,5 @@ public class ThymeleafAttributesHelper {
   public static final String UPLOAD_ERROR_ATTRIBUTE = "upload_error";
   public static final String NO_FILE_UPLOAD_ERROR = "Du hast noch keine Datei ausgewählt!";
   public static final String INPUT_ATTRIBUTE = "input";
+  public static final String CERTIFICATION_ATTRIBUTE = "certificationData";
 }

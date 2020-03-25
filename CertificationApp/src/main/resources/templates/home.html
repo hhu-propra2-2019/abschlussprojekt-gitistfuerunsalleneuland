@@ -45,15 +45,26 @@
                 </div>
 
                 <h3 style="padding-bottom: 10px">Quittungen hochladen</h3>
-                <form enctype="multipart/form-data" method="post" th:object="${input}">
-                    <div class="inputForm">
+                
+                <form enctype="multipart/form-data" method="post" th:object="${certificationData}">
+                   <div class="inputForm">
                         <div class="form-group">
-
+							<label>Anrede</label> <select class="form-control"
+								th:field="*{anrede}">
+								<option value="Frau">Frau</option>
+								<option value="Herr">Herr</option>
+							</select>
+						</div>             
+                        <div class="form-group">
                             <label id="matrikelLabel" for="matrikel">Matrikel-Nummer</label>
                             <input class="form-control" id="matrikel" placeholder="Matrikel-Nummer eingeben"
                                    required th:field="*{matrikelNummer}" type="number">
                         </div>
                     </div>
+                </form>
+                
+                <form enctype="multipart/form-data" method="post" th:object="${input}">
+                    
                     <div>
                         <p><strong>Bitte laden sie hier ihre Quittungen hoch:</strong></p>
                     </div>
