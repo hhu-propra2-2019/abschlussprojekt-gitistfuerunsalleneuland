@@ -11,5 +11,4 @@ public class CertificationData {
   private String date;
   private String type;
   private String[] veranstaltungen;
-
 }

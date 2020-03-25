@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class InputHandlerTests {
 
   private static final String KEINE_DATEI = "Keine Datei";
-private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
+  private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
   private static final String WRONG_RECEIPT_TYPE_WASNT_RECOGNIZED =
       "wrong Receipt Type wasnt recognized";
   private static final String BAD_FILE_WASNT_RECOGNIZED = "bad File wasnt recognized";
@@ -28,11 +28,7 @@ private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
           "validFile",
           ("ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRlc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg==")
               .getBytes());
-  private final MultipartFile invalidFile =
-      new MockMultipartFile(
-          "invalidFile",
-          ("")
-              .getBytes());
+  private final MultipartFile invalidFile = new MockMultipartFile("invalidFile", ("").getBytes());
 
   @AfterEach
   public void resetHandler() {
@@ -52,9 +48,7 @@ private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
   public void isFirstUploadMessageKeineDatei() {
     handler.setFirstRheinjugReceipt(invalidFile);
     assertEquals(
-        BAD_FILE_WASNT_RECOGNIZED,
-        KEINE_DATEI,
-        handler.getFirstRheinjugReceiptUploadMessage());
+        BAD_FILE_WASNT_RECOGNIZED, KEINE_DATEI, handler.getFirstRheinjugReceiptUploadMessage());
   }
 
   @Test
@@ -70,9 +64,7 @@ private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
   public void isSeccondUploadMessageKeineDatei() {
     handler.setSecondRheinjugReceipt(invalidFile);
     assertEquals(
-        BAD_FILE_WASNT_RECOGNIZED,
-        KEINE_DATEI,
-        handler.getSecondRheinjugReceiptUploadMessage());
+        BAD_FILE_WASNT_RECOGNIZED, KEINE_DATEI, handler.getSecondRheinjugReceiptUploadMessage());
   }
 
   @Test
@@ -88,18 +80,14 @@ private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
   public void isThirdUploadMessageKeineDatei() {
     handler.setThirdRheinjugReceipt(invalidFile);
     assertEquals(
-        BAD_FILE_WASNT_RECOGNIZED,
-        KEINE_DATEI,
-        handler.getThirdRheinjugReceiptUploadMessage());
+        BAD_FILE_WASNT_RECOGNIZED, KEINE_DATEI, handler.getThirdRheinjugReceiptUploadMessage());
   }
 
   @Test
   public void isEntwickelbarUploadMessageKeineDatei() {
     handler.setEntwickelbarReceipt(invalidFile);
     assertEquals(
-        BAD_FILE_WASNT_RECOGNIZED,
-        KEINE_DATEI,
-        handler.getEntwickelbarReceiptUploadMessage());
+        BAD_FILE_WASNT_RECOGNIZED, KEINE_DATEI, handler.getEntwickelbarReceiptUploadMessage());
   }
 
   @Test

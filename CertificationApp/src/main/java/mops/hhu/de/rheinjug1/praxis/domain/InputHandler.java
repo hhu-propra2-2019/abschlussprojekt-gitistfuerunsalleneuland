@@ -33,7 +33,6 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String KEINE_DATEI = "Keine Datei";
 
-
   private final ReceiptReaderInterface fileReaderService = new ReceiptReaderService();
   private final ReceiptVerificationInterface verificationService = new VerificationService();
 

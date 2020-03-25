@@ -1,8 +1,8 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.CERTIFICATION_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -68,7 +68,8 @@ public class CertificationController {
       model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
     model.addAttribute(CERTIFICATION_ATTRIBUTE, new CertificationData());
-    model.addAttribute(INPUT_ATTRIBUTE, new InputHandler(/*fileReaderService, verificationService*/));
+    model.addAttribute(
+        INPUT_ATTRIBUTE, new InputHandler(/*fileReaderService, verificationService*/ ));
     authenticatedAccess.increment();
     return "home";
   }
@@ -76,14 +77,17 @@ public class CertificationController {
   @PostMapping("/")
   @Secured({"ROLE_student", "ROLE_orga"})
   public String submitReceipt(
-      final KeycloakAuthenticationToken token, final Model model, final InputHandler inputHandler, final CertificationData certificationData)
+      final KeycloakAuthenticationToken token,
+      final Model model,
+      final InputHandler inputHandler,
+      final CertificationData certificationData)
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
 
-	    final Account account = createAccountFromPrincipal(token);
-	    certificationData.setName(account.getName()); // vor- und nachname evtl. trennen
-	    System.out.println(account.getEmail());
-	  
+    final Account account = createAccountFromPrincipal(token);
+    certificationData.setName(account.getName()); // vor- und nachname evtl. trennen
+    System.out.println(account.getEmail());
+
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
       certificationService.createCertification(certificationData);
     }
@@ -92,7 +96,6 @@ public class CertificationController {
       certificationService.createCertification(certificationData);
     }
 
-    
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute(INPUT_ATTRIBUTE, inputHandler);
     authenticatedAccess.increment();

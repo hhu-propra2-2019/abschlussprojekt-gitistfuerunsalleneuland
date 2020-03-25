@@ -8,8 +8,6 @@ import java.security.KeyStore.PrivateKeyEntry;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import lombok.NoArgsConstructor;
-import mops.hhu.de.rheinjug1.praxis.domain.CertificationData;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
