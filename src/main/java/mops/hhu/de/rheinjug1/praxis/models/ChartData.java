@@ -11,7 +11,9 @@ import mops.hhu.de.rheinjug1.praxis.services.TimeFormatService;
 @Setter
 @Builder
 @ToString
-public class ChartData implements Comparable<ChartData> {     //ChartData which represents some information on a specific date
+public class ChartData
+    implements Comparable<
+        ChartData> { // ChartData which represents some information on a specific date
 
   private final String date;
   private final int submissions;
@@ -19,7 +21,7 @@ public class ChartData implements Comparable<ChartData> {     //ChartData which 
   private final int receipts;
 
   @Override
-  public int compareTo(final ChartData other) {         //needed to sort the ChartData List after date
+  public int compareTo(final ChartData other) { // needed to sort the ChartData List after date
     final TimeFormatService timeFormatService = new TimeFormatService();
     final LocalDate thisDateTime = timeFormatService.getLocalDate(date);
     final LocalDate otherDateTime = timeFormatService.getLocalDate(other.getDate());

@@ -6,6 +6,7 @@ import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.A
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.database.entities.Event;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -82,11 +84,14 @@ public class RheinjugController {
 
   @GetMapping("/statistics")
   @Secured("ROLE_orga")
-  public String getStatistics(final KeycloakAuthenticationToken token, final Model model) {
+  public String getStatistics(
+      final KeycloakAuthenticationToken token,
+      final Model model,
+      @RequestParam(name = "points", required = false) final Optional<String> datapoints) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
     }
-    model.addAttribute("chart", chartService.getXEventsChart(6));
+    model.addAttribute("chart", chartService.getXEventsChart(datapoints));
     model.addAttribute(
         "numberEntwickelbarReceipts",
         String.valueOf(chartService.getNumberOfReceiptsByMeetupType(MeetupType.ENTWICKELBAR)));

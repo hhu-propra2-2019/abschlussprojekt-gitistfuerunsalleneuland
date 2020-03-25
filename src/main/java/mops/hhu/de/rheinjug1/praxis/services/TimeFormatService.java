@@ -27,9 +27,6 @@ public class TimeFormatService {
   private static final String DATEPATTERN = "dd.MM.yyyy";
   public static final String DATABASE_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-
-
-
   public String format(final Duration duration) {
     final Calendar cal = Calendar.getInstance();
     cal.set(0, 0, 0, duration.toHoursPart(), duration.toMinutesPart());
