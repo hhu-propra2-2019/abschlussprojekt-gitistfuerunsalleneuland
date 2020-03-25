@@ -1,19 +1,15 @@
 package mops.hhu.de.rheinjug1.praxis.domain.submission;
 
+import java.util.Optional;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
-import mops.hhu.de.rheinjug1.praxis.annotations.DB;
+import mops.hhu.de.rheinjug1.praxis.adapters.time.TimeFormatServiceImpl;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
-import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import org.joda.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 
-import java.util.Optional;
-
-@DB
 @Getter
 @EqualsAndHashCode
 public class Submission {
@@ -25,7 +21,6 @@ public class Submission {
   @NonNull private final String minIoLink;
   private boolean accepted = false;
   private String acceptanceDateTime;
-  private TimeFormatService timeFormatService;
 
   @Builder
   public Submission(
@@ -34,15 +29,13 @@ public class Submission {
       @NonNull final String name,
       final String minIoLink,
       final boolean accepted,
-      final String acceptanceDateTime,
-      @Autowired TimeFormatService timeFormatService) {
+      final String acceptanceDateTime) {
     this.meetupId = meetupId;
     this.email = email;
     this.name = name;
     this.minIoLink = Optional.ofNullable(minIoLink).orElse("");
     this.accepted = accepted;
     this.acceptanceDateTime = Optional.ofNullable(acceptanceDateTime).orElse("");
-    this.timeFormatService = timeFormatService;
   }
 
   public boolean isFromUser(final Account account) {
@@ -52,6 +45,6 @@ public class Submission {
   public void accept() {
     this.accepted = true;
     this.acceptanceDateTime =
-        LocalDateTime.now().toString(timeFormatService.getDatabaseDateTimePattern());
+        LocalDateTime.now().toString(TimeFormatServiceImpl.DATABASE_DATE_TIME_PATTERN);
   }
 }

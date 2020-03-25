@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.domain.submission;
 
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
@@ -7,8 +8,6 @@ import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.SubmissionNotFou
 import mops.hhu.de.rheinjug1.praxis.domain.submission.exception.UnauthorizedSubmissionAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor

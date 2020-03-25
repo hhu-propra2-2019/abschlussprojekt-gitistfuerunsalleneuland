@@ -6,8 +6,6 @@ import java.time.ZonedDateTime;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import org.joda.time.LocalDateTime;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 public interface TimeFormatService {
   String getDatabaseDateTimePattern();

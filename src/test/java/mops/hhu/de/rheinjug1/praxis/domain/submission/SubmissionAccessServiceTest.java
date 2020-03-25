@@ -28,12 +28,7 @@ public class SubmissionAccessServiceTest {
   @Test
   public void an_existent_submission_gets_accepted() throws SubmissionNotFoundException {
     final Optional<Submission> submissionOptional =
-        Optional.of(Submission.builder()
-                .meetupId(0L)
-                .email("")
-                .name("")
-                .minIoLink("")
-                .build());
+        Optional.of(Submission.builder().meetupId(0L).email("").name("").minIoLink("").build());
 
     when(submissionRepository.findById(0L)).thenReturn(submissionOptional);
     submissionAccessService.accept(0L);

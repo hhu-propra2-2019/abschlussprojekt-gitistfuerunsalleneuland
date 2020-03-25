@@ -60,6 +60,7 @@ public class TimeFormatServiceImpl implements TimeFormatService {
     return now().isAfter(dateTime.plusDays(uploadPeriodInDays));
   }
 
+  @Override
   public String getKeepAcceptedSubmissionsExpirationDate() {
     return now().minusDays(keepDurationInDays).toString(DATABASE_DATE_TIME_PATTERN);
   }
@@ -80,7 +81,6 @@ public class TimeFormatServiceImpl implements TimeFormatService {
   public String getGermanDateString(final Event event) {
     return getLocalDateTime(event.getZonedDateTime()).toString("dd.MM.yyyy");
   }
-
 
   @Override
   public String getGermanDateTimeString(final Event event) {

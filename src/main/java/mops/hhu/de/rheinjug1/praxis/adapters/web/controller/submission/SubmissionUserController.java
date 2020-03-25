@@ -1,7 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller.submission;
 
+import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE;
+
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
+import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
@@ -25,15 +31,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
-
-import javax.mail.MessagingException;
-import java.io.IOException;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.util.Optional;
-
-import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
-import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE;
 
 @Controller
 @RequestMapping("/user/submissions")
@@ -80,9 +77,9 @@ public class SubmissionUserController {
   @PostMapping(value = "/create-receipt/{submissionId}")
   @Secured("ROLE_studentin")
   public String createReceipt(
-          final KeycloakAuthenticationToken token,
-          final Model model,
-          @PathVariable("submissionId") final Long submissionId)
+      final KeycloakAuthenticationToken token,
+      final Model model,
+      @PathVariable("submissionId") final Long submissionId)
       throws SubmissionNotFoundException, UnauthorizedSubmissionAccessException {
 
     final Account account = accountFactory.createFromPrincipal(token);

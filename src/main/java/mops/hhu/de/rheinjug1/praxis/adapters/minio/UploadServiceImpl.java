@@ -50,8 +50,7 @@ public class UploadServiceImpl implements UploadService {
   }
 
   private static String generateFileName(final Long meetupId, final String email) {
-    final String sanitizedEmail = email.replace("@", "_")
-            .replace(".", "_");
+    final String sanitizedEmail = email.replace("@", "_").replace(".", "_");
     return String.format("Zusammenfassung-%d-%s.txt", meetupId, sanitizedEmail);
   }
 

@@ -19,12 +19,12 @@
             <tbody>
             <tr th:each="eventWithInfos : ${eventsWithInfos}">
                 <td scope="row"><a th:href="@{${eventWithInfos.eventLink}}"><span th:text="${eventWithInfos.eventTitle}">Name</span></a></td>
-                <td th:text="${@timeFormatService.getGermanDateString(eventWithInfos)}">Date</td>
-                <td th:text="${eventWithInfos.id > 0} ? 'erfolgt' : (${@timeFormatService.isUploadPeriodExpired(eventWithInfos)} ? 'abgelaufen' : (${@timeFormatService.isInTheFuture(eventWithInfos)}? 'zukünftig' : 'offen')) ">
+                <td th:text="${eventWithInfos.germanDateString}">Date</td>
+                <td th:text="${eventWithInfos.id > 0} ? 'erfolgt' : (${eventWithInfos.uploadPeriodExpired} ? 'abgelaufen' : (${eventWithInfos.inTheFuture}? 'zukünftig' : 'offen')) ">
                     Date
                 </td>
                 <td>
-                    <a th:if="${eventWithInfos.id == 0 && @timeFormatService.isInUploadPeriod(eventWithInfos)}"
+                    <a th:if="${eventWithInfos.id == 0 && eventWithInfos.inUploadPeriod}"
                        th:href="@{/upload/{meetup_id}(meetup_id= ${eventWithInfos.meetupId})}"><span>hochladen</span></a>
                     <a th:if="${eventWithInfos.id > 0}" th:href="@{${eventWithInfos.minIoLink}}"><span>herunterladen</span></a>
                 </td>

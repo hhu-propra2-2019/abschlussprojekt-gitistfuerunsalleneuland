@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller;
 
+import static java.util.stream.Collectors.toList;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 
 import io.micrometer.core.instrument.Counter;
@@ -7,12 +8,13 @@ import io.micrometer.core.instrument.MeterRegistry;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.TemplateEvent;
+import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.TemplateEventInfo;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
+import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import mops.hhu.de.rheinjug1.praxis.domain.chart.ChartService;
-import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfo;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoComparator;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
@@ -30,25 +32,28 @@ public class RheinjugController {
 
   private final Counter authenticatedAccess;
   private final Counter publicAccess;
-    private final MeetupService meetupService;
-    private final ChartService chartService;
+  private final MeetupService meetupService;
+  private final ChartService chartService;
   private final AccountFactory accountFactory;
   private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
+  private final TimeFormatService timeFormatService;
 
-    @Autowired
+  @Autowired
   public RheinjugController(
-          final MeterRegistry registry,
-          final MeetupService meetupService,
-          final ChartService chartService,
-          final AccountFactory accountFactory,
-          final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository) {
+      final MeterRegistry registry,
+      final MeetupService meetupService,
+      final ChartService chartService,
+      final AccountFactory accountFactory,
+      final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository,
+      final TimeFormatService timeFormatService) {
     authenticatedAccess = registry.counter("access.authenticated");
     publicAccess = registry.counter("access.public");
     this.meetupService = meetupService;
     this.chartService = chartService;
     this.accountFactory = accountFactory;
     this.submissionEventInfoDomainRepository = submissionEventInfoDomainRepository;
-    }
+    this.timeFormatService = timeFormatService;
+  }
 
   @GetMapping("/")
   @Secured({"ROLE_orga", "ROLE_studentin"})
@@ -57,7 +62,10 @@ public class RheinjugController {
       final Account account = accountFactory.createFromPrincipal(token);
       model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
-    final List<Event> upcoming = meetupService.getEventsByStatus("upcoming");
+    final List<TemplateEvent> upcoming =
+        meetupService.getEventsByStatus("upcoming").stream()
+            .map(event -> new TemplateEvent(event, timeFormatService))
+            .collect(toList());
     model.addAttribute("events", upcoming);
     publicAccess.increment();
     return "home";
@@ -72,8 +80,10 @@ public class RheinjugController {
 
     final Account account = accountFactory.createFromPrincipal(token);
 
-    final List<SubmissionEventInfo> submissionEventInfos =
-            submissionEventInfoDomainRepository.getAllEventsWithInfosByUserSorted(account);
+    final List<TemplateEventInfo> submissionEventInfos =
+        submissionEventInfoDomainRepository.getAllEventsWithInfosByUserSorted(account).stream()
+            .map(eventInfo -> new TemplateEventInfo(eventInfo, timeFormatService))
+            .collect(toList());
 
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute("eventsWithInfos", submissionEventInfos);

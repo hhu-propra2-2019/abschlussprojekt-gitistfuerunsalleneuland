@@ -28,7 +28,7 @@ public class SubmissionEventInfoDbRepository {
     return jdbcTemplate.query(query, paramSource, rowMapper);
   }
 
-    public List<SubmissionEventInfo> getAllEventsWithUserInfosByEmail(final String email) {
+  public List<SubmissionEventInfo> getAllEventsWithUserInfosByEmail(final String email) {
     final MapSqlParameterSource paramSource = new MapSqlParameterSource();
     paramSource.addValue("email", email);
 

@@ -1,14 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
-import org.bouncycastle.util.encoders.Base64;
-import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.Yaml;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import org.bouncycastle.util.encoders.Base64;
+import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.Yaml;
 
 @Service
 public class ReceiptPrintService {
