@@ -66,6 +66,10 @@ public class TimeFormatService {
     return getLocalDateTime(submissionEventInfo.getEventDateTime()).toString(DATEPATTERN);
   }
 
+  public String getGermanDateString(final Event event) {
+    return getLocalDateTime(event.getZonedDateTime()).toString(DATEPATTERN);
+  }
+
   public String getGermanDateTimeString(final Event event) {
     return getLocalDateTime(event.getZonedDateTime()).toString("HH:mm - dd.MM.yyyy");
   }
