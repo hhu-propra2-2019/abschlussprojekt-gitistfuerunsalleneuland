@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS rheinjug1.signature_record;
 DROP TABLE IF EXISTS rheinjug1.submission;
 DROP TABLE IF EXISTS rheinjug1.event;
+DROP VIEW IF EXISTS rheinjug1.chart_data;
 
 CREATE TABLE `rheinjug1`.`event` (
   `id` INT NOT NULL,
@@ -31,6 +32,7 @@ CREATE TABLE `rheinjug1`.`submission` (
   `email` VARCHAR(255) NOT NULL,
   `min_io_link` VARCHAR(2000) NOT NULL,
   `accepted` CHAR(1) NOT NULL,
+  `acceptance_date_time` VARCHAR(30) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `meetup_id__email__UNIQUE` (`meetup_id`,`email`)
   );
@@ -38,3 +40,10 @@ CREATE TABLE `rheinjug1`.`submission` (
 alter table submission
 	add constraint submission_event_id_fk
 		foreign key (meetup_id) references event (id);
+
+CREATE VIEW rheinjug1.chart_data AS
+SELECT e.zoned_date_time,COUNT(s.meetup_id) AS submissions,COUNT(s.accepted) AS accepted,COUNT(sr.meetup_id) AS receipts
+FROM rheinjug1.event e
+LEFT JOIN rheinjug1.submission s ON s.meetup_id = e.id
+LEFT JOIN rheinjug1.signature_record sr ON sr.meetup_id = e.id
+GROUP BY e.zoned_date_time;

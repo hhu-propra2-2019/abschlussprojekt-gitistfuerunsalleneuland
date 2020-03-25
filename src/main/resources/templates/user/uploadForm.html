@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<div id="content" class="container mt-3" th:fragment="mycontent">
+    <h3 th:text="'Veranstaltung: ' + ${event.name}">Veranstaltung:</h3>
+    <br>
+    <p>Wenn Du eine Zusammenfassung zur Veranstaltung verfasst hast, kannst Du sie hier hochladen. Bitte verwende dafür folgende
+        <a href="/user/submissions/download/template"><span>Vorlage</span></a>.
+        Sie wird dann von einer Korrektorin oder einem Korrektor überprüft. Falls sie akzeptiert wird, darfst Du Dir unter
+        <a href="/user/submissions"><span>Meine Zusammenfassungen</span></a> eine Quittung erstellen.</p>
+    <br>
+    <h5 class="mb-3">Zusammenfassung abgeben und hochladen</h5>
+    <form enctype="multipart/form-data"
+          th:action="@{/upload/{meetup_id}(meetup_id=${event.id})}" method="POST">
+        <div class="custom-file mb-3">
+            <input type="file" required class="custom-file-input" id="file" name="file">
+            <label class="custom-file-label" for="file" data-browse="Durchsuchen">Datei aussuchen</label>
+        </div>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary" value="Hochladen">Abgeben</button>
+        </div>
+    </form>
+    <script>
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+</div>
+
+</body>
+</html>
+
+
+

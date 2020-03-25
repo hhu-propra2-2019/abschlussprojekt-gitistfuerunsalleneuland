@@ -4,41 +4,49 @@
 <body>
 <div id="content" th:fragment="mycontent">
     <div class="container">
-        <h3></h3>
-        <p class="mt-5">Hier seht ihr eure akzeptierten Zusammenfassungen und könnt Quittungen erstellen, die ihr per
-            Mail bekommt.</p>
+        <h3>Meine Zusammenfassungen</h3>
     </div>
 
-    <div class="container mt-5">
-        <h4>Zusammenfassungen</h4>
-        <table>
-            <thead>
-            <th>Meetup</th>
+    <div class="container mt-5" th:if="${all_submissions_from_user.size()!=0}">
+        <p>Hier findest du deine Zusammenfassungen und sobald diese vom Korrektor
+        akzeptiert wurde, kannst du deine Quittung einlösen.</p>
+        <table class="table">
+            <thead class="thead-dark">
+            <th>Veranstaltung</th>
             <th>Typ</th>
             <th>MinIo Link</th>
-            <th>Status</th>
+            <th>Akzeptiert</th>
             <th>Quittung</th>
             </thead>
             <tbody>
             <tr th:each="submissionInfo : ${all_submissions_from_user}">
                 <td><a th:href="@{${submissionInfo.eventLink}}"><span
-                        th:text="${submissionInfo.eventName}"></span></a>
+                        th:text="${submissionInfo.eventTitle}"></span></a>
                 </td>
                 <td><span th:text="${submissionInfo.meetupType.getLabel()}"></span></td>
                 <td><a th:href="@{${submissionInfo.minIoLink}}"><span>Download</span></a>
                 </td>
-                <td><span th:text="${submissionInfo.accepted}? 'Akzeptiert': 'Ausstehend'"></span></td>
+                <td>
+                    <div th:if="${submissionInfo.accepted}">&#x2705;</div>
+                    <div th:unless="${submissionInfo.accepted}">&#x274C;</div>
+                </td>
+                <!--<td><span th:text="${submissionInfo.accepted}? 'Akzeptiert': 'Ausstehend'"></span></td>-->
                 <td>
                     <form method="POST"
                           th:action="@{/user/submissions/create-receipt/{id}(id=${submissionInfo.id})}">
                         <button th:if="${submissionInfo.accepted}" type="submit" name="submit" value="value"
                                 class="card-link">senden
                         </button>
+                        <button th:unless="${submissionInfo.accepted}" type="button" disabled>senden</button>
                     </form>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="container mt-5" th:unless="${all_submissions_from_user.size()!=0}">
+        <p>Du hast noch keine Abgaben getätigt. Melde dich für eine Veranstaltung an und gib eine Zusammenfassung ab, dann
+            siehst du hier den Status.</p>
     </div>
     <div class="mx-5">
         <p></p>

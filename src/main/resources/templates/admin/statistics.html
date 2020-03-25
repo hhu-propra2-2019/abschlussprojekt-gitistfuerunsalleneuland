@@ -2,8 +2,78 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{base :: html(content=~{:: mycontent})}">
 <body>
-<div id="content" th:fragment="mycontent">
-    //Hier den Seiteninhalt einfügen
+<div th:fragment="mycontent">
+
+    <div class="container mb-4">
+        <div class="row my-4">
+            <div class="col">
+                <h2>Statistiken</h2>
+            </div>
+            <div class="col">
+                <div class="float-right">
+                    <a href="/update/statistics"> <!-- Hardcoding -->
+                        <button type="button" class="btn btn-default">
+                            <i class="fas fa-redo-alt"></i>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <p> Eine Übersicht über aktuelle Zahlen und Fakten der Rheinjug und Entwickelbar Veranstaltungen </p>
+
+        <div class="row my-5">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Quittungen für Entwickelbar</h5>
+                        <h4 th:text="${numberEntwickelbarReceipts}">1746</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Quittungen für Rheinjug</h5>
+                        <h4 th:text="${numberRheinjugReceipts}">5,8%</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container my-4">
+        <h4>Besucherzahlen</h4>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script th:inline="javascript">
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [(${chart.dates})],
+                datasets: [{
+                    label: 'Anzahl Besucher',
+                    data: [(${chart.participants})],
+                    borderColor: "#3e95cd",
+                    backgroundColor: 'rgba(62, 150, 205, 0.3)',
+
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
 </div>
+
 </body>
 </html>

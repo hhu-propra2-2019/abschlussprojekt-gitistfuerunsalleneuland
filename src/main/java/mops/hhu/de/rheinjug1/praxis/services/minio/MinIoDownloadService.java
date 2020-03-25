@@ -1,9 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.services.minio;
 
 import io.minio.MinioClient;
-import io.minio.errors.InternalException;
-import io.minio.errors.InvalidExpiresRangeException;
-import io.minio.errors.InvalidResponseException;
 import io.minio.errors.MinioException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -29,8 +26,7 @@ public class MinIoDownloadService {
 
   public String getURLforObjectDownload(final String filename)
       throws IOException, NoSuchAlgorithmException, InvalidKeyException, XmlPullParserException,
-          MinioException, InternalException, InvalidExpiresRangeException,
-          InvalidResponseException {
+          MinioException {
 
     final MinioClient minioClient =
         new MinioClient(this.minioUrl, this.minioAccessKey, this.minioSecretKey);

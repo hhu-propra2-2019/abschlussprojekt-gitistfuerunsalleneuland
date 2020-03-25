@@ -13,8 +13,9 @@ public class SubmissionEventInfo {
   private final Long meetupId;
   private final String minIoLink;
   private final boolean accepted;
-  private final String eventName;
+  private final String eventTitle;
   private final String eventLink;
   private final String eventDateTime;
   private final MeetupType meetupType;
+  private final String name;
 }
