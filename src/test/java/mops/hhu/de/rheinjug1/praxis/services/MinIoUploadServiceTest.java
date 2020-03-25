@@ -35,7 +35,6 @@ public class MinIoUploadServiceTest {
     assertThat(minioClient.bucketExists("rheinjug")).isTrue();
   }
 
-  @Disabled
   @Test
   void uploadTestfile() throws Exception {
     final MultipartFile testMultipartFile =
