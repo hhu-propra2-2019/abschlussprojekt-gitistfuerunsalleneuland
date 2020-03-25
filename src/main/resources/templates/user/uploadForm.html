@@ -6,20 +6,18 @@
 </head>
 <body>
 <div id="content" class="container mt-3" th:fragment="mycontent">
-    <h2>Zusammenfassung einreichen!</h2>
-    <br>
-    <h5 th:text="'Veranstaltung: ' + ${event.name}">Veranstaltung:</h5>
+    <h3 th:text="'Veranstaltung: ' + ${event.name}">Veranstaltung:</h3>
     <br>
     <p>Wenn Du eine Zusammenfassung zur Veranstaltung verfasst hast, kannst Du sie hier hochladen. Bitte verwende dafür folgende
         <a href="/user/submissions/download/template"><span>Vorlage</span></a>.
         Sie wird dann von einer Korrektorin oder einem Korrektor überprüft. Falls sie akzeptiert wird, darfst Du Dir unter
         <a href="/user/submissions"><span>Meine Zusammenfassungen</span></a> eine Quittung erstellen.</p>
     <br>
-    <h5>Zusammenfassung abgeben und hochladen</h5>
+    <h5 class="mb-3">Zusammenfassung abgeben und hochladen</h5>
     <form enctype="multipart/form-data"
-          th:action="@{/upload/{meetup_id}(meetup_id=${meetup_id})}" method="POST">
+          th:action="@{/upload/{meetup_id}(meetup_id=${event.id})}" method="POST">
         <div class="custom-file mb-3">
-            <input type="file" class="custom-file-input" id="file" name="file">
+            <input type="file" required class="custom-file-input" id="file" name="file">
             <label class="custom-file-label" for="file" data-browse="Durchsuchen">Datei aussuchen</label>
         </div>
         <div class="mt-3">
