@@ -45,6 +45,10 @@ public class ChartService {
     return getXEventsChart(numberDatapoints);
   }
 
+  public int getDefaultNumberDatapoints() {
+    return DEFAULT_NUMBER_DATAPOINTS;
+  }
+
   private int getNumberDatapoints(final Optional<String> datapoints) {
     if (datapoints == null) {
       return DEFAULT_NUMBER_DATAPOINTS;

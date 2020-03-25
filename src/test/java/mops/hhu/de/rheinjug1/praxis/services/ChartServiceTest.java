@@ -21,6 +21,7 @@ public class ChartServiceTest {
   private final List<Event> sampleData = new LinkedList<>();
   private MeetupService meetupServiceMock;
   private ChartService chartService;
+  private int defaultNumerDatapoints;
 
   @BeforeEach
   void init() {
@@ -35,6 +36,7 @@ public class ChartServiceTest {
     final SignatureRepository signatureRepository = mock(SignatureRepository.class);
     this.chartService =
         new ChartService(meetupServiceMock, signatureRepository, new TimeFormatService());
+    this.defaultNumerDatapoints = chartService.getDefaultNumberDatapoints();
   }
 
   @Test
@@ -77,7 +79,17 @@ public class ChartServiceTest {
 
     chartService.getXEventsChart(null);
 
-    verify(meetupServiceMock).getLastXEvents(6);
+    verify(meetupServiceMock).getLastXEvents(defaultNumerDatapoints);
+  }
+
+  @Test
+  void testGetXEventsChartEmptyOptionl() {
+    when(meetupServiceMock.getLastXEvents(Mockito.anyInt())).thenReturn(sampleData);
+    when(meetupServiceMock.getNumberPastEvents()).thenReturn(3);
+
+    chartService.getXEventsChart(Optional.empty());
+
+    verify(meetupServiceMock).getLastXEvents(defaultNumerDatapoints);
   }
 
   @Test
