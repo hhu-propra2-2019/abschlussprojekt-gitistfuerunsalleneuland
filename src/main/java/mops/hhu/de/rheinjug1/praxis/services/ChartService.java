@@ -39,13 +39,16 @@ public class ChartService {
 
   public Chart getXEventsChart(final Optional<String> datapoints) {
     final int numberDatapoints = getNumberDatapoints(datapoints);
-    if (numberDatapoints < 0) {
+    if (numberDatapoints <= 0) {
       return getXEventsChart(meetupService.getNumberPastEvents());
     }
     return getXEventsChart(numberDatapoints);
   }
 
   private int getNumberDatapoints(final Optional<String> datapoints) {
+    if (datapoints == null) {
+      return DEFAULT_NUMBER_DATAPOINTS;
+    }
     if (datapoints.isPresent()) {
       try {
         return Integer.parseInt(datapoints.get());
