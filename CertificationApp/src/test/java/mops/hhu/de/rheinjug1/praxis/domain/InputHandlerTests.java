@@ -12,9 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 @SpringBootTest
 public class InputHandlerTests {
 
-  private static final String DOPPELT = "Doppelt";
-  private static final String DUPLICATE_FILE_WASNT_RECOGNIZED = "duplicate File wasnt recognized";
-  private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
+  private static final String KEINE_DATEI = "Keine Datei";
+private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
   private static final String WRONG_RECEIPT_TYPE_WASNT_RECOGNIZED =
       "wrong Receipt Type wasnt recognized";
   private static final String BAD_FILE_WASNT_RECOGNIZED = "bad File wasnt recognized";
@@ -24,25 +23,15 @@ public class InputHandlerTests {
 
   @Autowired InputHandler handler;
 
-  private final MultipartFile validRheinjugFile =
-      new MockMultipartFile(
-          "validFile",
-          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId: 1, meetupTitle: Titel,\r\n"
-                  + "  meetupType: RHEINJUG, name: TestName, signature: OEUIc5654eut}\r\n"
-                  + "")
-              .getBytes());
   private final MultipartFile validEntwickelbarFile =
       new MockMultipartFile(
           "validFile",
-          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId: 1, meetupTitle: Titel,\r\n"
-                  + "  meetupType: ENTWICKELBAR, name: TestName, signature: OEUIc5654eut}\r\n"
-                  + "")
+          ("ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRlc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg==")
               .getBytes());
   private final MultipartFile invalidFile =
       new MockMultipartFile(
-          "validFile",
-          ("!!mops.hhu.de.rheinjug1.praxis.models.Receipt {email: TestEmail, meetupId:, meetupTitle: Titel,\r\n"
-                  + "  meetupType: ENTWICKELBAR, name: TestName, signature: OEUIc5654eut}")
+          "invalidFile",
+          ("")
               .getBytes());
 
   @AfterEach
@@ -60,44 +49,30 @@ public class InputHandlerTests {
   }
 
   @Test
-  public void isFirstUploadMessageFehlerhafteQuittung() {
+  public void isFirstUploadMessageKeineDatei() {
     handler.setFirstRheinjugReceipt(invalidFile);
     assertEquals(
         BAD_FILE_WASNT_RECOGNIZED,
-        FEHLERHAFTE_QUITTUNG,
+        KEINE_DATEI,
         handler.getFirstRheinjugReceiptUploadMessage());
   }
 
   @Test
-  public void isFirstUploadMessageValide() {
-    handler.setFirstRheinjugReceipt(validRheinjugFile);
-    assertEquals(
-        VALID_FILE_WASNT_RECOGNIZED, VALIDE, handler.getFirstRheinjugReceiptUploadMessage());
-  }
-
-  @Test
-  public void isSeccondUploadMessageFalscheVeranstaultung() {
+  public void isSecondUploadMessageKeineDatei() {
     handler.setSecondRheinjugReceipt(validEntwickelbarFile);
     assertEquals(
         WRONG_RECEIPT_TYPE_WASNT_RECOGNIZED,
         FALSCHE_VERANSTALTUNG,
-        handler.getFirstRheinjugReceiptUploadMessage());
-  }
-
-  @Test
-  public void isSeccondUploadMessageFehlerhafteQuittung() {
-    handler.setSecondRheinjugReceipt(invalidFile);
-    assertEquals(
-        BAD_FILE_WASNT_RECOGNIZED,
-        FEHLERHAFTE_QUITTUNG,
         handler.getSecondRheinjugReceiptUploadMessage());
   }
 
   @Test
-  public void isSeccondUploadMessageValide() {
-    handler.setSecondRheinjugReceipt(validRheinjugFile);
+  public void isSeccondUploadMessageKeineDatei() {
+    handler.setSecondRheinjugReceipt(invalidFile);
     assertEquals(
-        VALID_FILE_WASNT_RECOGNIZED, VALIDE, handler.getSecondRheinjugReceiptUploadMessage());
+        BAD_FILE_WASNT_RECOGNIZED,
+        KEINE_DATEI,
+        handler.getSecondRheinjugReceiptUploadMessage());
   }
 
   @Test
@@ -110,44 +85,20 @@ public class InputHandlerTests {
   }
 
   @Test
-  public void isThirdUploadMessageFehlerhafteQuittung() {
+  public void isThirdUploadMessageKeineDatei() {
     handler.setThirdRheinjugReceipt(invalidFile);
     assertEquals(
         BAD_FILE_WASNT_RECOGNIZED,
-        FEHLERHAFTE_QUITTUNG,
+        KEINE_DATEI,
         handler.getThirdRheinjugReceiptUploadMessage());
   }
 
   @Test
-  public void isThirdUploadMessageValide() {
-    handler.setThirdRheinjugReceipt(validRheinjugFile);
-    assertEquals(
-        VALID_FILE_WASNT_RECOGNIZED, VALIDE, handler.getThirdRheinjugReceiptUploadMessage());
-  }
-
-  @Test
-  public void isUploadMessageDoppelt() {
-    handler.setFirstRheinjugReceipt(validRheinjugFile);
-    handler.setThirdRheinjugReceipt(validRheinjugFile);
-    assertEquals(
-        DUPLICATE_FILE_WASNT_RECOGNIZED, DOPPELT, handler.getThirdRheinjugReceiptUploadMessage());
-  }
-
-  @Test
-  public void isEntwickelbarUploadMessageFalscheVeranstaultung() {
-    handler.setEntwickelbarReceipt(validRheinjugFile);
-    assertEquals(
-        WRONG_RECEIPT_TYPE_WASNT_RECOGNIZED,
-        FALSCHE_VERANSTALTUNG,
-        handler.getEntwickelbarReceiptUploadMessage());
-  }
-
-  @Test
-  public void isEntwickelbarUploadMessageFehlerhafteQuittung() {
+  public void isEntwickelbarUploadMessageKeineDatei() {
     handler.setEntwickelbarReceipt(invalidFile);
     assertEquals(
         BAD_FILE_WASNT_RECOGNIZED,
-        FEHLERHAFTE_QUITTUNG,
+        KEINE_DATEI,
         handler.getEntwickelbarReceiptUploadMessage());
   }
 

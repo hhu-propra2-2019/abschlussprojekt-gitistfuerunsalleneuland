@@ -1,6 +1,5 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
-import static mops.hhu.de.rheinjug1.praxis.domain.Account.createAccountFromPrincipal;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.CERTIFICATION_ATTRIBUTE;
@@ -22,11 +21,10 @@ import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import mops.hhu.de.rheinjug1.praxis.services.CertificationService;
-import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
 import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
+import mops.hhu.de.rheinjug1.praxis.services.YamlReceiptReader;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,13 +43,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CertificationController {
 
   private final Counter authenticatedAccess;
-  @Autowired private final CertificationService certificationService;// = new CertificationService();
-  @Autowired private final ReceiptReaderInterface fileReaderService;// = new FileReaderService();
-  @Autowired private final ReceiptVerificationInterface verificationService;// = new VerificationService();
+  private final CertificationService certificationService = new CertificationService();
+  private final ReceiptReaderInterface fileReaderService = new YamlReceiptReader();
+  private final ReceiptVerificationInterface verificationService = new VerificationService();
 
   public CertificationController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
-    publicAccess = registry.counter("access.public");
   }
 
   private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
@@ -71,7 +68,7 @@ public class CertificationController {
       model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
     model.addAttribute(CERTIFICATION_ATTRIBUTE, new CertificationData());
-    model.addAttribute(INPUT_ATTRIBUTE, new InputHandler(fileReaderService, verificationService));
+    model.addAttribute(INPUT_ATTRIBUTE, new InputHandler(/*fileReaderService, verificationService*/));
     authenticatedAccess.increment();
     return "home";
   }
@@ -89,8 +86,8 @@ public class CertificationController {
 	  
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
       certificationService.createCertification(inputHandler);
+      
     }
-    // und sowas wie mailservice.send
     if (inputHandler.isEntwickelbarUploadOkForCertification()
         && inputHandler.verifyEntwickelbar()) {
       certificationService.createCertification(inputHandler);
