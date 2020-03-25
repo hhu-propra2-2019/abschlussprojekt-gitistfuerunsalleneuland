@@ -1,10 +1,9 @@
 package mops.hhu.de.rheinjug1.praxis.enums;
 
+import java.util.Locale;
 import lombok.Getter;
 
 @Getter
-@SuppressWarnings("PMD.UseLocaleWithCaseConversions") // Violation in conflict with
-// PMD.UnnecessaryLocalBeforeReturn
 public enum MeetupType {
   RHEINJUG("Rheinjug"),
   ENTWICKELBAR("Entwickelbar");
@@ -15,7 +14,7 @@ public enum MeetupType {
     this.label = label;
   };
 
-  public String databaseRepresentation() { // In database meetup_type is saved in Uppercase
-    return label.toUpperCase();
+  public String databaseRepresentation() {
+    return label.toUpperCase(Locale.GERMANY);
   }
 }

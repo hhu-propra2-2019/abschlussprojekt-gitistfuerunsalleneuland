@@ -9,7 +9,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ChartDataRepository {    //interface to the view rheinjug1.data_chart needed for statisticts view
+public
+class ChartDataRepository { // interface to the view rheinjug1.data_chart needed for statisticts
+  // view
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
 

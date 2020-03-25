@@ -21,12 +21,9 @@ public class ChartServiceTest {
   @BeforeEach
   void init() {
     final String time = "12.03.2020";
-    sampleData.add(
-        ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
-    sampleData.add(
-        ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
-    sampleData.add(
-        ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
+    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
+    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
+    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
     this.chartDataRepositorymock = mock(ChartDataRepository.class);
     final SignatureRepository signatureRepository = mock(SignatureRepository.class);
     this.chartService = new ChartService(signatureRepository, chartDataRepositorymock);

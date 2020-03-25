@@ -1,5 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
+import static mops.hhu.de.rheinjug1.praxis.auth.RolesHelper.ORGA;
+import static mops.hhu.de.rheinjug1.praxis.auth.RolesHelper.STUDENTIN;
 import static mops.hhu.de.rheinjug1.praxis.models.Account.createAccountFromPrincipal;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 
@@ -58,20 +60,35 @@ public class RheinjugController {
     return "home";
   }
 
-  @GetMapping("/events")
-  @Secured({"ROLE_orga", "ROLE_studentin"})
-  public String showAllEvents(final KeycloakAuthenticationToken token, final Model model) {
+  @GetMapping("/user/events")
+  @Secured(value = STUDENTIN)
+  public String showAllEventsWithSubmissionInfos(
+      final KeycloakAuthenticationToken token, final Model model) {
 
     final Account account = createAccountFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
     final List<SubmissionEventInfo> submissionEventInfos =
         submissionEventInfoService.getAllEventsWithInfosByUser(account);
     submissionEventInfos.sort(new SubmissionEventInfoDateComparator());
 
-    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute("eventsWithInfos", submissionEventInfos);
     publicAccess.increment();
-    return "allEvents";
+    return "/user/allEventsWithUpload";
+  }
+
+  @GetMapping("/admin/events")
+  @Secured(value = ORGA)
+  public String showAllPastEvents(final KeycloakAuthenticationToken token, final Model model) {
+
+    final Account account = createAccountFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+
+    final List<Event> events = meetupService.getEventsByStatus("past");
+
+    model.addAttribute("events", events);
+    publicAccess.increment();
+    return "/admin/pastEventsWithUpload";
   }
 
   @GetMapping("/logout")
@@ -81,7 +98,7 @@ public class RheinjugController {
   }
 
   @GetMapping("/statistics")
-  @Secured("ROLE_orga")
+  @Secured(value = ORGA)
   public String getStatistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
