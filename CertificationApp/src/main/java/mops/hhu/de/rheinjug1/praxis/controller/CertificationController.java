@@ -15,6 +15,8 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBException;
+
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.CertificationData;
 import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
@@ -23,6 +25,7 @@ import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import mops.hhu.de.rheinjug1.praxis.services.CertificationService;
 import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
 import mops.hhu.de.rheinjug1.praxis.services.YamlReceiptReader;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -81,11 +84,11 @@ public class CertificationController {
       final Model model,
       final InputHandler inputHandler,
       final CertificationData certificationData)
-      throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
-          UnrecoverableEntryException, SignatureException, IOException {
+          throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
+          UnrecoverableEntryException, SignatureException, IOException, JAXBException, Docx4JException {
 
     final Account account = createAccountFromPrincipal(token);
-    certificationData.setName(account.getName()); // vor- und nachname evtl. trennen
+    certificationData.setFirstname(account.getName()); // TODO: replace username with first- and lastname fields in input form
     System.out.println(account.getEmail());
 
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
