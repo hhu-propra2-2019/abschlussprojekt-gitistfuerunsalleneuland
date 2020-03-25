@@ -21,12 +21,13 @@ public class TimeFormatService {
   @Value("${duration.upload.days}")
   private int uploadPeriodInDays;
 
-
-  private static final LocalDateTime NOW = LocalDateTime.now();
-  private static final String DATABASE_DATE_TIME_PATTERN = "HH:mm - dd.MM.yyyy";
-  private static final String DATEPATTERN = "dd.MM.yyyy";
   @Value("${duration.keep-accepted-submissions.days}")
   private int keepDurationInDays;
+
+  private static final String DATEPATTERN = "dd.MM.yyyy";
+  public static final String DATABASE_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+
 
 
   public String format(final Duration duration) {
