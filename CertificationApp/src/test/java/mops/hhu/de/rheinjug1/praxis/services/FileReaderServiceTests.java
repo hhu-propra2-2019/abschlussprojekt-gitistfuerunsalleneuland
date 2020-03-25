@@ -1,14 +1,12 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.io.IOException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.exceptions.Base64Exception;
-import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
-
-import org.junit.Ignore;
+import org.bouncycastle.util.encoders.DecoderException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,53 +20,50 @@ public class FileReaderServiceTests {
   private final MultipartFile validFile =
       new MockMultipartFile(
           "validFile",
-          ("ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRlc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg==")
+          "ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRlc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg=="
               .getBytes());
+
   private final MultipartFile invalidFile =
       new MockMultipartFile(
           "invalidFile",
-          ("ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg==")
+          "ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg=="
               .getBytes());
+
   private final Receipt receipt = new Receipt();
 
-  @Autowired private ReceiptReaderInterface fileReaderService = new YamlReceiptReader();
+  @Autowired private ReceiptReaderService receiptReader;
 
   @BeforeEach
   public void setReceipt() {
+    receipt.setEmail("TestEmail");
+    receipt.setName("TestName");
     receipt.setMeetupId((long) 1);
+    receipt.setMeetupTitle("Titel");
     receipt.setMeetupType(MeetupType.ENTWICKELBAR);
     receipt.setSignature("OEUIc5654eut");
   }
 
   @Test
-  public void validFileGenereatesCorrectReceipt() {
-    try {
-    	assertEquals(
-          "read file didn't equal expected receipt", receipt, fileReaderService.read(validFile));
-    } catch (IOException | Base64Exception e) {
-      fail();
-	}
+  public void validFileGenereatesCorrectReceipt() throws IOException {
+    assertThat(receipt).isEqualTo(receiptReader.read(validFile));
   }
 
   @Test
-  public void invalidFileDoesNotBecomeReceipt() {
-    boolean thrown = false;
-    try {
-    	fileReaderService.read(invalidFile);
-    } catch (IOException | Base64Exception e) {
-      thrown = true;
-	}
-    assertTrue("invalid file generated a receipt", thrown);
+  public void invalidFileDoesNotBecomeReceipt() throws IOException {
+    assertThatExceptionOfType(DecoderException.class)
+        .isThrownBy(
+            () -> {
+              receiptReader.read(invalidFile);
+            });
   }
 
   @Test
-  public void validFileIsAccepted() {
-    boolean thrown = true;
-    try {
-      fileReaderService.read(validFile);
-    } catch (IOException | Base64Exception e) {
-      thrown = false;
-    }
-    assertTrue("valid file got rejected", thrown);
+  public void emptyFileNotReadable() throws IOException {
+    final MockMultipartFile emptyFile = null;
+    assertThatExceptionOfType(IOException.class)
+        .isThrownBy(
+            () -> {
+              receiptReader.read(emptyFile);
+            });
   }
 }

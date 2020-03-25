@@ -12,12 +12,10 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import mops.hhu.de.rheinjug1.praxis.exceptions.Base64Exception;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
+import mops.hhu.de.rheinjug1.praxis.services.ReceiptReaderService;
 import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
-import mops.hhu.de.rheinjug1.praxis.services.YamlReceiptReader;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +32,7 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String KEINE_DATEI = "Keine Datei";
 
-  private final ReceiptReaderInterface fileReaderService = new YamlReceiptReader();
+  private final ReceiptReaderInterface fileReaderService = new ReceiptReaderService();
   private final ReceiptVerificationInterface verificationService = new VerificationService();
 
   @Setter private String matrikelNummer;
@@ -53,28 +51,28 @@ public class InputHandler {
   private String thirdRheinjugReceiptUploadMessage = "Dritte Rheinjug Quittung";
   private String entwickelbarReceiptUploadMessage = "Entwickelbar Quittung";
 
-  public void setFirstRheinjugReceipt(final MultipartFile firstRheinjugFile) throws Base64Exception {
+  public void setFirstRheinjugReceipt(final MultipartFile firstRheinjugFile) {
     firstRheinjugReceiptUploadMessage = getUploadMessage(firstRheinjugFile, MeetupType.RHEINJUG);
     if (firstRheinjugReceiptUploadMessage.equals(VALIDE)) {
       firstRheinjugReceipt = newReceipt.cloneThisReceipt();
     }
   }
 
-  public void setSecondRheinjugReceipt(final MultipartFile seccondRheinjugFile) throws Base64Exception {
+  public void setSecondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
     secondRheinjugReceiptUploadMessage = getUploadMessage(seccondRheinjugFile, MeetupType.RHEINJUG);
     if (secondRheinjugReceiptUploadMessage.equals(VALIDE)) {
       secondRheinjugReceipt = newReceipt.cloneThisReceipt();
     }
   }
 
-  public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) throws Base64Exception {
+  public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
     thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, MeetupType.RHEINJUG);
     if (thirdRheinjugReceiptUploadMessage.equals(VALIDE)) {
       thirdRheinjugReceipt = newReceipt.cloneThisReceipt();
     }
   }
 
-  public void setEntwickelbarReceipt(final MultipartFile entwickelbarFile) throws Base64Exception {
+  public void setEntwickelbarReceipt(final MultipartFile entwickelbarFile) {
     entwickelbarReceiptUploadMessage = getUploadMessage(entwickelbarFile, MeetupType.ENTWICKELBAR);
     if (entwickelbarReceiptUploadMessage.equals(VALIDE)) {
       entwickelbarReceipt = newReceipt.cloneThisReceipt();
@@ -93,7 +91,7 @@ public class InputHandler {
     // &&signature ist nicht in der Datenbank
   }
 
-  private String getUploadMessage(final MultipartFile uploadedFile, final MeetupType type) throws Base64Exception {
+  private String getUploadMessage(final MultipartFile uploadedFile, final MeetupType type) {
     if (uploadedFile == null || uploadedFile.isEmpty()) {
       newReceipt = new Receipt();
       return KEINE_DATEI;
