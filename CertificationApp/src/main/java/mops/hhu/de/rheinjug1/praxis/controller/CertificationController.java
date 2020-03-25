@@ -20,8 +20,8 @@ import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import mops.hhu.de.rheinjug1.praxis.services.CertificationService;
-import mops.hhu.de.rheinjug1.praxis.services.FileReaderService;
 import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
+import mops.hhu.de.rheinjug1.praxis.services.YamlReceiptReader;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -44,7 +44,7 @@ public class CertificationController {
   private final Counter authenticatedAccess;
   private final Counter publicAccess;
   private final CertificationService certificationService = new CertificationService();
-  private final ReceiptReaderInterface fileReaderService = new FileReaderService();
+  private final ReceiptReaderInterface fileReaderService = new YamlReceiptReader();
   private final ReceiptVerificationInterface verificationService = new VerificationService();
 
   public CertificationController(final MeterRegistry registry) {
@@ -82,8 +82,8 @@ public class CertificationController {
 
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
       certificationService.createCertification(inputHandler);
+      
     }
-    // und sowas wie mailservice.send
     if (inputHandler.isEntwickelbarUploadOkForCertification()
         && inputHandler.verifyEntwickelbar()) {
       certificationService.createCertification(inputHandler);
