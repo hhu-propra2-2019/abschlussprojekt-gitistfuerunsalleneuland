@@ -17,7 +17,7 @@ public class ReceiptSendService {
 
   public void sendReceipt(final Receipt receipt, final String to)
       throws MessagingException, IOException {
-    final String path = receiptPrintService.printReceipt(receipt);
+    final String path = receiptPrintService.printReceiptAndReturnPath(receipt);
     final String mailText = FileUtils.readStringFromFile("mail/quittung.txt");
 
     final String mailSubject = "Deine Quittung für " + receipt.getMeetupTitle();

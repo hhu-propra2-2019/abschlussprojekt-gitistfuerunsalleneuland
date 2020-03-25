@@ -32,6 +32,7 @@ CREATE TABLE `rheinjug1`.`submission` (
   `email` VARCHAR(255) NOT NULL,
   `min_io_link` VARCHAR(2000) NOT NULL,
   `accepted` CHAR(1) NOT NULL,
+  `acceptance_date_time` VARCHAR(30) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `meetup_id__email__UNIQUE` (`meetup_id`,`email`)
   );

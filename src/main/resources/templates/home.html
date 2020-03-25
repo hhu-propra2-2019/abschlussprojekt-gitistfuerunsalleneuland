@@ -1,35 +1,108 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{base :: html(content=~{:: mycontent})}">
+      <head>
+      	<meta charset="utf-8">
+      </head>
 <body>
 
 <div id="content" th:fragment="mycontent">
 
-    <div class="container">
-        <h3>Willkommen bei Java in der Praxis!</h3>
-        <p class="mt-5">Über diese Seite besteht die Möglichkeit sich für verschiedene Projekte von Rheinjug und Entwickelbar
-            anzumelden und sich so im Bereich der Informatik weiterzubilden. .... </p>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md">
-                <div class="mt-5">
-                    <ol>
-                        <li class="my-4">Für Veranstaltung anmelden</li>
-                        <li class="my-4">Veranstaltung besuchen und notizen machen</li>
-                        <li class="my-4">Zusammenfassung schreiben und abgeben</li>
-                        <li class="my-4">Creditpoints erhalten 😊</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="col-md">
-                <img src="https://cdn.pixabay.com/photo/2015/09/04/19/32/landscape-922581_1280.png"
-                     class="img-fluid rounded mx-auto" alt="Responsive image">
-            </div>
-        </div>
-    </div>
-
     <div class="container my-3">
+    	<div class="row">
+    		<div class ="col-md mb-4">
+    			<h3>Java in der Praxis!</h3>
+        		<p class="mt-5 mb-4">Über diese Seite besteht die Möglichkeit sich für verschiedene Projekte von Rheinjug und Entwickelbar
+            	anzumelden und sich so im Bereich der Informatik weiterzubilden.</p>
+            	<p class="mb-2"><a class="btn btn-primary" href="#allEvents">Kommende Veranstaltungen</a></p>
+            	<p><a class="btn btn-primary" href="/events">Abgabe Zusammenfassung</a></p>
+    		</div>
+    		<div class ="col-md">
+                <img src="pictures\code.jpg" class="img-fluid mx-auto" alt="Responsive image">
+    		</div>
+    	</div>
+    </div>
+    
+ 	    <div class="container my-4 py-2">
+    	<h4 class="text-center py-5">Arten von Veranstaltungen</h4>
+    	<div class="row">
+    		<div class="col-md">
+				<div class="card mb-2">
+					<img src="pictures\Rheinjug.png"
+						class="card-img-top" alt="Card image cap">
+					<div class="card-body">
+						<a class="stretched-link" href="http://www.rheinjug.de/"></a>
+						<h5 class="crad-title">Rheinjug</h5>
+						<p class="card-text">Die rheinjug Düsseldorf ist eine von weltweit vielen Java
+							User Groups. Wir organisieren Veranstaltungen im Bereich Java und
+							der JVM, wir werfen aber auch einen Blick über den Tellerrand und
+							schauen uns andere Technologien an. Die rheinjug bietet allen,
+							die beruflich oder privat mit Java zu tun haben, aktuelle
+							Informationen sowie die Möglichkeit, neue interessante Kontakte
+							zu knüpfen.  ...</p>
+					</div>
+				</div>
+			</div>
+    		<div class="col-md">
+				<div class="card">
+					<img src="pictures\Entwickelbarpng.png" 
+						class="card-img-top" alt="Card image cap">
+					<div class="card-body">
+						<a class="stretched-link" href="https://entwickelbar.github.io/"></a>
+						<h5 class="crad-title">Entwickelbar</h5>
+						<p class="card-text">EntwickelBar ist eine Unconference, die
+							nach der Open Space Methode organisiert und moderiert wird.
+							Anstatt ein Programm vorher fest zu definieren, laden wir die
+							Community ein das Programm mitzugestalten. Inhaltlich wollen wir
+							auf alle Themen konzentrieren, die irgendwas mit der
+							Softwareentwicklung zu tun haben. Jeder ist eingeladen etwas 
+							beizutragen:  ...</p>
+					</div>
+				</div>
+			</div>
+    	</div>
+    </div>
+    
+        <div class="container my-4 py-2">
+    	<h4 class="text-center py-5">Ablauf um sich Veranstaltung anrechnen zu lassen</h4>
+    	<div class="row">
+    		<div class="col-sm">
+    			<div class="d-flex justify-content-center pb-3">
+    				<i class="fas fa-sign-in-alt fa-3x"></i>
+    			</div>
+    			<div class="d-flex justify-content-center">
+    				<p class="text-center">Für Veranstaltung anmelden</p>
+    			</div>
+    		</div>
+    		<div class="col-sm my-3">
+    			<div class="d-flex justify-content-center pb-3">
+    				<i class="far fa-eye fa-3x"></i>
+    			</div>
+    			<div class="d-flex justify-content-center">
+    				<p class="text-center">Veranstaltung besuchen und notizen machen</p>
+    			</div>
+    		</div>
+    		<div class="col-sm my-3">
+    			<div class="d-flex justify-content-center pb-3">
+    				<i class="fas fa-pen fa-3x"></i>
+    			</div>
+    			<div class="d-flex justify-content-center">
+    				<p class="text-center">Zusammenfassung schreiben und abgeben</p>
+    			</div>
+    		</div>
+    		<div class="col-sm">
+    			<div class="d-flex justify-content-center pb-3">
+    				 <i class="fas fa-ticket-alt fa-3x"></i>   <!-- use local svg instead <i <img alt="Quittung" src="icons\ticket-alt-solid.svg" width="55" height="55"> -->
+    			</div>
+    			<div class="d-flex justify-content-center">
+    				<p class="text-center">Creditpoints erhalten 😊</p>
+    			</div>
+    		</div>
+    	</div>
+    
+    </div>
+    
+        <div class="container my-4">
         <div class="row my-4">
             <div class="col">
                 <h4>Kommende Veranstaltungen</h4>
@@ -44,30 +117,60 @@
                 </div>
             </div>
         </div>
-        <table class="w3-table">
-            <tbody th:each="event : ${events}">
-            <tr>
-                <div class="card">
-                    <span class="card-header">
-                        <a th:text="${event.name}" class="collapsed d-block" data-toggle="collapse" th:attr="data-target='#demo' + ${event.id}" aria-expanded="true" aria-controls="collapse-collapsed" id="heading-collapsed">
-                            <i th:class="fa fa-chevron-down pull-right"></i>
-                            Collapsible Group Item #1
-                        </a>
-                    </span>
-                    <div th:id="'demo' + ${event.id}" class="collapse" aria-labelledby="heading-collapsed">
-                        <div class="card-body"><h5>Datum</h5><div th:text="${@timeFormatService.getGermanDateString(event)}">1</div></div>
-                        <div class="card-body"><h5>Uhrzeit</h5><div th:text="${@timeFormatService.getGermanTimeString(event)}">1</div></div>
-                        <div class="card-body"><h5>Wie lang?:</h5><div th:text="${event.duration} + 'h'">2</div></div>
-                        <div class="card-body"><h5>Bei meetup anmelden:</h5><a th:href="@{${event.link}}"><div th:text="${event.link}">Link</div></a></div>
-                        <div class="card-body" th:utext="${event.description}">3</div>
-                    </div>
-                </div>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 
-</div>
+			<div th:each="event : ${events}" class="my-2" id="allEvents">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-10">
+								<a class="collapsed stretched-link" data-toggle="collapse"
+									th:attr="href='#' + ${event.id}"></a>
+								<h5 class="card-title">
+									<span th:text="${event.name}">titel</span> <i
+										class="fas fa-angle-down"></i>
+								</h5>
+								<div class="d-flex flex-row">
+									<div>
+										<span><i class="far fa-calendar-alt"></i></span>
+									</div>
+									<div>
+										<span th:text="${@timeFormatService.getGermanDateTimeString(event)}" class="ml-2">Datum/Uhrzeit</span>
+									</div>
+									<div class="pl-4">
+										<span><i class="far fa-clock"></i></span>
+									</div>
+									<div>
+										<span th:text="${event.duration} + 'h (Dauer)'" class="ml-2">Duration</span>
+									</div>
+								</div>
+							</div>
+							<div class="col my-auto">
+								<div class="float-right">
+									<a th:href="@{${event.link}}" class="btn btn-primary btn-sm" style="background-color: #ED1C40; border: #ED1C40">Mehr
+										Infos</a>
+								</div>
+							</div>
+							<div th:id="${event.id}" class="collapse">
+								<div class="container">
+									<p class="card-header"></p>
+									<p class="card-text" th:utext="${event.description}">description</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="page-footer mt-4">
+			<div class="container text-center border-top">
+				<p class="font-weight-light mt-2">Erstellt von: Team GitIstFürUnsAlleNeuland</p>
+			</div>
+			<div class="footer-copyright text-center py-1">
+				<span class="font-weight-light">© 2020 Copyright:</span> <a href="">Mops</a>
+			</div>
+		</footer>
+
+	</div>
 </body>
 
 </html>

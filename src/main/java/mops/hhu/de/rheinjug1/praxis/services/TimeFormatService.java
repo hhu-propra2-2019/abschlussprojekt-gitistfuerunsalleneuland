@@ -1,5 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
+import static org.joda.time.LocalDateTime.*;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -19,9 +21,13 @@ public class TimeFormatService {
   @Value("${duration.upload.days}")
   private int uploadPeriodInDays;
 
+
   private static final LocalDateTime NOW = LocalDateTime.now();
   private static final String DATABASE_DATE_TIME_PATTERN = "HH:mm - dd.MM.yyyy";
   private static final String DATEPATTERN = "dd.MM.yyyy";
+  @Value("${duration.keep-accepted-submissions.days}")
+  private int keepDurationInDays;
+
 
   public String format(final Duration duration) {
     final Calendar cal = Calendar.getInstance();
@@ -40,22 +46,30 @@ public class TimeFormatService {
 
   public boolean isInTheFuture(final SubmissionEventInfo submissionEventInfo) {
     final LocalDateTime dateTime = getLocalDateTime(submissionEventInfo.getEventDateTime());
-    return NOW.isBefore(dateTime);
+    return now().isBefore(dateTime);
   }
 
   public boolean isUploadPeriodExpired(final SubmissionEventInfo submissionEventInfo) {
     final LocalDateTime dateTime = getLocalDateTime(submissionEventInfo.getEventDateTime());
-    return NOW.isAfter(dateTime.plusDays(uploadPeriodInDays));
+    return now().isAfter(dateTime.plusDays(uploadPeriodInDays));
+  }
+
+  public String getKeepAcceptedSubmissionsExpirationDate() {
+    return now().minusDays(keepDurationInDays).toString(DATABASE_DATE_TIME_PATTERN);
   }
 
   public boolean isInUploadPeriod(final SubmissionEventInfo submissionEventInfo) {
     final LocalDateTime dateTime = getLocalDateTime(submissionEventInfo.getEventDateTime());
 
-    return NOW.isBefore(dateTime.plusDays(uploadPeriodInDays)) && NOW.isAfter(dateTime);
+    return now().isBefore(dateTime.plusDays(uploadPeriodInDays)) && now().isAfter(dateTime);
   }
 
   public String getGermanDateString(final SubmissionEventInfo submissionEventInfo) {
     return getLocalDateTime(submissionEventInfo.getEventDateTime()).toString(DATEPATTERN);
+  }
+
+  public String getGermanDateTimeString(final Event event) {
+    return getLocalDateTime(event.getZonedDateTime()).toString("HH:mm - dd.MM.yyyy");
   }
 
   public String getGermanTimeString(final Event event) {
