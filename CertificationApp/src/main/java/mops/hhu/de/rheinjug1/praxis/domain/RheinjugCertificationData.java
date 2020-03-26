@@ -17,7 +17,7 @@ public class RheinjugCertificationData {
   public RheinjugCertificationData(final FormUserData formUserData) {
     this.firstname = formUserData.getFirstname();
     this.lastname = formUserData.getLastname();
-    this.sex = "Herr".equals(formUserData.getSalutation()) ? Sex.MALE : Sex.FEMALE;
+    this.sex = formUserData.getSalutation().equals("Herr") ? Sex.MALE : Sex.FEMALE;
     this.studentNumber = formUserData.getStudentNumber();
   }
 
