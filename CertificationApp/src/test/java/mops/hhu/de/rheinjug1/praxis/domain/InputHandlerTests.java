@@ -18,7 +18,6 @@ public class InputHandlerTests {
       "wrong Receipt Type wasnt recognized";
   private static final String BAD_FILE_WASNT_RECOGNIZED = "bad File wasnt recognized";
   private static final String VALIDE = "Valide";
-  private static final String FEHLERHAFTE_QUITTUNG = "Fehlerhafte Quittung";
   private static final String VALID_FILE_WASNT_RECOGNIZED = "valid File wasnt recognized";
 
   @Autowired InputHandler handler;
@@ -26,9 +25,9 @@ public class InputHandlerTests {
   private final MultipartFile validEntwickelbarFile =
       new MockMultipartFile(
           "validFile",
-          ("ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRlc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg==")
+          "ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRlc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg=="
               .getBytes());
-  private final MultipartFile invalidFile = new MockMultipartFile("invalidFile", ("").getBytes());
+  private final MultipartFile invalidFile = new MockMultipartFile("invalidFile", "".getBytes());
 
   @AfterEach
   public void resetHandler() {

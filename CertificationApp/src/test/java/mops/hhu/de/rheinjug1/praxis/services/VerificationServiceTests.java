@@ -1,21 +1,16 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.UnrecoverableEntryException;
+import java.security.*;
 import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.exceptions.DuplicateSignatureException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SignatureDoesntMatchExeption;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,14 +60,15 @@ public class VerificationServiceTests {
   @Test
   public void verifyValidReceipt()
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
-          UnrecoverableEntryException, SignatureException, IOException {
+          UnrecoverableEntryException, SignatureException, IOException,
+          SignatureDoesntMatchExeption, DuplicateSignatureException {
     assertTrue("Verification worked", verificationService.isSignatureValid(validReceipt));
   }
 
   @Test
-  public void verifyInvalidReceipt()
-      throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
-          UnrecoverableEntryException, SignatureException, IOException {
-    assertFalse("Verification did not work", verificationService.isSignatureValid(invalidReceipt));
+  public void verifyInvalidReceipt() {
+    assertThrows(
+        SignatureDoesntMatchExeption.class,
+        () -> verificationService.isSignatureValid(invalidReceipt));
   }
 }
