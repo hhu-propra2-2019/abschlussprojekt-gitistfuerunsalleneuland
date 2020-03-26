@@ -36,7 +36,6 @@ public class SubmissionUserUploadController {
   public String showUploadForm(
       final KeycloakAuthenticationToken token, final Model model, @PathVariable final Long meetupId)
       throws EventNotFoundException, DuplicateSubmissionException {
-
     final Account account = createAccountFromPrincipal(token);
     final Event event = submissionUploadService.checkUploadableAndReturnEvent(meetupId, account);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
