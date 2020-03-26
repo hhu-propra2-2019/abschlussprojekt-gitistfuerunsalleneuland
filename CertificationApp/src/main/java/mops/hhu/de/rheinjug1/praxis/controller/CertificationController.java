@@ -1,7 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.FORM_USER_DATA_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.*;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;

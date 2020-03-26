@@ -23,7 +23,8 @@ public class VerificationService implements ReceiptVerificationInterface {
   private final ReceiptRepository receiptRepository;
 
   @Autowired
-  public VerificationService(final KeyService keyService, final ReceiptRepository receiptRepository) {
+  public VerificationService(
+      final KeyService keyService, final ReceiptRepository receiptRepository) {
     this.keyService = keyService;
     this.receiptRepository = receiptRepository;
   }
