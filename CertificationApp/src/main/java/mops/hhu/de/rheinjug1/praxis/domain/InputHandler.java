@@ -33,7 +33,6 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String KEINE_DATEI = "Keine Datei";
 
-
   private final ReceiptReaderInterface fileReaderService = new ReceiptReaderService();
   private final ReceiptVerificationInterface verificationService = new VerificationService();
 
@@ -63,6 +62,14 @@ public class InputHandler {
     if (secondRheinjugReceiptUploadMessage.equals(VALIDE)) {
       secondRheinjugReceipt = newReceipt.cloneThisReceipt();
     }
+  }
+
+  public List<String> getEventTitles() {
+    List<String> eventTitles = new ArrayList<>();
+    eventTitles.add(firstRheinjugReceipt.getName());
+    eventTitles.add(secondRheinjugReceipt.getName());
+    eventTitles.add(thirdRheinjugReceipt.getName());
+    return eventTitles;
   }
 
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
@@ -106,7 +113,7 @@ public class InputHandler {
         signatures.add(newReceipt.getSignature());
         return VALIDE;
       }
-    } catch (IOException e) {
+    } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
       return FEHLERHAFTE_QUITTUNG;
     }
   }
@@ -136,5 +143,11 @@ public class InputHandler {
       throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException {
     return verificationService.isSignatureValid(entwickelbarReceipt);
+  }
+
+  public void setRheinjugReceipts(final FormUserData formUserData) {
+    setFirstRheinjugReceipt(formUserData.getFirstRheinjugReceipt());
+    setSecondRheinjugReceipt(formUserData.getSecondRheinjugReceipt());
+    setThirdRheinjugReceipt(formUserData.getThirdRheinjugReceipt());
   }
 }

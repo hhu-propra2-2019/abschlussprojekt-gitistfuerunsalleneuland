@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Receipt {
+public class Receipt implements Serializable {
 
   private String name;
   private String email;

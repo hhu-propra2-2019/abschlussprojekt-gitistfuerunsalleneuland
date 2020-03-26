@@ -10,37 +10,34 @@
     <div class="row">
         <div class="col-sm-8">
             <div class="container">
-                <div class="alert alert-success alert-dismissible fade show" th:if="${input.areRheinjugUploadsOkForCertification()}">
-                    <strong>Erfolgreich!</strong> Die Rheinjug Quittungen wurden erfolgreich hochgeladen und abgeschickt.
-                </div>
-                <div class="alert alert-success alert-dismissible fade show" th:if="${input.isEntwickelbarUploadOkForCertification()}">
-                    <strong>Erfolgreich!</strong> Die Entwickelbar Quittung wurde erfolgreich hochgeladen und abgeschickt.
-                </div>
-                <div class="alert alert-danger alert-dismissible fade show" th:if="${input.getFirstRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
-                                                                                    ${input.getSecondRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
-                                                                                     ${input.getThirdRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
-                                                                                      ${input.getEntwickelbarReceiptUploadMessage().equals('Fehlerhafte Quittung')}
-                ">
-                    <strong>Error!</strong> Es gab einen Fehler beim hochladen.
-                </div>
-
                 <h3 style="padding-bottom: 10px">Quittungen hochladen</h3>
-                
-                <form enctype="multipart/form-data" method="post" th:object="${certificationData}">
-                   <div class="inputForm">
+
+                <form enctype="multipart/form-data" method="post" th:object="${formUserData}"
+                      th:action="@{/rheinjug1/}">
+                    <div class="inputForm">
                         <div class="form-group">
-							<label>Anrede</label>
-							<select class="form-control" th:field="*{anrede}">
-								<option value="Frau">Frau</option>
-								<option value="Herr">Herr</option>
-							</select>
-						</div>
+                            <label for="salutation">Anrede</label>
+                            <select id="salutation" class="custom-select" th:field="*{salutation}">
+                                <option value="Frau">Frau</option>
+                                <option value="Herr">Herr</option>
+                            </select>
+                        </div>
+
                         <div class="form-group">
-                            <label id="matrikelLabel" for="matrikel">Matrikel-Nummer</label>
+                            <label for="firstname">Vorname</label>
+                            <input class="mb-4 form-control" id="firstname" placeholder="Vorname eingeben"
+                                   required th:field="*{firstname}">
+                            <label for="lastname">Nachname</label>
+                            <input class="mb-4 form-control" id="lastname" placeholder="Nachname eingeben"
+                                   required th:field="*{lastname}">
+                        </div>
+                        <div class="form-group">
+                            <label for="matrikel">Matrikel-Nummer</label>
                             <input class="form-control" id="matrikel" placeholder="Matrikel-Nummer eingeben"
-                                   required th:field="*{matrikelNummer}" type="number">
+                                   required th:field="*{studentNumber}" type="number">
                         </div>
                     </div>
+
                 </form>
 
                 <form enctype="multipart/form-data" method="post" th:object="${input}">
@@ -52,7 +49,7 @@
                         <div class="form-group">
                             <p>Drei Rheinjug Quittungen:</p>
                             <div class="input-group input-file">
-                                <label for="input1" th:text="*{getFirstRheinjugReceiptUploadMessage().equals('Keine Datei')} ? 'Erste Rheinjug Quittung' : *{getFirstRheinjugReceiptUploadMessage()}">Erste Rheinjug Quittung</label>
+                                <label for="input1">Erste Rheinjug Quittung</label>
                                 <input class="form-control" id="input1" th:field="*{firstRheinjugReceipt}"
                                        type="file">
                             </div>
@@ -60,14 +57,14 @@
 
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input2" th:text="*{getSecondRheinjugReceiptUploadMessage().equals('Keine Datei')} ? 'Zweite Rheinjug Quittung' : *{getSecondRheinjugReceiptUploadMessage()}">Zweite Rheinjug Quittung</label>
+                                <label for="input2">Zweite Rheinjug Quittung</label>
                                 <input class="form-control" id="input2" th:field="*{secondRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input3" th:text="*{getThirdRheinjugReceiptUploadMessage().equals('Keine Datei')} ? 'Dritte Rheinjug Quittung' : *{getThirdRheinjugReceiptUploadMessage()}">Dritte Rheinjug Quittung</label>
+                                <label for="input3">Dritte Rheinjug Quittung</label>
                                 <input class="form-control" id="input3" th:field="*{thirdRheinjugReceipt}"
                                        type="file">
                             </div>
@@ -77,10 +74,9 @@
                         <div class="form-group">
                             <p>Entwickelbar Quittung:</p>
                             <div class="input-group input-file">
-                                <label for="input4" th:text="*{getEntwickelbarReceiptUploadMessage().equals('Keine Datei')} ? 'Entwickelbar Quittung' : *{getEntwickelbarReceiptUploadMessage()}">Entwickelbar Quittung</label>
+                                <label for="input4">Entwickelbar Quittung</label>
                                 <input class="form-control" id="input4" th:field="*{entwickelbarReceipt}"
                                        type="file">
-                                <span th:text="${entwickelbarReceiptUploadMessage}"></span>
                             </div>
                         </div>
                     </div>

@@ -1,21 +1,21 @@
- package mops.hhu.de.rheinjug1.praxis.services;
+package mops.hhu.de.rheinjug1.praxis.services;
 
- import java.io.ByteArrayInputStream;
- import java.io.IOException;
- import java.io.InputStream;
- import java.util.Scanner;
- import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
- import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
- import org.bouncycastle.util.encoders.Base64;
- import org.springframework.stereotype.Service;
- import org.springframework.web.multipart.MultipartFile;
- import org.yaml.snakeyaml.Yaml;
- import org.yaml.snakeyaml.constructor.Constructor;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
+import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
+import org.bouncycastle.util.encoders.Base64;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 // wirft Fehler, FileReaderService nicht
 
- @Service
- public class YamlReceiptReader implements ReceiptReaderInterface {
+@Service
+public class YamlReceiptReader implements ReceiptReaderInterface {
 
   @Override
   public Receipt read(final MultipartFile base64ReceiptFile) throws IOException {
@@ -44,4 +44,4 @@
       return (MultipartFile) new ByteArrayInputStream(receiptBytes);
     }
   }
- }
+}

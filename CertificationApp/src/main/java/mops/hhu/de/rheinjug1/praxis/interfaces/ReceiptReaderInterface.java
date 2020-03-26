@@ -6,5 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ReceiptReaderInterface {
 
-  Receipt read(final MultipartFile file) throws IOException;
+  Receipt read(final MultipartFile file)
+      throws IOException, NoSuchFieldException, IllegalAccessException;
 }
