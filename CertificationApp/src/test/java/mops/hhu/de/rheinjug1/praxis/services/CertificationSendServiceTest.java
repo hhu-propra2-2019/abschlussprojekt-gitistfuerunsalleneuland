@@ -15,7 +15,7 @@ public class CertificationSendServiceTest {
 
   @Test
   public void sendTestCertificate() throws IOException, MessagingException {
-    byte[] certificate = Files.readAllBytes(Paths.get("src/test/resources/test_schein.docx"));
+    final byte[] certificate = Files.readAllBytes(Paths.get("src/test/resources/test_schein.docx"));
     certificationSendService.sendCertificate(certificate, "rheinjughhu@gmail.com");
   }
 }

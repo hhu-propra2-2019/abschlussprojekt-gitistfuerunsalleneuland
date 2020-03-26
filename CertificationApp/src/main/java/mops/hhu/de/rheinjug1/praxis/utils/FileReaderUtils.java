@@ -5,12 +5,12 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 
-public class FileReader {
+public final class FileReaderUtils {
 
-  private FileReader() {}
+  private FileReaderUtils() {}
 
   public static String readStringFromFile(final String fileName) throws IOException {
-    try (final InputStream resourceAsStream =
+    try (InputStream resourceAsStream =
         Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName); ) {
 
       if (resourceAsStream == null) {
