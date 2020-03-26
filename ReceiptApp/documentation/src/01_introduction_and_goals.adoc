@@ -1,6 +1,7 @@
 [[section-introduction-and-goals]]
 ==	Einführung und Ziele
 
+<<<<<<< HEAD
 ****
 
 === Aufgabenstellung
@@ -21,9 +22,22 @@ Vereinfachung des Erhalts von Creditpoints durch Teilnahme an r/E-Veranstaltunge
 Vereinfachung der Organisation von r/E-Veranstaltungen und bessere Kommunikation mit Studierenden.
 
 ****
+=======
 
-=== Qualitätsziele
 
+=== Aufgabenstellung
+
+>>>>>>> remotes/origin/HEAD
+
+.Aufgaben
+Information über Veranstaltungen der rheinjug und Entwickelbar.
+Anmeldung bei einer rheinjug- oder Entwickelbarveranstaltung in der Rolle des Studierenden.
+Abgabe von schriftlichen Zusammenfassungen über besuchte Veranstaltungen in der Rolle des Studierenden unter Nutzung eines bereitgestellten Templates.
+Kontrolle der Zusammenfassungen der Studierenden und evtl. Akzeptanz der Abgabe und Ausstellung einer Kryptoquittung zur Bestätigung des erfolgreichen Bestehens in einer neuen Organisatorrolle(rheinjug-Organisator).
+Nachträgliches Hinzufügen von verspäteten Abgaben ducrh Organisatoren.
+Möglichkeit des Einlösen von drei rheinjug-Quittungen oder einer Entwickelbar-Quittung gegen einen Schein über 0,5 Creditpoints durch Studierende.
+
+<<<<<<< HEAD
 ****
 .Inhalt
 - Modularität
@@ -60,6 +74,31 @@ Organisation der Anmeldung von Studierenden und Creditpointvergabe durch Organis
 .Form
 
 ****
+=======
+
+.Motivation
+* Studierende: verlässliches und flexibles Ernlangen von Creditpoints durch Besuch der r/E-Veranstaltungen
+* Verbesserter Überblick über noch nicht oder bereits ausgestellte Creditpoints oder zugehörige Abgaben
+* Organisatoren: einfacher Zugriff auf wohlformatierte Abgaben, flexible Möglichkeit der Erteilung von Creditpoints(Ausstellen von Quittungen)
+* Vereinfachung der Organisation von r/E-Veranstaltungen und bessere Kommunikation mit Studierenden
+* Steigerung der Anzahl der Besuche der rheinjug- und Entwickelbarveranstaltungen (r/E-Veranstaltungen) durch Studierende
+
+
+=== Qualitätsziele
+
+- Bereitstellen eines formatierten Templates für Abgaben
+- Modularität
+- Unabhängigkeit der Rollen
+- Datenerhalt und geeignete Speicherung von Daten
+- Verschlüsselung der Metadaten zu Abgaben, um Infomrationen möglichst lange zu erhalten und diese nur einmal einlösbar zu machen
+- Wartbarkeit
+- Sicherheit
+
+=== Stakeholder
+
+* Studierende der Informatik
+* Organisatoren der r/E-Veranstaltungen mit Verbindungen zur Informatik der HHU (v.a. Jens)
+>>>>>>> remotes/origin/HEAD
 
 [cols="1,1,2" options="header"]
 |===

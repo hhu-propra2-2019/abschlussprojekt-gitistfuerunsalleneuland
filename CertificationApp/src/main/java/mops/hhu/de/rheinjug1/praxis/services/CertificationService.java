@@ -24,7 +24,6 @@ public class CertificationService {
       throws JAXBException, Docx4JException, IOException {
     final WordprocessingMLPackage wordMLPackage;
     try (InputStream templateInputStream =
-        // this.getClass().getClassLoader().getResourceAsStream(TEMPLATE_NAME);) {
         Thread.currentThread().getContextClassLoader().getResourceAsStream(TEMPLATE_NAME); ) {
       wordMLPackage = WordprocessingMLPackage.load(templateInputStream);
     }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+
+<body>
+
+<div id="content" th:fragment="mycontent">
+    <div class="container mt-5">
+    
+        <h4 class="mb-4">Alle Veranstaltungen</h4>
+
+			<table class="table my-3">
+            <thead  class="thead-dark">
+            	<th scope="col">Titel</th>
+            	<th scope="col">Datum</th>
+            	<th scope="col">Abgabe</th>
+            	<th scope="col">Aktion</th>
+            </thead>
+            <tbody>
+            <tr th:each="eventWithInfos : ${eventsWithInfos}">
+                <td scope="row"><a th:href="@{${eventWithInfos.eventLink}}"><span th:text="${eventWithInfos.eventTitle}">Name</span></a></td>
+                <td th:text="${@timeFormatService.getGermanDateString(eventWithInfos)}">Date</td>
+                <td th:text="${eventWithInfos.id > 0} ? 'erfolgt' : (${@timeFormatService.isUploadPeriodExpired(eventWithInfos)} ? 'abgelaufen' : (${@timeFormatService.isInTheFuture(eventWithInfos)}? 'zukünftig' : 'offen')) ">
+                    Date
+                </td>
+                <td>
+                    <a th:if="${eventWithInfos.id == 0 && @timeFormatService.isInUploadPeriod(eventWithInfos)}"
+                       th:href="@{/upload/{meetup_id}(meetup_id= ${eventWithInfos.meetupId})}"><span>hochladen</span></a>
+                    <a th:if="${eventWithInfos.id > 0}" th:href="@{${eventWithInfos.minIoLink}}"><span>herunterladen</span></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+
+</html>

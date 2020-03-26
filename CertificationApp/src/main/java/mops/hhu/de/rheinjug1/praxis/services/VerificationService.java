@@ -2,13 +2,7 @@ package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.UnrecoverableEntryException;
+import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.List;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
@@ -25,8 +19,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class VerificationService implements ReceiptVerificationInterface {
 
-  @Autowired private KeyService keyService;
-  @Autowired private ReceiptRepository receiptRepository;
+  private final KeyService keyService;
+  private final ReceiptRepository receiptRepository;
+
+  @Autowired
+  public VerificationService(
+      final KeyService keyService, final ReceiptRepository receiptRepository) {
+    this.keyService = keyService;
+    this.receiptRepository = receiptRepository;
+  }
 
   @Override
   public boolean isSignatureValid(final Receipt receipt)

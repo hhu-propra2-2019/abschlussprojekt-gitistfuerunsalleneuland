@@ -2,17 +2,11 @@ package mops.hhu.de.rheinjug1.praxis.services;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.UnrecoverableEntryException;
+import java.security.*;
 import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
@@ -78,17 +72,9 @@ public class VerificationServiceTests {
   }
 
   @Test
-  public void verifyInvalidReceipt()
-      throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
-          UnrecoverableEntryException, SignatureException, IOException {
-    boolean thrown = false;
-    try {
-      verificationService.isSignatureValid(invalidReceipt);
-    } catch (DuplicateSignatureException e) {
-      fail("wrong message: Duplicate Signature");
-    } catch (SignatureDoesntMatchException e) {
-      thrown = true;
-    }
-    assertTrue("Verification did not work", thrown);
+  public void verifyInvalidReceipt() {
+    assertThrows(
+        SignatureDoesntMatchException.class,
+        () -> verificationService.isSignatureValid(invalidReceipt));
   }
 }

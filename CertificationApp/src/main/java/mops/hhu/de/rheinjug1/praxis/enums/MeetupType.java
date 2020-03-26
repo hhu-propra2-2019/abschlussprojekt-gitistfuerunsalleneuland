@@ -8,5 +8,5 @@ public enum MeetupType {
   ENTWICKELBAR("Entwickelbar"),
   RHEINJUG("Rheinjug");
 
-  @Getter private String label;
+  @Getter private final String label;
 }
