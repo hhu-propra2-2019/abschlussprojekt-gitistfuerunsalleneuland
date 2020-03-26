@@ -22,5 +22,7 @@ public interface UploadService {
   void checkUploadable(Long meetupId, String email)
       throws DuplicateSubmissionException, EventNotFoundException;
 
-  void uploadAndSaveSubmission(Long meetupId, MultipartFile file, String name, String email) throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException;
+  void uploadAndSaveSubmission(Long meetupId, MultipartFile file, String name, String email)
+      throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
+          IOException;
 }

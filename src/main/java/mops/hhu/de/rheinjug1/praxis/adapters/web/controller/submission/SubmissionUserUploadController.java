@@ -59,7 +59,12 @@ public class SubmissionUserUploadController {
 
     try {
       uploadService.uploadAndSaveSubmission(meetupId, file, account);
-    } catch (final IOException | MinioException | XmlPullParserException | NoSuchAlgorithmException | InvalidKeyException | InterruptedException e) {
+    } catch (final IOException
+        | MinioException
+        | XmlPullParserException
+        | NoSuchAlgorithmException
+        | InvalidKeyException
+        | InterruptedException e) {
       throw (HttpServerErrorException)
           new HttpServerErrorException(
                   HttpStatus.INTERNAL_SERVER_ERROR,

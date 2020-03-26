@@ -2,11 +2,12 @@ package mops.hhu.de.rheinjug1.praxis.domain.chart;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import lombok.RequiredArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class ChartDataRowMapper implements RowMapper<ChartData> {
 

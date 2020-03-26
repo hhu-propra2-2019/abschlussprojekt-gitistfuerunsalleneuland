@@ -34,7 +34,6 @@ public class UploadServiceImpl implements UploadService {
       throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
           IOException {
     uploadAndSaveSubmission(meetupId, file, account.getName(), account.getEmail());
-
   }
 
   @Override
@@ -65,25 +64,28 @@ public class UploadServiceImpl implements UploadService {
     }
   }
 
-    @Override
-    public void uploadAndSaveSubmission(Long meetupId, MultipartFile file, String name, String email) throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException {
+  @Override
+  public void uploadAndSaveSubmission(
+      final Long meetupId, final MultipartFile file, final String name, final String email)
+      throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
+          IOException {
 
-      final String fileName = generateFileName(meetupId, email);
+    final String fileName = generateFileName(meetupId, email);
 
-      minIoUploadService.transferMultipartFileToMinIo(file, fileName);
-      final String minIoLink = minIoDownloadService.getURLforDownload(fileName);
-      final Submission newSubmission =
-              Submission.builder()
-                      .accepted(false)
-                      .email(email)
-                      .name(name)
-                      .meetupId(meetupId)
-                      .minIoLink(minIoLink)
-                      .build();
-      submissionRepository.save(newSubmission);
-    }
+    minIoUploadService.transferMultipartFileToMinIo(file, fileName);
+    final String minIoLink = minIoDownloadService.getURLforDownload(fileName);
+    final Submission newSubmission =
+        Submission.builder()
+            .accepted(false)
+            .email(email)
+            .name(name)
+            .meetupId(meetupId)
+            .minIoLink(minIoLink)
+            .build();
+    submissionRepository.save(newSubmission);
+  }
 
-    private boolean existsByMeetupIdAndEmail(final Long meetupId, final String email) {
+  private boolean existsByMeetupIdAndEmail(final Long meetupId, final String email) {
     return !submissionRepository.findAllByMeetupIdAndEmail(meetupId, email).isEmpty();
   }
 }

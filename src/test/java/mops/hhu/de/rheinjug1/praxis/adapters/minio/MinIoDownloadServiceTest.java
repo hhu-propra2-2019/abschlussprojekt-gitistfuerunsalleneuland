@@ -1,20 +1,19 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.minio;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.minio.MinioClient;
 import io.minio.errors.MinioException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.xmlpull.v1.XmlPullParserException;
 
 @SpringBootTest
 public class MinIoDownloadServiceTest {

@@ -1,7 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.domain.chart;
 
 import com.google.gson.Gson;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -14,7 +13,7 @@ public class Chart { // contains the ChartData and represents them as JSON Strin
     this.chartData.addAll(chartData);
   }
 
-    public String getDates() {
+  public String getDates() {
     final List<String> dates =
         chartData.stream().map(i -> i.getDate()).collect(Collectors.toList());
     return gson.toJson(dates);

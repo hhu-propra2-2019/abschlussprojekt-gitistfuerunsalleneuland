@@ -68,7 +68,7 @@ public class TimeFormatServiceImpl implements TimeFormatService {
   }
 
   @Override
-  public LocalDate getLocalDate(String localDateString) {
+  public LocalDate getLocalDate(final String localDateString) {
     final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATEPATTERN);
     return LocalDate.parse(localDateString, dateTimeFormatter);
   }
@@ -100,13 +100,13 @@ public class TimeFormatServiceImpl implements TimeFormatService {
     return getLocalDateTime(event.getZonedDateTime()).toString("HH:mm");
   }
 
-    @Override
-    public String extractDate(String zonedDateTime) {
+  @Override
+  public String extractDate(final String zonedDateTime) {
 
-      return getLocalDateTime(zonedDateTime).toString(DATEPATTERN);
-    }
+    return getLocalDateTime(zonedDateTime).toString(DATEPATTERN);
+  }
 
-    @Override
+  @Override
   public LocalDateTime getLocalDateTime(final String dateTimeString) {
     final org.joda.time.format.DateTimeFormatter formatter =
         DateTimeFormat.forPattern(DATABASE_DATE_TIME_PATTERN);

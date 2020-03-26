@@ -1,15 +1,13 @@
 package mops.hhu.de.rheinjug1.praxis.domain.chart;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
-import mops.hhu.de.rheinjug1.praxis.adapters.time.TimeFormatServiceImpl;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.ChartDataRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +29,7 @@ public class ChartServiceTest {
   }
 
   @Test
-  void testNumberOfDataPoints() {// Arrange
+  void testNumberOfDataPoints() { // Arrange
     when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
     // Act
     final int numberOfTalks = chartService.getXEventsChart(2).getTalksLength();

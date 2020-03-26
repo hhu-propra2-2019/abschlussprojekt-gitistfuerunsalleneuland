@@ -36,5 +36,4 @@ public interface TimeFormatService {
   String getKeepAcceptedSubmissionsExpirationDate();
 
   LocalDate getLocalDate(String localDateString);
-
 }

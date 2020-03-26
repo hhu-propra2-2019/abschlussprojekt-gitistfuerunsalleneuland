@@ -13,7 +13,8 @@ import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 @Builder
 @ToString
 public class ChartData
-    implements Comparable<ChartData> { // ChartData which represents some information on a specific date
+    implements Comparable<
+        ChartData> { // ChartData which represents some information on a specific date
 
   private final String date;
   private final int submissions;
