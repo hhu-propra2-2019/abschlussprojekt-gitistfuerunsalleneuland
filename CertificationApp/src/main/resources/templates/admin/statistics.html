@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+<body>
+<div id="content" th:fragment="mycontent">
+    <h3 style="padding-bottom: 10px">Quittungen hochladen</h3>
+    <div class="row my-5">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ausgestellte Scheine durch Entwickelbar</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Insgesamt</h6>
+                    <h4 th:text="${numberEntwickelbarReceipts}">5</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ausgestellte Scheine durch Rheinjug</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Insgesamt</h6>
+                    <h4 th:text="${numberRheinjugReceipts}">5</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

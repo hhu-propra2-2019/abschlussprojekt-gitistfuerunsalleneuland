@@ -1,36 +1,34 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.CERTIFICATION_ATTRIBUTE;
-
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.CertificationData;
 import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import mops.hhu.de.rheinjug1.praxis.services.CertificationService;
+import mops.hhu.de.rheinjug1.praxis.services.ChartService;
 import mops.hhu.de.rheinjug1.praxis.services.VerificationService;
 import mops.hhu.de.rheinjug1.praxis.services.YamlReceiptReader;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
+
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.*;
 
 @Controller
 @RequestMapping("/rheinjug1")
@@ -46,6 +44,8 @@ public class CertificationController {
   private final CertificationService certificationService = new CertificationService();
   private final ReceiptReaderInterface fileReaderService = new YamlReceiptReader();
   private final ReceiptVerificationInterface verificationService = new VerificationService();
+  @Autowired
+  private ChartService chartService;
 
   public CertificationController(final MeterRegistry registry) {
     authenticatedAccess = registry.counter("access.authenticated");
@@ -98,6 +98,21 @@ public class CertificationController {
     model.addAttribute(INPUT_ATTRIBUTE, inputHandler);
     authenticatedAccess.increment();
     return "home";
+  }
+
+  @GetMapping("admin/statistics/")
+  @Secured("ROLE_orga")
+  public String showStatistics(final KeycloakAuthenticationToken token, final Model model) {
+    if (token != null) {
+      model.addAttribute(ACCOUNT_ATTRIBUTE, createAccountFromPrincipal(token));
+    }
+    model.addAttribute(
+            "numberEntwickelbarReceipts",
+            String.valueOf(chartService.getNumberOfReceiptsByMeetupType(MeetupType.ENTWICKELBAR)));
+    model.addAttribute(
+            "numberRheinjugReceipts",
+            String.valueOf(chartService.getNumberOfReceiptsByMeetupType(MeetupType.RHEINJUG)));
+    return "admin/statistics";
   }
 
   @GetMapping("/logout")

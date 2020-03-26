@@ -1,8 +1,10 @@
-DROP TABLE IF EXISTS receipt;
-CREATE TABLE receipt (
+DROP TABLE IF EXISTS receipts.receipt;
+CREATE TABLE receipts.receipt (
   
   id INT NOT NULL,
-  signature text,
+  signature VARCHAR(2000) NOT NULL,
+  meetup_type ENUM('ENTWICKELBAR', 'RHEINJUG') NOT NULL,
   
   PRIMARY KEY (id),
-  UNIQUE INDEX id_UNIQUE (id ASC));
+  UNIQUE INDEX `signature__UNIQUE` (`signature`)
+);
