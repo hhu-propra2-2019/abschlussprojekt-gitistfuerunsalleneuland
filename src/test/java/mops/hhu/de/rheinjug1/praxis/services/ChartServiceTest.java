@@ -2,7 +2,6 @@ package mops.hhu.de.rheinjug1.praxis.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.ChartDataRepository;
 import mops.hhu.de.rheinjug1.praxis.database.repositories.SignatureRepository;
+import mops.hhu.de.rheinjug1.praxis.models.Chart;
 import mops.hhu.de.rheinjug1.praxis.models.ChartData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,35 +20,29 @@ public class ChartServiceTest {
   private final List<ChartData> sampleData = new LinkedList<>();
   private ChartDataRepository chartDataRepositorymock;
   private ChartService chartService;
-  //private static int defaultNumberDatapoints;
+  private int defaultNumberDatapoints;
+  static final String TIME = "12.03.2020";
 
   @BeforeEach
   void init() {
-    final String time = "12.03.2020";
-    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
-    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
-    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
+    sampleData.clear();
     this.chartDataRepositorymock = mock(ChartDataRepository.class);
-    final SignatureRepository signatureRepository = mock(SignatureRepository.class);
+    final SignatureRepository signatureRepositorymock = mock(SignatureRepository.class);
 
-    this.chartService = new ChartService(signatureRepository, chartDataRepositorymock);
-    //this.defaultNumberDatapoints = chartService.getDefaultNumberDatapoints();
+    this.chartService = new ChartService(signatureRepositorymock, chartDataRepositorymock);
+    this.defaultNumberDatapoints = chartService.getDefaultNumberDatapoints();
   }
 
-  @Test
-  void testNumberOfDataPoints() {
-    // Arrange
-    when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
-    // Act
-    final int numberOfTalks =
-        chartService.getXEventsChart(Optional.of(String.valueOf(2))).getTalksLength();
-    // Assert
-    assertThat(numberOfTalks).isEqualTo(2);
+  private List<ChartData> createSampleData(final int n) {
+    for (int i = 0; i < n; i++) {
+      sampleData.add(ChartData.builder().date(TIME).submissions(1).accepted(1).receipts(1).build());
+    }
+    return sampleData;
   }
 
   @Test
   void testGetXEventsChartOptional() {
-    when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
+    when(chartDataRepositorymock.getAll()).thenReturn(createSampleData(3));
 
     final int numberOfTalks =
         chartService.getXEventsChart(Optional.of(String.valueOf(2))).getTalksLength();
@@ -59,39 +53,47 @@ public class ChartServiceTest {
 
   @Test
   void testGetXEventsChartBigInt() {
-    when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
+    when(chartDataRepositorymock.getAll()).thenReturn(createSampleData(3));
 
     final int numberOfTalks =
         chartService.getXEventsChart(Optional.of(String.valueOf(5))).getTalksLength();
 
-    assertThat(numberOfTalks).isEqualTo(3);
+    assertThat(numberOfTalks).isEqualTo(sampleData.size());
   }
 
   @Test
   void testGetXEventsChartNullOptional() {
-    when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
+    when(chartDataRepositorymock.getAll()).thenReturn(createSampleData(3));
 
-    chartService.getXEventsChart(null);
+    final Chart data = chartService.getXEventsChart(null);
 
-    verify(chartDataRepositorymock).getAll();
+    assertThat(data.getTalksLength()).isEqualTo(sampleData.size());
+  }
+
+  @Test
+  void testGetXEventsChartNullBigSample() {
+    when(chartDataRepositorymock.getAll()).thenReturn(createSampleData(10));
+
+    final Chart data = chartService.getXEventsChart(null);
+
+    assertThat(data.getTalksLength()).isEqualTo(defaultNumberDatapoints);
   }
 
   @Test
   void testGetXEventsChartEmptyOptionl() {
-    when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
+    when(chartDataRepositorymock.getAll()).thenReturn(createSampleData(10));
 
-    chartService.getXEventsChart(Optional.empty());
+    final Chart data = chartService.getXEventsChart(Optional.empty());
 
-    verify(chartDataRepositorymock).getAll();
+    assertThat(data.getTalksLength()).isEqualTo(defaultNumberDatapoints);
   }
 
   @Test
   void testGetXEventsChartNegativOptional() {
-    when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
+    when(chartDataRepositorymock.getAll()).thenReturn(createSampleData(5));
 
-    chartService.getXEventsChart(Optional.of(String.valueOf(-1)));
+    final Chart data = chartService.getXEventsChart(Optional.of(String.valueOf(-1)));
 
-    verify(chartDataRepositorymock, times(1)).getAll();
-    verify(chartDataRepositorymock).getAll();
+    assertThat(data.getTalksLength()).isEqualTo(5);
   }
 }
