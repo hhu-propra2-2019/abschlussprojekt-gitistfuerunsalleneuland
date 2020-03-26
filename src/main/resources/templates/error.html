@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: html(content=~{:: mycontent})}">
+	<head>
+		<meta charset="utf-8">
+	</head>
+<body>
+	<div id="content" th:fragment="mycontent">
+		<div class="containermt-2">
+			<div class="d-flex justify-content-center mt-5">
+				<h3>Error 404: Die von Ihnen angeforderte Seite konnte nicht gefunden werden!</h3>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
