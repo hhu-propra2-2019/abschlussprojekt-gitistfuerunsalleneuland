@@ -46,20 +46,28 @@
 
                 <h3 style="padding-bottom: 10px">Quittungen hochladen</h3>
                 
-                <form enctype="multipart/form-data" method="post" th:object="${certificationData}">
+                <form enctype="multipart/form-data" method="post" th:object="${formUserData}">
                    <div class="inputForm">
                         <div class="form-group">
-							<label>Anrede</label>
-							<select class="form-control" th:field="*{anrede}">
+							<label for="salutation">Anrede</label>
+							<select id="salutation" class="custom-select" th:field="*{salutation}">
 								<option value="Frau">Frau</option>
 								<option value="Herr">Herr</option>
 							</select>
-						</div>             
-                        <div class="form-group">
-                            <label id="matrikelLabel" for="matrikel">Matrikel-Nummer</label>
-                            <input class="form-control" id="matrikel" placeholder="Matrikel-Nummer eingeben"
-                                   required th:field="*{matrikelNummer}" type="number">
-                        </div>
+						</div>
+                       <div class="form-group">
+                           <label for="firstname">Vorname</label>
+                           <input class="mb-4 form-control" id="firstname" placeholder="Vorname eingeben"
+                                  required th:field="*{firstname}">
+                           <label for="lastname">Nachname</label>
+                           <input class="mb-4 form-control" id="lastname" placeholder="Nachname eingeben"
+                                  required th:field="*{lastname}">
+                       </div>
+                       <div class="form-group">
+                           <label for="matrikel">Matrikel-Nummer</label>
+                           <input class="form-control" id="matrikel" placeholder="Matrikel-Nummer eingeben"
+                                  required th:field="*{studentNumber}" type="number">
+                       </div>
                     </div>
                 </form>
                 
