@@ -2,6 +2,7 @@ package mops.hhu.de.rheinjug1.praxis.controller;
 
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.FORM_USER_DATA_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -67,6 +68,8 @@ public class CertificationController {
     }
     authenticatedAccess.increment();
 
+    model.addAttribute(
+        INPUT_ATTRIBUTE, new InputHandler(/*fileReaderService, verificationService*/ ));
     model.addAttribute(FORM_USER_DATA_ATTRIBUTE, new FormUserData());
     return "home";
   }
@@ -74,7 +77,10 @@ public class CertificationController {
   @PostMapping(value = "/", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   @Secured({"ROLE_studentin", "ROLE_orga"})
   public @ResponseBody byte[] submitReceipt(
-      final KeycloakAuthenticationToken token, final Model model, final FormUserData formUserData)
+      final KeycloakAuthenticationToken token,
+      final Model model,
+      final FormUserData formUserData,
+      final InputHandler input)
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException, JAXBException,
           Docx4JException {
@@ -83,17 +89,14 @@ public class CertificationController {
     authenticatedAccess.increment();
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
-    final InputHandler inputHandler = new InputHandler();
-    inputHandler.setRheinjugReceipts(formUserData);
     final RheinjugCertificationData rheinjugCertificationData =
         new RheinjugCertificationData(formUserData);
 
-    if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
-      rheinjugCertificationData.setEventTitles(inputHandler.getEventTitles());
+    if (input.areRheinjugUploadsOkForCertification() && input.verifyRheinjug()) {
+      rheinjugCertificationData.setEventTitles(input.getEventTitles());
       return certificationService.createCertification(rheinjugCertificationData);
     }
-    if (inputHandler.isEntwickelbarUploadOkForCertification()
-        && inputHandler.verifyEntwickelbar()) {
+    if (input.isEntwickelbarUploadOkForCertification() && input.verifyEntwickelbar()) {
       certificationService.createCertification(rheinjugCertificationData);
     }
 
