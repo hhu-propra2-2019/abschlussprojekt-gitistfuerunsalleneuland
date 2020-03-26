@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
-import mops.hhu.de.rheinjug1.praxis.database.repositories.ChartDataRepository;
+
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
