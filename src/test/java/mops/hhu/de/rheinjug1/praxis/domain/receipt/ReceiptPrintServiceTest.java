@@ -1,17 +1,23 @@
 package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import org.junit.jupiter.api.Disabled;
+import org.bouncycastle.util.encoders.Base64;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class ReceiptPrintServiceTest {
 
-  @Disabled
+  @Autowired ReceiptPrintService receiptPrintService;
+
   @Test
   void writeYml() throws IOException {
 
@@ -24,13 +30,16 @@ class ReceiptPrintServiceTest {
             .signature("testSignature")
             .meetupType(MeetupType.ENTWICKELBAR)
             .build();
-    final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
 
     final String path = receiptPrintService.printReceiptAndReturnPath(receipt);
+    final String actualMailText =
+        new String(Base64.decode(Files.readString(Paths.get(path))), StandardCharsets.UTF_8);
 
-    final String actualMailText = Files.readString(Paths.get(path));
-    final String expectedMailText =
-        Files.readString(Paths.get("src/main/resources/mail/testEmailAttachment.txt"));
-    assertThat(actualMailText).isEqualTo(expectedMailText);
+    assertThat(actualMailText, containsString("12345"));
+    assertThat(actualMailText, containsString("testName"));
+    assertThat(actualMailText, containsString("testEmail"));
+    assertThat(actualMailText, containsString("testMeetupTitle"));
+    assertThat(actualMailText, containsString("testSignature"));
+    assertThat(actualMailText, containsString("ENTWICKELBAR"));
   }
 }

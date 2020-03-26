@@ -1,6 +1,0 @@
-email: testEmail
-meetupId: 12345
-meetupTitle: testMeetupTitle
-meetupType: ENTWICKELBAR
-name: testName
-signature: testSignature
