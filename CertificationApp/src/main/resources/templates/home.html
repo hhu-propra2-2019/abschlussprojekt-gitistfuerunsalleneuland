@@ -40,7 +40,8 @@
 
                 </form>
 
-                <form enctype="multipart/form-data" method="post" th:object="${input}">
+                <form enctype="multipart/form-data" method="post" th:object="${formUserData}"
+                      th:action="@{/rheinjug1/}">
 
                     <div>
                         <p><strong>Bitte laden sie hier ihre Quittungen hoch:</strong></p>

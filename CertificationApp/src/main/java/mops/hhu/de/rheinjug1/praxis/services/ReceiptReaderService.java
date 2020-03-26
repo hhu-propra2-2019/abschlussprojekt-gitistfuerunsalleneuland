@@ -1,9 +1,5 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import org.bouncycastle.util.encoders.Base64;
@@ -11,6 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 @Service
 public class ReceiptReaderService implements ReceiptReaderInterface {
@@ -40,7 +42,7 @@ public class ReceiptReaderService implements ReceiptReaderInterface {
       final Scanner scanner = new Scanner(input).useDelimiter("\\A");
       receiptString = scanner.hasNext() ? scanner.next() : "";
     }
-    final byte[] receiptBytes = Base64.decode(receiptString);
+    final byte[] receiptBytes = Base64.decode(receiptString.getBytes(StandardCharsets.UTF_8));
     return new ByteArrayInputStream(receiptBytes);
   }
 }
