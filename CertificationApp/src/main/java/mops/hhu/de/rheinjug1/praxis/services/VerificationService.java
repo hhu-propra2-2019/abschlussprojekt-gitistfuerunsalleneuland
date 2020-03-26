@@ -2,24 +2,16 @@ package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.UnrecoverableEntryException;
+import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.List;
-
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.entities.ReceiptEntity;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.exceptions.DuplicateSignatureException;
-import mops.hhu.de.rheinjug1.praxis.exceptions.SignatureDoesntMatchEsception;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SignatureDoesntMatchExeption;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import mops.hhu.de.rheinjug1.praxis.repositories.ReceiptRepository;
-
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,15 +19,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class VerificationService implements ReceiptVerificationInterface {
 
-  @Autowired private KeyService keyService;
- @Autowired private ReceiptRepository receiptRepository;
-  
+  private final KeyService keyService;
+  private final ReceiptRepository receiptRepository;
+
+  @Autowired
+  public VerificationService(
+      final KeyService keyService, final ReceiptRepository receiptRepository) {
+    this.keyService = keyService;
+    this.receiptRepository = receiptRepository;
+  }
+
   @Override
   public boolean isSignatureValid(final Receipt receipt)
       throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
-          UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException, DuplicateSignatureException, SignatureDoesntMatchEsception {
+          UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException,
+          DuplicateSignatureException, SignatureDoesntMatchExeption {
 
-	  final PublicKey publicKey = keyService.getKeyPairFromKeyStore().getPublic();
+    final PublicKey publicKey = keyService.getKeyPairFromKeyStore().getPublic();
 
     final String name = receipt.getName();
     final long meetupId = receipt.getMeetupId();
@@ -43,15 +43,16 @@ public class VerificationService implements ReceiptVerificationInterface {
     final String email = receipt.getEmail();
     final byte[] signature = Base64.decode(receipt.getSignature());
     final String hashValue = createHashValue(meetupType, meetupId, name, email);
-    
-    final List<ReceiptEntity> identicalSignatures = receiptRepository.findReceiptEntityBySignature(signature.toString());
+
+    final List<ReceiptEntity> identicalSignatures =
+        receiptRepository.findReceiptEntityBySignature(signature.toString());
     if (!identicalSignatures.isEmpty()) {
-    	throw new DuplicateSignatureException();
+      throw new DuplicateSignatureException();
     }
-    if (isVerified(signature, publicKey, hashValue)) {
-    	throw new SignatureDoesntMatchEsception();
+    if (!isVerified(signature, publicKey, hashValue)) {
+      throw new SignatureDoesntMatchExeption();
     }
-    
+
     return true;
   }
 

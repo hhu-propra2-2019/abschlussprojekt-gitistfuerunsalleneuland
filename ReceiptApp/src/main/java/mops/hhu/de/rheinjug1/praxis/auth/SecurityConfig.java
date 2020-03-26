@@ -4,9 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
+import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory;
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,7 +27,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
+@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+
+  @Autowired public KeycloakClientRequestFactory keycloakClientRequestFactory;
 
   @Autowired
   public void configureGlobal(final AuthenticationManagerBuilder auth) {
@@ -32,6 +38,12 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         keycloakAuthenticationProvider();
     keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
     auth.authenticationProvider(keycloakAuthenticationProvider);
+  }
+
+  @Bean
+  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public KeycloakRestTemplate keycloakRestTemplate() {
+    return new KeycloakRestTemplate(keycloakClientRequestFactory);
   }
 
   @Bean
@@ -51,12 +63,28 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
   @Override
   protected void configure(final HttpSecurity http) throws Exception {
     super.configure(http);
-    http.csrf().disable()
-    	.authorizeRequests()
+    forceHTTPS(http);
+    http.cors()
+        .and()
+        .csrf()
+        .disable()
+        .authorizeRequests()
         .antMatchers("/actuator/**")
         .hasRole("monitoring")
         .anyRequest()
         .permitAll();
+  }
+
+  /**
+   * Redirect all Requests to SSL if header in proxy are set.
+   *
+   * @param http
+   * @throws Exception
+   */
+  private void forceHTTPS(final HttpSecurity http) throws Exception {
+    http.requiresChannel()
+        .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+        .requiresSecure();
   }
 
   /**
@@ -65,6 +93,6 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
    * {@link javax.annotation.security.RolesAllowed} annotation for Role-based authorization
    */
   @Configuration
-  @EnableGlobalMethodSecurity(prePostEnabled = false, securedEnabled = true, jsr250Enabled = false)
+  @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
   public static class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {}
 }

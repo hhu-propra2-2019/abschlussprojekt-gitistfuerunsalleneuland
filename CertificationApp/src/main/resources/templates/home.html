@@ -26,10 +26,25 @@
         </ul>
     </nav>
 </header>
+
 <main th:fragment="bodycontent">
     <div class="row">
         <div class="col-sm-8">
             <div class="container">
+                <div class="alert alert-success alert-dismissible fade show" th:if="${@inputHandler.areRheinjugUploadsOkForCertification()}">
+                    <strong>Erfolgreich!</strong> Die Rheinjug Quittungen wurden erfolgreich hochgeladen und abgeschickt.
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" th:if="${@inputHandler.isEntwickelbarUploadOkForCertification()}">
+                    <strong>Erfolgreich!</strong> Die Entwickelbar Quittung wurde erfolgreich hochgeladen und abgeschickt.
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" th:if="${@inputHandler.getFirstRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
+                                                                                    ${@inputHandler.getSecondRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
+                                                                                     ${@inputHandler.getThirdRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
+                                                                                      ${@inputHandler.getEntwickelbarReceiptUploadMessage().equals('Fehlerhafte Quittung')}
+                ">
+                    <strong>Error!</strong> Es gab einen Fehler beim hochladen.
+                </div>
+
                 <h3 style="padding-bottom: 10px">Quittungen hochladen</h3>
 
                 <form enctype="multipart/form-data" method="post" th:object="${formUserData}"
@@ -64,7 +79,7 @@
                             <p>Drei Rheinjug Quittungen:</p>
                             <div class="input-group input-file">
                                 <label for="input1">Erste Rheinjug Quittung</label>
-                                <input class="form-control" id="input1" th:field="*{firstRheinjugReceipt}"
+                                <input class="form-control" required id="input1" th:field="*{firstRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>
@@ -72,14 +87,14 @@
                         <div class="form-group">
                             <div class="input-group input-file">
                                 <label for="input2">Zweite Rheinjug Quittung</label>
-                                <input class="form-control" id="input2" th:field="*{secondRheinjugReceipt}"
+                                <input class="form-control" required id="input2" th:field="*{secondRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group input-file">
                                 <label for="input3">Dritte Rheinjug Quittung</label>
-                                <input class="form-control" id="input3" th:field="*{thirdRheinjugReceipt}"
+                                <input class="form-control" required id="input3" th:field="*{thirdRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>

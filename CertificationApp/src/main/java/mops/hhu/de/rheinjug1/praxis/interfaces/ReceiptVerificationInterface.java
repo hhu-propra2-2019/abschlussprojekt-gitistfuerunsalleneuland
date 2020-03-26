@@ -9,11 +9,12 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.exceptions.DuplicateSignatureException;
-import mops.hhu.de.rheinjug1.praxis.exceptions.SignatureDoesntMatchEsception;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SignatureDoesntMatchExeption;
 
 public interface ReceiptVerificationInterface {
 
   boolean isSignatureValid(Receipt receipt)
       throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
-          UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException, DuplicateSignatureException, SignatureDoesntMatchEsception;
+          UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException,
+          DuplicateSignatureException, SignatureDoesntMatchExeption;
 }

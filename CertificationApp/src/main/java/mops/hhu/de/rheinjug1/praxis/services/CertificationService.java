@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,18 +15,18 @@ import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.springframework.stereotype.Service;
 
 @Service
+@SuppressWarnings("PMD.AvoidCatchingGenericException")
 public class CertificationService {
 
   private static final String TEMPLATE_NAME = "rheinjug_schein.docx";
 
   public byte[] createCertification(final RheinjugCertificationData rheinjugCertificationData)
-      throws JAXBException, Docx4JException {
-
-    InputStream templateInputStream =
-        this.getClass().getClassLoader().getResourceAsStream(TEMPLATE_NAME);
-
-    final WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(templateInputStream);
-
+      throws JAXBException, Docx4JException, IOException {
+    final WordprocessingMLPackage wordMLPackage;
+    try (InputStream templateInputStream =
+        Thread.currentThread().getContextClassLoader().getResourceAsStream(TEMPLATE_NAME); ) {
+      wordMLPackage = WordprocessingMLPackage.load(templateInputStream);
+    }
     final MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 
     try {
@@ -47,7 +48,7 @@ public class CertificationService {
 
     documentPart.variableReplace(variables);
 
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     wordMLPackage.save(outputStream);
 

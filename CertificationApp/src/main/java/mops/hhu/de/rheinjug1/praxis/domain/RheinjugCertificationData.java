@@ -14,10 +14,10 @@ public class RheinjugCertificationData {
   private String type;
   private List<String> eventTitles;
 
-  public RheinjugCertificationData(FormUserData formUserData) {
+  public RheinjugCertificationData(final FormUserData formUserData) {
     this.firstname = formUserData.getFirstname();
     this.lastname = formUserData.getLastname();
-    this.sex = formUserData.getSalutation() == "Herr" ? Sex.MALE : Sex.FEMALE;
+    this.sex = formUserData.getSalutation().equals("Herr") ? Sex.MALE : Sex.FEMALE;
     this.studentNumber = formUserData.getStudentNumber();
   }
 
