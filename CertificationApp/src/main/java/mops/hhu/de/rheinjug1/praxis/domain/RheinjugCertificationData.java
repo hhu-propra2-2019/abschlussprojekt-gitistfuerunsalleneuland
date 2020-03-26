@@ -1,9 +1,8 @@
 package mops.hhu.de.rheinjug1.praxis.domain;
 
+import java.util.List;
 import lombok.Data;
 import mops.hhu.de.rheinjug1.praxis.enums.Sex;
-
-import java.util.List;
 
 @Data
 public class RheinjugCertificationData {
@@ -15,10 +14,10 @@ public class RheinjugCertificationData {
   private String type;
   private List<String> eventTitles;
 
-  public RheinjugCertificationData(FormUserData formUserData){
+  public RheinjugCertificationData(FormUserData formUserData) {
     this.firstname = formUserData.getFirstname();
     this.lastname = formUserData.getLastname();
-    this.sex = formUserData.getSalutation() == "Herr"? Sex.MALE: Sex.FEMALE;
+    this.sex = formUserData.getSalutation() == "Herr" ? Sex.MALE : Sex.FEMALE;
     this.studentNumber = formUserData.getStudentNumber();
   }
 
@@ -27,7 +26,7 @@ public class RheinjugCertificationData {
     if (sex == Sex.MALE) {
       return "Herr";
     }
-      return "Frau";
+    return "Frau";
   }
 
   public String getPronoun() {
@@ -37,5 +36,4 @@ public class RheinjugCertificationData {
     }
     return "sie";
   }
-
 }

@@ -113,7 +113,7 @@ public class InputHandler {
         signatures.add(newReceipt.getSignature());
         return VALIDE;
       }
-    } catch (IOException e) {
+    } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
       return FEHLERHAFTE_QUITTUNG;
     }
   }
@@ -143,5 +143,11 @@ public class InputHandler {
       throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException {
     return verificationService.isSignatureValid(entwickelbarReceipt);
+  }
+
+  public void setRheinjugReceipts(final FormUserData formUserData) {
+    setFirstRheinjugReceipt(formUserData.getFirstRheinjugReceipt());
+    setSecondRheinjugReceipt(formUserData.getSecondRheinjugReceipt());
+    setThirdRheinjugReceipt(formUserData.getThirdRheinjugReceipt());
   }
 }

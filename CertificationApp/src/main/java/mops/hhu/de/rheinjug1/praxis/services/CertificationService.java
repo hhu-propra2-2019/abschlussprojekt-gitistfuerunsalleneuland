@@ -1,5 +1,11 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import javax.xml.bind.JAXBException;
 import mops.hhu.de.rheinjug1.praxis.domain.RheinjugCertificationData;
 import org.docx4j.model.datastorage.migration.VariablePrepare;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
@@ -7,28 +13,20 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.JAXBException;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-
 @Service
 public class CertificationService {
 
   private static final String TEMPLATE_NAME = "rheinjug_schein.docx";
 
-  public byte[] createCertification(RheinjugCertificationData rheinjugCertificationData)
-      throws JAXBException, Docx4JException, IOException {
+  public byte[] createCertification(final RheinjugCertificationData rheinjugCertificationData)
+      throws JAXBException, Docx4JException {
 
     InputStream templateInputStream =
         this.getClass().getClassLoader().getResourceAsStream(TEMPLATE_NAME);
 
-    WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(templateInputStream);
+    final WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(templateInputStream);
 
-    MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
+    final MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 
     try {
       VariablePrepare.prepare(wordMLPackage);
@@ -36,7 +34,7 @@ public class CertificationService {
       e.printStackTrace();
     }
 
-    HashMap<String, String> variables = new HashMap<>();
+    final HashMap<String, String> variables = new HashMap<>();
     variables.put("firstName", rheinjugCertificationData.getFirstname());
     variables.put("lastName", rheinjugCertificationData.getLastname());
     variables.put("salutation", rheinjugCertificationData.getSalutation());
