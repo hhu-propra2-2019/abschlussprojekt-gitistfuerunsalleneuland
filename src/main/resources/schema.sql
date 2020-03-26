@@ -46,4 +46,5 @@ SELECT e.zoned_date_time,COUNT(s.meetup_id) AS submissions,COUNT(s.accepted) AS 
 FROM rheinjug1.event e
 LEFT JOIN rheinjug1.submission s ON s.meetup_id = e.id
 LEFT JOIN rheinjug1.signature_record sr ON sr.meetup_id = e.id
+WHERE e.status="past"
 GROUP BY e.zoned_date_time;

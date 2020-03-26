@@ -1,21 +1,25 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import mops.hhu.de.rheinjug1.praxis.models.Receipt;
 import mops.hhu.de.rheinjug1.praxis.services.receipt.ReceiptPrintService;
-import mops.hhu.de.rheinjug1.praxis.utils.FileUtils;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class ReceiptPrintServiceTest {
 
-  @Ignore
+  @Autowired ReceiptPrintService receiptPrintService;
+
   @Test
   void writeYml() throws IOException {
 
@@ -28,12 +32,16 @@ class ReceiptPrintServiceTest {
             .signature("testSignature")
             .meetupType(MeetupType.ENTWICKELBAR)
             .build();
-    final ReceiptPrintService receiptPrintService = new ReceiptPrintService();
+
     final String path = receiptPrintService.printReceiptAndReturnPath(receipt);
+    final String actualMailText =
+        new String(Base64.decode(Files.readString(Paths.get(path))), StandardCharsets.UTF_8);
 
-    final String expectedMailText = FileUtils.readStringFromFile("mail/testEmailAttachment.txt");
-    final String actualMailText = new String(Base64.decode(Files.readString(Paths.get(path))));
-
-    assertThat(actualMailText).isEqualTo(expectedMailText);
+    assertThat(actualMailText, containsString("12345"));
+    assertThat(actualMailText, containsString("testName"));
+    assertThat(actualMailText, containsString("testEmail"));
+    assertThat(actualMailText, containsString("testMeetupTitle"));
+    assertThat(actualMailText, containsString("testSignature"));
+    assertThat(actualMailText, containsString("ENTWICKELBAR"));
   }
 }
