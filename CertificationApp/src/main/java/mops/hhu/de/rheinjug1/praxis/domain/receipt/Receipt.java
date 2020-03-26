@@ -18,8 +18,4 @@ public class Receipt implements Serializable, Cloneable {
   private MeetupType meetupType;
   private String signature;
 
-  @Override
-  public Receipt clone() {
-    return new Receipt(name, email, meetupId, meetupTitle, meetupType, signature);
-  }
 }
