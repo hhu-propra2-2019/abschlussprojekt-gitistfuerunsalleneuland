@@ -12,6 +12,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.exceptions.DuplicateSignatureException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SignatureDoesntMatchException;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
 import mops.hhu.de.rheinjug1.praxis.services.ReceiptReaderService;
@@ -27,6 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class InputHandler {
 
+  private static final String FEHLERHAFTE_SIGNATUR = "Fehlerhafte Signatur";
+  private static final String QUITTUNG_BEREITS_REGISTRIERT = "Quittung bereits registriert";
   private static final String FALSCHE_VERANSTALTUNG = "Falsche Veranstaltung";
   private static final String FEHLERHAFTE_QUITTUNG = "Fehlerhafte Quittung";
   private static final String DOPPELT = "Doppelt";
@@ -65,7 +69,7 @@ public class InputHandler {
   }
 
   public List<String> getEventTitles() {
-    List<String> eventTitles = new ArrayList<>();
+    final List<String> eventTitles = new ArrayList<>();
     eventTitles.add(firstRheinjugReceipt.getName());
     eventTitles.add(secondRheinjugReceipt.getName());
     eventTitles.add(thirdRheinjugReceipt.getName());
@@ -134,20 +138,47 @@ public class InputHandler {
   public boolean verifyRheinjug()
       throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException {
-    return verificationService.isSignatureValid(firstRheinjugReceipt)
-        && verificationService.isSignatureValid(secondRheinjugReceipt)
-        && verificationService.isSignatureValid(thirdRheinjugReceipt);
+    try {
+      verificationService.isSignatureValid(firstRheinjugReceipt);
+    } catch (DuplicateSignatureException e) {
+      firstRheinjugReceiptUploadMessage = QUITTUNG_BEREITS_REGISTRIERT;
+      return false;
+    } catch (SignatureDoesntMatchException e) {
+      firstRheinjugReceiptUploadMessage = FEHLERHAFTE_SIGNATUR;
+      return false;
+    }
+    try {
+      verificationService.isSignatureValid(secondRheinjugReceipt);
+    } catch (DuplicateSignatureException e) {
+      secondRheinjugReceiptUploadMessage = QUITTUNG_BEREITS_REGISTRIERT;
+      return false;
+    } catch (SignatureDoesntMatchException e) {
+      secondRheinjugReceiptUploadMessage = FEHLERHAFTE_SIGNATUR;
+      return false;
+    }
+    try {
+      verificationService.isSignatureValid(thirdRheinjugReceipt);
+    } catch (DuplicateSignatureException e) {
+      thirdRheinjugReceiptUploadMessage = QUITTUNG_BEREITS_REGISTRIERT;
+      return false;
+    } catch (SignatureDoesntMatchException e) {
+      thirdRheinjugReceiptUploadMessage = FEHLERHAFTE_SIGNATUR;
+      return false;
+    }
+    return true;
   }
 
   public boolean verifyEntwickelbar()
       throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException {
-    return verificationService.isSignatureValid(entwickelbarReceipt);
-  }
-
-  public void setRheinjugReceipts(final FormUserData formUserData) {
-    setFirstRheinjugReceipt(formUserData.getFirstRheinjugReceipt());
-    setSecondRheinjugReceipt(formUserData.getSecondRheinjugReceipt());
-    setThirdRheinjugReceipt(formUserData.getThirdRheinjugReceipt());
+    try {
+      return verificationService.isSignatureValid(entwickelbarReceipt);
+    } catch (DuplicateSignatureException e) {
+      entwickelbarReceiptUploadMessage = QUITTUNG_BEREITS_REGISTRIERT;
+      return false;
+    } catch (SignatureDoesntMatchException e) {
+      entwickelbarReceiptUploadMessage = FEHLERHAFTE_SIGNATUR;
+      return false;
+    }
   }
 }

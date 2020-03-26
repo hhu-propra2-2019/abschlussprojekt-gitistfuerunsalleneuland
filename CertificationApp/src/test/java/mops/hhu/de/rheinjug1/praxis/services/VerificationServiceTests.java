@@ -1,7 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.services;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,6 +16,8 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.Receipt;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.exceptions.DuplicateSignatureException;
+import mops.hhu.de.rheinjug1.praxis.exceptions.SignatureDoesntMatchException;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,13 +68,27 @@ public class VerificationServiceTests {
   public void verifyValidReceipt()
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
-    assertTrue("Verification worked", verificationService.isSignatureValid(validReceipt));
+    try {
+      assertTrue("Verification worked", verificationService.isSignatureValid(validReceipt));
+    } catch (DuplicateSignatureException e) {
+      fail("wrong message: Duplicate Signature");
+    } catch (SignatureDoesntMatchException e) {
+      fail("wrong message: SignatureDoesntMatch");
+    }
   }
 
   @Test
   public void verifyInvalidReceipt()
       throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException {
-    assertFalse("Verification did not work", verificationService.isSignatureValid(invalidReceipt));
+    boolean thrown = false;
+    try {
+      verificationService.isSignatureValid(invalidReceipt);
+    } catch (DuplicateSignatureException e) {
+      fail("wrong message: Duplicate Signature");
+    } catch (SignatureDoesntMatchException e) {
+      thrown = true;
+    }
+    assertTrue("Verification did not work", thrown);
   }
 }
