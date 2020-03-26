@@ -15,7 +15,5 @@ public interface MeetupService {
 
   List<Event> getEventsByStatus(String status);
 
-  List<Event> getLastXEvents(int x);
-
   Event getEventIfExistent(Long meetUpId) throws EventNotFoundException;
 }

@@ -19,7 +19,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.UnusedPrivateMethod"})
+@SuppressWarnings({
+  "PMD.UnusedPrivateField",
+  "PMD.UnusedPrivateMethod",
+  "PMD.AvoidDuplicateLiterals"
+})
 @EnableScheduling
 @Service
 @AllArgsConstructor
@@ -55,17 +59,6 @@ public class MeetupServiceImpl implements MeetupService {
     return submissionRepository.countSubmissionByMeetupId(event.getId());
   }
 
-  private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
-    meetupEvents.stream().filter(allEvents::contains).forEach(eventRepository::save);
-  }
-
-  private void insertNonExistingEvents(
-      final List<Event> meetupEvents, final List<Event> allEvents) {
-    meetupEvents.stream()
-        .filter(i -> !allEvents.contains(i))
-        .forEach(jdbcAggregateTemplate::insert);
-  }
-
   @Override
   public List<Event> getEventsByStatus(final String status) {
     switch (status) {
@@ -80,22 +73,6 @@ public class MeetupServiceImpl implements MeetupService {
     }
   }
 
-  private List<Event> filterEventsByStatus(final String status) {
-    return eventRepository.findAll().stream()
-        .filter(i -> i.getStatus().equals(status))
-        .collect(Collectors.toList());
-  }
-
-  @Override
-  public List<Event> getLastXEvents(final int x) {
-    final List<Event> pastEvents = getEventsByStatus("past");
-    final int n = pastEvents.size();
-    if (n < x) {
-      return pastEvents;
-    }
-    return pastEvents.subList(n - x, n);
-  }
-
   @Override
   public Event getEventIfExistent(final Long meetUpId) throws EventNotFoundException {
     final Optional<Event> eventOptional = eventRepository.findById(meetUpId);
@@ -105,5 +82,22 @@ public class MeetupServiceImpl implements MeetupService {
     }
 
     return eventOptional.get();
+  }
+
+  private void updateExistingEvents(final List<Event> meetupEvents, final List<Event> allEvents) {
+    meetupEvents.stream().filter(allEvents::contains).forEach(eventRepository::save);
+  }
+
+  private void insertNonExistingEvents(
+      final List<Event> meetupEvents, final List<Event> allEvents) {
+    meetupEvents.stream()
+        .filter(i -> !allEvents.contains(i))
+        .forEach(jdbcAggregateTemplate::insert);
+  }
+
+  private List<Event> filterEventsByStatus(final String status) {
+    return eventRepository.findAll().stream()
+        .filter(i -> i.getStatus().equals(status))
+        .collect(Collectors.toList());
   }
 }
