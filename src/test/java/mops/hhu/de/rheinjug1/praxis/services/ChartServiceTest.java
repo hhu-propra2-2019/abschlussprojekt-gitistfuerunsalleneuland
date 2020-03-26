@@ -20,7 +20,7 @@ public class ChartServiceTest {
   private final List<ChartData> sampleData = new LinkedList<>();
   private ChartDataRepository chartDataRepositorymock;
   private ChartService chartService;
-  // private static int defaultNumberDatapoints;
+  //private static int defaultNumberDatapoints;
 
   @BeforeEach
   void init() {
@@ -32,7 +32,7 @@ public class ChartServiceTest {
     final SignatureRepository signatureRepository = mock(SignatureRepository.class);
 
     this.chartService = new ChartService(signatureRepository, chartDataRepositorymock);
-    // this.defaultNumberDatapoints = chartService.getDefaultNumberDatapoints();
+    //this.defaultNumberDatapoints = chartService.getDefaultNumberDatapoints();
   }
 
   @Test

@@ -80,19 +80,6 @@ public class MeetupService {
         .collect(Collectors.toList());
   }
 
-  public List<Event> getLastXEvents(final int x) {
-    final List<Event> pastEvents = getEventsByStatus("past");
-    final int n = pastEvents.size();
-    if (n <= x) {
-      return pastEvents;
-    }
-    return pastEvents.subList(n - x, n);
-  }
-
-  public int getNumberPastEvents() {
-    return getEventsByStatus("past").size();
-  }
-
   public Event getEventIfExistent(final Long meetUpId) throws EventNotFoundException {
     final Optional<Event> eventOptional = eventRepository.findById(meetUpId);
 

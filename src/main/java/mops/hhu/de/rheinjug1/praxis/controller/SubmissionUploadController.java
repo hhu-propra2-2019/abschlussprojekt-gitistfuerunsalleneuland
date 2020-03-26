@@ -66,7 +66,6 @@ public class SubmissionUploadController {
 
     final Account account = createAccountFromPrincipal(token);
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
-
     if (file.isEmpty()) {
       attributes.addAttribute(UPLOAD_ERROR_ATTRIBUTE, NO_FILE_UPLOAD_ERROR);
       return new ModelAndView(String.format("redirect:/upload/%d", meetupId));
