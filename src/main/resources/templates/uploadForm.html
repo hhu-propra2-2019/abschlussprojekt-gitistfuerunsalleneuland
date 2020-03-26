@@ -6,11 +6,6 @@
 </head>
 <body>
 <div id="content" class="container mt-3" th:fragment="mycontent">
-    <span th:if="${upload_err}">
-        <div class="alert alert-danger" role="alert">
-            Bitte Datei unten einfügen!
-        </div>
-    </span>
     <h2>Zusammenfassung einreichen!</h2>
     <br>
     <h5 th:text="'Veranstaltung: ' + ${event.name}">Veranstaltung:</h5>

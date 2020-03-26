@@ -39,8 +39,6 @@ public class SubmissionUploadController {
       @ModelAttribute(UPLOAD_ERROR_ATTRIBUTE) final String uploadError,
       @PathVariable final Long meetupId)
       throws EventNotFoundException, DuplicateSubmissionException {
-    final boolean uploaderror = uploadError != null && uploadError.equals(NO_FILE_UPLOAD_ERROR);
-    model.addAttribute("upload_err", uploaderror);
     final Account account = createAccountFromPrincipal(token);
     final Event event = eventRepository.findById(meetupId).get();
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
