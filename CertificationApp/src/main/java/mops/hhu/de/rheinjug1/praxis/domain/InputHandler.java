@@ -59,6 +59,7 @@ public class InputHandler {
     if (firstRheinjugReceiptUploadMessage.equals(VALIDE)) {
       firstRheinjugReceipt = newReceipt.cloneThisReceipt();
     }
+    
   }
 
   public void setSecondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {

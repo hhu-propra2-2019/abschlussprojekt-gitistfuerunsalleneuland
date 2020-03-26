@@ -75,7 +75,7 @@
                         <div class="form-group">
                             <p>Drei Rheinjug Quittungen:</p>
                             <div class="input-group input-file">
-                                <label for="input1">Erste Rheinjug Quittung</label>
+                                <label for="input1" th:text="*{getFirstRheinjugReceiptUploadMessage().equals('Keine Datei')} ? 'Erste Rheinjug Quittung' : *{getFirstRheinjugReceiptUploadMessage()}">Erste Rheinjug Quittung</label>
                                 <input class="form-control" id="input1" th:field="${input.firstRheinjugReceipt}"
                                        type="file">
                             </div>
@@ -83,14 +83,14 @@
 
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input2">Zweite Rheinjug Quittung</label>
+                                <label for="input2" th:text="*{getSecondRheinjugReceiptUploadMessage().equals('Keine Datei')} ? 'Zweite Rheinjug Quittung' : *{getSecondRheinjugReceiptUploadMessage()}">Zweite Rheinjug Quittung</label>
                                 <input class="form-control" id="input2" th:field="${input.secondRheinjugReceipt}"
                                        type="file">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group input-file">
-                                <label for="input3">Dritte Rheinjug Quittung</label>
+                                <label for="input3" th:text="*{getThirdRheinjugReceiptUploadMessage().equals('Keine Datei')} ? 'Dritte Rheinjug Quittung' : *{getThirdRheinjugReceiptUploadMessage()}">Dritte Rheinjug Quittung</label>
                                 <input class="form-control" id="input3" th:field="${input.thirdRheinjugReceipt}"
                                        type="file">
                             </div>
@@ -100,7 +100,7 @@
                         <div class="form-group">
                             <p>Entwickelbar Quittung:</p>
                             <div class="input-group input-file">
-                                <label for="input4">Entwickelbar Quittung</label>
+                                <label for="input4" th:text="*{getEntwickelbarReceiptUploadMessage().equals('Keine Datei')} ? 'Entwickelbar Quittung' : *{getEntwickelbarReceiptUploadMessage()}">Entwickelbar Quittung</label>
                                 <input class="form-control" id="input4" th:field="${input.entwickelbarReceipt}"
                                        type="file">
                             </div>
