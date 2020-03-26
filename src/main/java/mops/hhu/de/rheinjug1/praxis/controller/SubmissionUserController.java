@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
+import static mops.hhu.de.rheinjug1.praxis.auth.RolesHelper.STUDENTIN;
 import static mops.hhu.de.rheinjug1.praxis.models.Account.createAccountFromPrincipal;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE;
@@ -57,7 +58,7 @@ public class SubmissionUserController {
   }
 
   @GetMapping
-  @Secured("ROLE_studentin")
+  @Secured(value = STUDENTIN)
   public String showMySubmissions(final KeycloakAuthenticationToken token, final Model model) {
 
     final Account account = createAccountFromPrincipal(token);
@@ -70,7 +71,7 @@ public class SubmissionUserController {
   }
 
   @GetMapping("/download/template")
-  @Secured("ROLE_studentin")
+  @Secured(value = STUDENTIN)
   @ResponseBody
   public ResponseEntity<Resource> downloadTemplate(
       final KeycloakAuthenticationToken token, final Model model) {
@@ -85,7 +86,7 @@ public class SubmissionUserController {
   }
 
   @PostMapping(value = "/create-receipt/{submissionId}")
-  @Secured("ROLE_studentin")
+  @Secured(value = STUDENTIN)
   public String createReceipt(
       final KeycloakAuthenticationToken token,
       final Model model,

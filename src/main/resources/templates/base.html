@@ -27,14 +27,15 @@
             <li class="nav-item"><a class="nav-link text-dark" href="/">Übersicht<span class="sr-only">(current)</span></a>
             </li>
             <div th:if="${account != null and account.getRoles().contains('orga')}">
-                <li class="nav-item"><a class="nav-link text-dark" href="/admin/submissions">Alle Zusammenfassungen</a>
+                <li class="nav-item"><a class="nav-link text-dark" href="/admin/submissions">Zusammenfassungen</a>
                 </li>
                 <li class="nav-item"><a class="nav-link text-dark" href="/statistics">Statistiken</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/admin/events">manuell Hochladen</a></li>
             </div>
             <div th:if="${account != null and account.getRoles().contains('studentin')}">
-                <li class="nav-item"><a class="nav-link text-dark" href="/user/submissions">Meine Zusammenfassungen</a>
+                <li class="nav-item"><a class="nav-link text-dark" href="/user/submissions">Zusammenfassungen</a>
                 </li>
-                <li class="nav-item"><a class="nav-link text-dark" href="/events">Alle Events</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/user/events">Abgeben</a></li>
             </div>
         </ul>
     </nav>

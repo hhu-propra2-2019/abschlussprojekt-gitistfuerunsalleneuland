@@ -47,12 +47,32 @@ public class SubmissionUploadService {
     submissionRepository.save(newSubmission);
   }
 
+  public void uploadToMinIoAndSaveSubmission(
+      final Long meetupId, final MultipartFile file, final String name, final String email)
+      throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
+          IOException {
+
+    final String fileName = generateFileName(meetupId, name);
+
+    minIoUploadService.transferMultipartFileToMinIo(file, fileName);
+    final String minIoLink = minIoDownloadService.getURLforObjectDownload(fileName);
+    final Submission newSubmission =
+        Submission.builder()
+            .accepted(false)
+            .email(email)
+            .name(name)
+            .meetupId(meetupId)
+            .minIoLink(minIoLink)
+            .build();
+    submissionRepository.save(newSubmission);
+  }
+
   private static String generateFileName(final Long meetupId, final String email) {
     final String sanitizedEmail = email.replace("@", "_").replace(".", "_");
     return String.format("Zusammenfassung-%d-%s.txt", meetupId, sanitizedEmail);
   }
 
-  public String checkUploadableAndReturnTitle(final Long meetupId, final Account account)
+  public Event checkUploadableAndReturnEvent(final Long meetupId, final Account account)
       throws EventNotFoundException, DuplicateSubmissionException {
 
     final Event event = meetupService.getEventIfExistent(meetupId);
@@ -61,7 +81,17 @@ public class SubmissionUploadService {
       throw new DuplicateSubmissionException(meetupId, account.getEmail());
     }
 
-    return event.getName();
+    return event;
+  }
+
+  public void checkUploadable(final Long meetupId, final String email)
+      throws DuplicateSubmissionException, EventNotFoundException {
+
+    final Event event = meetupService.getEventIfExistent(meetupId);
+
+    if (existsByMeetupIdAndEmail(event.getId(), email)) {
+      throw new DuplicateSubmissionException(event.getId(), email);
+    }
   }
 
   private boolean existsByMeetupIdAndEmail(final Long meetupId, final String email) {
