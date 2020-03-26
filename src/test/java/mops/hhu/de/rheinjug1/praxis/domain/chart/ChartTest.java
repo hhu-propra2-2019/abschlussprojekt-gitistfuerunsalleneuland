@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import mops.hhu.de.rheinjug1.praxis.adapters.time.TimeFormatServiceImpl;
+import mops.hhu.de.rheinjug1.praxis.domain.chart.ChartData.ChartDataBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -91,6 +93,9 @@ public class ChartTest {
   }
 
   private ChartData chartDataBuild(final String date, final Integer participants) {
-    return ChartData.builder().date(date).submissions(participants).build();
+    return new ChartDataBuilder(new TimeFormatServiceImpl())
+        .date(date)
+        .submissions(participants)
+        .build();
   }
 }

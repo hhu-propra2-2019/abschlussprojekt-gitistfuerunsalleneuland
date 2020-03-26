@@ -3,21 +3,17 @@ package mops.hhu.de.rheinjug1.praxis.adapters.meetup;
 import static mops.hhu.de.rheinjug1.praxis.enums.MeetupTypeUtils.extractMeetupTypeFromString;
 
 import java.time.*;
+import lombok.RequiredArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
-import mops.hhu.de.rheinjug1.praxis.domain.event.EventFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventFactoryImpl implements EventFactory {
+@RequiredArgsConstructor
+public class EventFactory {
   private final TimeFormatService timeFormatService;
   private EventResponseDTO dto;
 
-  public EventFactoryImpl(final TimeFormatService timeFormatService) {
-    this.timeFormatService = timeFormatService;
-  }
-
-  @Override
   public Event createFromDTO(final EventResponseDTO dto) {
     this.dto = dto;
     return Event.builder()

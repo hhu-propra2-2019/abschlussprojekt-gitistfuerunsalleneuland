@@ -6,7 +6,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
-
+import mops.hhu.de.rheinjug1.praxis.adapters.time.TimeFormatServiceImpl;
+import mops.hhu.de.rheinjug1.praxis.domain.chart.ChartData.ChartDataBuilder;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,9 +21,10 @@ public class ChartServiceTest {
   @BeforeEach
   void init() {
     final String time = "12.03.2020";
-    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
-    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
-    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
+    final ChartDataBuilder chartDataBuilder = new ChartDataBuilder(new TimeFormatServiceImpl());
+    sampleData.add(chartDataBuilder.date(time).submissions(1).accepted(1).receipts(1).build());
+    sampleData.add(chartDataBuilder.date(time).submissions(1).accepted(1).receipts(1).build());
+    sampleData.add(chartDataBuilder.date(time).submissions(1).accepted(1).receipts(1).build());
     this.chartDataRepositorymock = mock(ChartDataRepository.class);
     final SignatureRepository signatureRepository = mock(SignatureRepository.class);
     this.chartService = new ChartService(signatureRepository, chartDataRepositorymock);
