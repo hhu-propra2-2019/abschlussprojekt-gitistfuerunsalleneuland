@@ -20,7 +20,6 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,12 +40,16 @@ public class CertificationController {
 
   private final Counter authenticatedAccess;
   private final CertificationService certificationService;
+  private final InputHandler inputHandler;
 
   @Autowired
   public CertificationController(
-      final MeterRegistry registry, final CertificationService certificationService) {
+      final MeterRegistry registry,
+      final CertificationService certificationService,
+      final InputHandler inputHandler) {
     authenticatedAccess = registry.counter("access.authenticated");
     this.certificationService = certificationService;
+    this.inputHandler = inputHandler;
   }
 
   private Account createAccountFromPrincipal(final KeycloakAuthenticationToken token) {
@@ -71,7 +74,9 @@ public class CertificationController {
     return "home";
   }
 
-  @PostMapping(value = "/", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+  @PostMapping(
+      value = "/",
+      produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
   @Secured({"ROLE_studentin", "ROLE_orga"})
   public @ResponseBody byte[] submitReceipt(
       final KeycloakAuthenticationToken token, final Model model, final FormUserData formUserData)
@@ -83,7 +88,7 @@ public class CertificationController {
     authenticatedAccess.increment();
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
-    final InputHandler inputHandler = new InputHandler();
+    inputHandler.reset();
     inputHandler.setRheinjugReceipts(formUserData);
     final RheinjugCertificationData rheinjugCertificationData =
         new RheinjugCertificationData(formUserData);
