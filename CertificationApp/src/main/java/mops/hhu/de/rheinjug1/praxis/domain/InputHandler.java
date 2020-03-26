@@ -64,6 +64,14 @@ public class InputHandler {
     }
   }
 
+  public List<String> getEventTitles() {
+    List<String> eventTitles = new ArrayList<>();
+    eventTitles.add(firstRheinjugReceipt.getName());
+    eventTitles.add(secondRheinjugReceipt.getName());
+    eventTitles.add(thirdRheinjugReceipt.getName());
+    return eventTitles;
+  }
+
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
     thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, MeetupType.RHEINJUG);
     if (thirdRheinjugReceiptUploadMessage.equals(VALIDE)) {

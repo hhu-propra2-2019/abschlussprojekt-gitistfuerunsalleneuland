@@ -1,9 +1,5 @@
 package mops.hhu.de.rheinjug1.praxis.controller;
 
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.CERTIFICATION_ATTRIBUTE;
-import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.INPUT_ATTRIBUTE;
-
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.io.IOException;
@@ -18,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBException;
 
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
-import mops.hhu.de.rheinjug1.praxis.domain.CertificationData;
+import mops.hhu.de.rheinjug1.praxis.domain.RheinjugCertificationData;
+import mops.hhu.de.rheinjug1.praxis.domain.FormUserData;
 import mops.hhu.de.rheinjug1.praxis.domain.InputHandler;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptReaderInterface;
 import mops.hhu.de.rheinjug1.praxis.interfaces.ReceiptVerificationInterface;
@@ -34,6 +31,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import static mops.hhu.de.rheinjug1.praxis.thymeleaf.ThymeleafAttributesHelper.*;
 
 @Controller
 @RequestMapping("/rheinjug1")
@@ -70,7 +69,7 @@ public class CertificationController {
       final Account account = createAccountFromPrincipal(token);
       model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     }
-    model.addAttribute(CERTIFICATION_ATTRIBUTE, new CertificationData());
+    model.addAttribute(FORM_USER_DATA_ATTRIBUTE, new FormUserData());
     model.addAttribute(
         INPUT_ATTRIBUTE, new InputHandler(/*fileReaderService, verificationService*/ ));
     authenticatedAccess.increment();
@@ -83,20 +82,20 @@ public class CertificationController {
       final KeycloakAuthenticationToken token,
       final Model model,
       final InputHandler inputHandler,
-      final CertificationData certificationData)
+      final FormUserData formUserData)
           throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, SignatureException, IOException, JAXBException, Docx4JException {
 
     final Account account = createAccountFromPrincipal(token);
-    certificationData.setFirstname(account.getName()); // TODO: replace username with first- and lastname fields in input form
-    System.out.println(account.getEmail());
+    RheinjugCertificationData rheinjugCertificationData = new RheinjugCertificationData(formUserData);
 
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
-      certificationService.createCertification(certificationData);
+      rheinjugCertificationData.setEventTitles(inputHandler.getEventTitles());
+      certificationService.createCertification(rheinjugCertificationData);
     }
     if (inputHandler.isEntwickelbarUploadOkForCertification()
         && inputHandler.verifyEntwickelbar()) {
-      certificationService.createCertification(certificationData);
+      certificationService.createCertification(rheinjugCertificationData);
     }
 
     model.addAttribute(ACCOUNT_ATTRIBUTE, account);

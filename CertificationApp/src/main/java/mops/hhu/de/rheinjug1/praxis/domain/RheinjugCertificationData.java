@@ -3,19 +3,24 @@ package mops.hhu.de.rheinjug1.praxis.domain;
 import lombok.Data;
 import mops.hhu.de.rheinjug1.praxis.enums.Sex;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CertificationData {
+public class RheinjugCertificationData {
 
   private String firstname;
   private String lastname;
   private String studentNumber;
   private Sex sex;
-  private String date;
   private String type;
-  private List<String> eventTitles = new ArrayList<>(3);
+  private List<String> eventTitles;
+
+  public RheinjugCertificationData(FormUserData formUserData){
+    this.firstname = formUserData.getFirstname();
+    this.lastname = formUserData.getLastname();
+    this.sex = formUserData.getSalutation() == "Herr"? Sex.MALE: Sex.FEMALE;
+    this.studentNumber = formUserData.getStudentNumber();
+  }
 
   public String getSalutation() {
 
