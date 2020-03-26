@@ -1,5 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller.submission;
 
+import static mops.hhu.de.rheinjug1.praxis.adapters.auth.config.RolesHelper.STUDENTIN;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE;
 
@@ -47,7 +48,7 @@ public class SubmissionUserController {
   private final SubmissionEventInfoDomainRepository submissionEventInfoDomainRepository;
 
   @GetMapping
-  @Secured("ROLE_studentin")
+  @Secured(value = STUDENTIN)
   public String showMySubmissions(final KeycloakAuthenticationToken token, final Model model) {
 
     final Account account = accountFactory.createFromPrincipal(token);
@@ -60,7 +61,7 @@ public class SubmissionUserController {
   }
 
   @GetMapping("/download/template")
-  @Secured("ROLE_studentin")
+  @Secured(value = STUDENTIN)
   @ResponseBody
   public ResponseEntity<Resource> downloadTemplate(
       final KeycloakAuthenticationToken token, final Model model) {
@@ -75,7 +76,7 @@ public class SubmissionUserController {
   }
 
   @PostMapping(value = "/create-receipt/{submissionId}")
-  @Secured("ROLE_studentin")
+  @Secured(value = STUDENTIN)
   public String createReceipt(
       final KeycloakAuthenticationToken token,
       final Model model,

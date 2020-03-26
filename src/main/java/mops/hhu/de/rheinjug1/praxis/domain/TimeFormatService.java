@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.domain;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
@@ -28,7 +29,12 @@ public interface TimeFormatService {
 
   String getGermanTimeString(Event event);
 
+  String extractDate(final String zonedDateTime);
+
   LocalDateTime getLocalDateTime(String dateTimeString);
 
   String getKeepAcceptedSubmissionsExpirationDate();
+
+  LocalDate getLocalDate(String localDateString);
+
 }

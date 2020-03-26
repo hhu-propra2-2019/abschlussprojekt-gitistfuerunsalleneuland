@@ -106,9 +106,4 @@ public class MeetupServiceImpl implements MeetupService {
 
     return eventOptional.get();
   }
-
-  public String getEventTitleIfExistent(final Long meetUpId) throws EventNotFoundException {
-
-    return getEventIfExistent(meetUpId).getName();
-  }
 }

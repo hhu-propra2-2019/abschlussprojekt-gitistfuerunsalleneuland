@@ -1,37 +1,28 @@
 package mops.hhu.de.rheinjug1.praxis.domain.chart;
 
-import static java.util.stream.Collectors.toList;
-
+import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
-import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
-import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.ChartDataRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
 public class ChartService {
 
-  private final MeetupService meetupService;
   private final SignatureRepository signatureRepository;
-  private final TimeFormatService timeFormatService;
+  private final ChartDataRepository chartDataRepository;
 
   public int getNumberOfReceiptsByMeetupType(final MeetupType meetupType) {
     return signatureRepository.countSignatureByMeetupType(meetupType.databaseRepresentation());
   }
 
-  public Chart getXEventsChart(final int events) {
-    final List<Event> xEvents = meetupService.getLastXEvents(events);
-
-    final List<String> dates =
-        xEvents.stream().map(timeFormatService::getGermanDateString).collect(toList());
-
-    final List<Integer> participants =
-        xEvents.stream().map(meetupService::getSubmissionCount).collect(toList());
-
-    return new Chart(dates, participants);
+  public Chart getXEventsChart(final int limit) {
+    final List<ChartData> chartData = chartDataRepository.getAll();
+    final int n = chartData.size();
+    Collections.sort(chartData); // Sort ChartData after date asc
+    return new Chart(chartData.subList(n - limit, n)); // get the last "limit" dates
   }
 }

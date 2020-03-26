@@ -8,40 +8,34 @@ import static org.mockito.Mockito.when;
 import java.util.LinkedList;
 import java.util.List;
 import mops.hhu.de.rheinjug1.praxis.adapters.time.TimeFormatServiceImpl;
-import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
-import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
-import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.database.repositories.ChartDataRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ChartServiceTest {
 
-  private final List<Event> sampleData = new LinkedList<>();
-  private MeetupService meetupServiceMock;
+  private final List<ChartData> sampleData = new LinkedList<>();
+  private ChartDataRepository chartDataRepositorymock;
   private ChartService chartService;
 
   @BeforeEach
   void init() {
-    final String time = "2020-03-12 12:30:00";
-    sampleData.add(
-        Event.builder().id(1).zonedDateTime(time).meetupType(MeetupType.RHEINJUG).build());
-    sampleData.add(
-        Event.builder().id(2).zonedDateTime(time).meetupType(MeetupType.RHEINJUG).build());
-    sampleData.add(
-        Event.builder().id(3).zonedDateTime(time).meetupType(MeetupType.ENTWICKELBAR).build());
-    this.meetupServiceMock = mock(MeetupService.class);
+    final String time = "12.03.2020";
+    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
+    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
+    sampleData.add(ChartData.builder().date(time).submissions(1).accepted(1).receipts(1).build());
+    this.chartDataRepositorymock = mock(ChartDataRepository.class);
     final SignatureRepository signatureRepository = mock(SignatureRepository.class);
-    this.chartService =
-        new ChartService(meetupServiceMock, signatureRepository, new TimeFormatServiceImpl());
+    this.chartService = new ChartService(signatureRepository, chartDataRepositorymock);
   }
 
   @Test
-  void testNumberOfDataPoints() {
-    when(meetupServiceMock.getLastXEvents(anyInt())).thenReturn(sampleData);
-
+  void testNumberOfDataPoints() {// Arrange
+    when(chartDataRepositorymock.getAll()).thenReturn(sampleData);
+    // Act
     final int numberOfTalks = chartService.getXEventsChart(2).getTalksLength();
-
-    assertThat(numberOfTalks).isEqualTo(sampleData.size());
+    // Assert
+    assertThat(numberOfTalks).isEqualTo(2);
   }
 }

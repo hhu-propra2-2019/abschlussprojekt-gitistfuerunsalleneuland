@@ -33,20 +33,20 @@ public class UploadServiceImpl implements UploadService {
       final Long meetupId, final MultipartFile file, final Account account)
       throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException,
           IOException {
+    uploadAndSaveSubmission(meetupId, file, account.getName(), account.getEmail());
 
-    final String fileName = generateFileName(meetupId, account.getEmail());
+  }
 
-    minIoUploadService.transferMultipartFileToMinIo(file, fileName);
-    final String minIoLink = minIoDownloadService.getURLforDownload(fileName);
-    final Submission newSubmission =
-        Submission.builder()
-            .accepted(false)
-            .email(account.getEmail())
-            .name(account.getName())
-            .meetupId(meetupId)
-            .minIoLink(minIoLink)
-            .build();
-    submissionRepository.save(newSubmission);
+  @Override
+  public Event checkUploadableAndReturnEvent(final Long meetupId, final Account account)
+      throws EventNotFoundException, DuplicateSubmissionException {
+
+    final Event event = meetupService.getEventIfExistent(meetupId);
+
+    if (existsByMeetupIdAndEmail(meetupId, account.getEmail())) {
+      throw new DuplicateSubmissionException(meetupId, account.getEmail());
+    }
+    return event;
   }
 
   private static String generateFileName(final Long meetupId, final String email) {
@@ -55,18 +55,35 @@ public class UploadServiceImpl implements UploadService {
   }
 
   @Override
-  public String checkUploadableAndReturnTitle(final Long meetupId, final Account account)
-      throws EventNotFoundException, DuplicateSubmissionException {
+  public void checkUploadable(final Long meetupId, final String email)
+      throws DuplicateSubmissionException, EventNotFoundException {
 
     final Event event = meetupService.getEventIfExistent(meetupId);
 
-    if (existsByMeetupIdAndEmail(meetupId, account.getEmail())) {
-      throw new DuplicateSubmissionException(meetupId, account.getEmail());
+    if (existsByMeetupIdAndEmail(event.getId(), email)) {
+      throw new DuplicateSubmissionException(event.getId(), email);
     }
-    return event.getName();
   }
 
-  private boolean existsByMeetupIdAndEmail(final Long meetupId, final String email) {
+    @Override
+    public void uploadAndSaveSubmission(Long meetupId, MultipartFile file, String name, String email) throws MinioException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+      final String fileName = generateFileName(meetupId, email);
+
+      minIoUploadService.transferMultipartFileToMinIo(file, fileName);
+      final String minIoLink = minIoDownloadService.getURLforDownload(fileName);
+      final Submission newSubmission =
+              Submission.builder()
+                      .accepted(false)
+                      .email(email)
+                      .name(name)
+                      .meetupId(meetupId)
+                      .minIoLink(minIoLink)
+                      .build();
+      submissionRepository.save(newSubmission);
+    }
+
+    private boolean existsByMeetupIdAndEmail(final Long meetupId, final String email) {
     return !submissionRepository.findAllByMeetupIdAndEmail(meetupId, email).isEmpty();
   }
 }

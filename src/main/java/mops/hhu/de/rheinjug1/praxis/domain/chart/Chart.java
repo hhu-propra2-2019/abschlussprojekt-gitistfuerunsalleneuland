@@ -1,28 +1,32 @@
 package mops.hhu.de.rheinjug1.praxis.domain.chart;
 
 import com.google.gson.Gson;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class Chart {
+public class Chart { // contains the ChartData and represents them as JSON String
 
-  private final List<String> dates = new ArrayList<>();
-  private final List<Integer> participants = new ArrayList<>();
+  private final List<ChartData> chartData = new ArrayList<>();
   private final Gson gson = new Gson();
 
-  public Chart(final List<String> dates, final List<Integer> participants) {
-    this.dates.addAll(dates);
-    this.participants.addAll(participants);
+  public Chart(final List<ChartData> chartData) {
+    this.chartData.addAll(chartData);
   }
 
-  public String getDates() {
-    return gson.toJson(this.dates);
+    public String getDates() {
+    final List<String> dates =
+        chartData.stream().map(i -> i.getDate()).collect(Collectors.toList());
+    return gson.toJson(dates);
   }
 
   public String getParticipants() {
-    return gson.toJson(this.participants);
+    final List<Integer> participants =
+        chartData.stream().map(i -> i.getSubmissions()).collect(Collectors.toList());
+    return gson.toJson(participants);
   }
 
   public int getTalksLength() {
-    return dates.size();
+    return chartData.size();
   }
 }

@@ -1,21 +1,15 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller;
 
-import static java.util.stream.Collectors.toList;
-import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
-
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.TemplateEvent;
 import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.TemplateEventInfo;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
 import mops.hhu.de.rheinjug1.praxis.domain.TimeFormatService;
 import mops.hhu.de.rheinjug1.praxis.domain.chart.ChartService;
+import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.MeetupService;
-import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoComparator;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.eventinfo.SubmissionEventInfoDomainRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -25,6 +19,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
+import static mops.hhu.de.rheinjug1.praxis.adapters.auth.config.RolesHelper.ORGA;
+import static mops.hhu.de.rheinjug1.praxis.adapters.auth.config.RolesHelper.STUDENTIN;
 
 @Controller
 @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
@@ -71,24 +74,37 @@ public class RheinjugController {
     return "home";
   }
 
-  @GetMapping("/events")
-  @Secured({"ROLE_orga", "ROLE_studentin"})
+  @GetMapping("/user/events")
+  @Secured(value = STUDENTIN)
   public String showAllEvents(
-      final KeycloakAuthenticationToken token,
-      final SubmissionEventInfoComparator comparator,
-      final Model model) {
+          final KeycloakAuthenticationToken token,
+          final Model model) {
 
     final Account account = accountFactory.createFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
 
     final List<TemplateEventInfo> submissionEventInfos =
         submissionEventInfoDomainRepository.getAllEventsWithInfosByUserSorted(account).stream()
             .map(eventInfo -> new TemplateEventInfo(eventInfo, timeFormatService))
             .collect(toList());
 
-    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
     model.addAttribute("eventsWithInfos", submissionEventInfos);
     publicAccess.increment();
-    return "allEvents";
+    return "/user/allEventsWithUpload";
+  }
+
+  @GetMapping("/admin/events")
+  @Secured(value = ORGA)
+  public String showAllPastEvents(final KeycloakAuthenticationToken token, final Model model) {
+
+    final Account account = accountFactory.createFromPrincipal(token);
+    model.addAttribute(ACCOUNT_ATTRIBUTE, account);
+
+    final List<Event> events = meetupService.getEventsByStatus("past");
+
+    model.addAttribute("events", events);
+    publicAccess.increment();
+    return "/admin/pastEventsWithUpload";
   }
 
   @GetMapping("/logout")
@@ -98,7 +114,7 @@ public class RheinjugController {
   }
 
   @GetMapping("/statistics")
-  @Secured("ROLE_orga")
+  @Secured(value = ORGA)
   public String getStatistics(final KeycloakAuthenticationToken token, final Model model) {
     if (token != null) {
       model.addAttribute(ACCOUNT_ATTRIBUTE, accountFactory.createFromPrincipal(token));

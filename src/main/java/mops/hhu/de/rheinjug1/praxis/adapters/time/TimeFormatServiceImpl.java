@@ -3,6 +3,7 @@ package mops.hhu.de.rheinjug1.praxis.adapters.time;
 import static org.joda.time.LocalDateTime.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +25,7 @@ public class TimeFormatServiceImpl implements TimeFormatService {
   @Value("${duration.keep-accepted-submissions.days}")
   private int keepDurationInDays;
 
+  private static final String DATEPATTERN = "dd.MM.yyyy";
   public static final String DATABASE_DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
   @Override
@@ -66,6 +68,12 @@ public class TimeFormatServiceImpl implements TimeFormatService {
   }
 
   @Override
+  public LocalDate getLocalDate(String localDateString) {
+    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATEPATTERN);
+    return LocalDate.parse(localDateString, dateTimeFormatter);
+  }
+
+  @Override
   public boolean isInUploadPeriod(final SubmissionEventInfo submissionEventInfo) {
     final LocalDateTime dateTime = getLocalDateTime(submissionEventInfo.getEventDateTime());
 
@@ -74,12 +82,12 @@ public class TimeFormatServiceImpl implements TimeFormatService {
 
   @Override
   public String getGermanDateString(final SubmissionEventInfo submissionEventInfo) {
-    return getLocalDateTime(submissionEventInfo.getEventDateTime()).toString("dd.MM.yyyy");
+    return getLocalDateTime(submissionEventInfo.getEventDateTime()).toString(DATEPATTERN);
   }
 
   @Override
   public String getGermanDateString(final Event event) {
-    return getLocalDateTime(event.getZonedDateTime()).toString("dd.MM.yyyy");
+    return getLocalDateTime(event.getZonedDateTime()).toString(DATEPATTERN);
   }
 
   @Override
@@ -92,7 +100,13 @@ public class TimeFormatServiceImpl implements TimeFormatService {
     return getLocalDateTime(event.getZonedDateTime()).toString("HH:mm");
   }
 
-  @Override
+    @Override
+    public String extractDate(String zonedDateTime) {
+
+      return getLocalDateTime(zonedDateTime).toString(DATEPATTERN);
+    }
+
+    @Override
   public LocalDateTime getLocalDateTime(final String dateTimeString) {
     final org.joda.time.format.DateTimeFormatter formatter =
         DateTimeFormat.forPattern(DATABASE_DATE_TIME_PATTERN);
