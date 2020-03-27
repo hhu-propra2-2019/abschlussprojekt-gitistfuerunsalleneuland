@@ -1,0 +1,37 @@
+{"properties": [
+  {
+    "name": "keystore.path",
+    "type": "java.lang.String",
+    "description": "A description for 'keystore.path'"
+  },
+  {
+    "name": "keystore.receipt.name",
+    "type": "java.lang.String",
+    "description": "A description for 'keystore.receipt.name'"
+  },
+  {
+    "name": "keystore.password",
+    "type": "java.lang.String",
+    "description": "A description for 'keystore.password'"
+  },
+  {
+    "name": "keystore.receipt.password",
+    "type": "java.lang.String",
+    "description": "A description for 'keystore.receipt.password'"
+  },
+  {
+    "name": "application.name",
+    "type": "java.lang.String",
+    "description": "A description for 'application.name'"
+  },
+  {
+    "name": "hhu_keycloak.token-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'hhu_keycloak.token-uri'"
+  },
+  {
+    "name": "multipart.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'multipart.enabled'"
+  }
+]}

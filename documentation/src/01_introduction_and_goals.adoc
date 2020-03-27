@@ -41,3 +41,4 @@
 | Studierende | Anmeldung an Veranstaltungen, Abgabe von Zusammenfassungen, Erhalt von Quittungen, Einlösen von Quittungen | Einfachheit, Überblick
 | Organisatoren | Zugriff auf Abgaben, Ausstellen von Quittungen | einfacher Zugriff auf Abgaben
 |===
+
