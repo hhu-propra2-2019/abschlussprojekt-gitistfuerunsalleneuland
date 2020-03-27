@@ -67,7 +67,7 @@ include::src/04_solution_strategy.adoc[]
 include::src/05_building_block_view.adoc[]
 
 // 6. Laufzeitsicht
-include::src/06_runtime_view (modified).adoc[]
+include::src/06_runtime_view.adoc[]
 
 <<<<
 // 7. Verteilungssicht

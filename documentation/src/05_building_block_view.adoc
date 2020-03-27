@@ -1,11 +1,10 @@
 [[section-building-block-view]]
-= Bausteinsicht
+== Bausteinsicht
 
-== Receipt App
+=== Receipt App
 
 image::../images/receiptAppBuildingBlocks.png[]
 
-=== Erste Ebene
 ****
 |===
 | **Name** | **Verantwortung**
@@ -19,7 +18,6 @@ image::../images/receiptAppBuildingBlocks.png[]
 |===
 ****
 
-=== Zweite Ebene
 
 ==== MeetupClient
 ****

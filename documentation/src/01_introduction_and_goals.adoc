@@ -7,12 +7,12 @@
 
 
 .Aufgaben
-Information über Veranstaltungen der rheinjug und Entwickelbar.
-Anmeldung bei einer rheinjug- oder Entwickelbarveranstaltung in der Rolle des Studierenden.
-Abgabe von schriftlichen Zusammenfassungen über besuchte Veranstaltungen in der Rolle des Studierenden unter Nutzung eines bereitgestellten Templates.
-Kontrolle der Zusammenfassungen der Studierenden und evtl. Akzeptanz der Abgabe und Ausstellung einer Kryptoquittung zur Bestätigung des erfolgreichen Bestehens durch eine Organisator.
-Nachträgliches Hinzufügen von verspäteten Abgaben ducrh Organisatoren.
-Möglichkeit des Einlösen von drei rheinjug-Quittungen oder einer Entwickelbar-Quittung gegen einen Schein über 0,5 Creditpoints durch Studierende.
+* Information über Veranstaltungen der rheinjug und Entwickelbar
+* Anmeldung bei einer rheinjug- oder Entwickelbarveranstaltung in der Rolle des Studierenden
+* Abgabe von schriftlichen Zusammenfassungen über besuchte Veranstaltungen in der Rolle des Studierenden unter Nutzung eines bereitgestellten Templates
+* Kontrolle der Zusammenfassungen der Studierenden und evtl. Akzeptanz der Abgabe und Ausstellung einer Kryptoquittung zur Bestätigung des erfolgreichen Bestehens durch eine Organisator
+* Nachträgliches Hinzufügen von verspäteten Abgaben ducrh Organisatoren
+* Möglichkeit des Einlösen von drei rheinjug-Quittungen oder einer Entwickelbar-Quittung gegen einen Schein über 0,5 Creditpoints durch Studierende
 
 
 .Motivation
