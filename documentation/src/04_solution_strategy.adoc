@@ -12,15 +12,13 @@ von Quittungen
 * Innerhalb der Teilanwendungen haben wir uns fuer eine hexagonale Architektur entschieden, da sich dort die Kommunikation mit externen Systemen besser
 einbinden laesst als in einer Schicht-Architektur
 * Wir haben uns gegen eine differenziertere Onion-Architektur entschieden,
-da diese wegen der schlanken Geschaeftslogik einen nicht erforderlich bzw. hilfreich waere.
+da diese wegen der schlanken Geschaeftslogik nicht erforderlich bzw. hilfreich wäre.
 
 === Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen technologisch
 * Verwendung von kryptographsicher Signatur für Quittungen, welche alle relevanten Informationen in sich trägt(Bibliothek JDK Security, tutorials.jenkov.com/java-cryptography).
 * permanente Speicherungen von Zusammenfassungen/Abgaben über MiniIO
-* Formatierungsvorlagen für Abgaben in Markdown oder Asciidoc
-* neue Organisatorrolle erfolgt über Keycloak (nicht durch unsere Gruppe, müssen wir nur anfragen)
-//TODO
-* extrem schmale Anforderungen an Datenbank (evtl. postgres), zwei Spalten: id einer Quittung und ob eingelöst oder nicht
+* Formatierungsvorlagen für Abgaben in Asciidoc
+* Speicherung der Evente, Informationen der Abgaben und Quittungen sowie bereitstellung der statistischen Informationen durch eine Datenbank (mySQL)
 
 === Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen logisch
 * Möglichkeit der Zustimmung zur Veröffentlichung (namentlich oder anonym) von Abgaben
