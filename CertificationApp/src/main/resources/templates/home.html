@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de"
+      th:replace="~{mopslayout :: html(name='Java in der Praxis', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Java in der Praxis</title>
+    <th:block th:fragment="headcontent">
+        <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              rel="stylesheet">
+        <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" type="text/css">
+    </th:block>
+</head>
+<body>
+<header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link text-dark" href="/rheinjug1/">Quittungen hochladen<span
+                    class="sr-only">(current)</span></a>
+            </li>
+            <div>
+                <!-- th:switch="${user}" / th:case="" / oder th:if="${param.error}"-->
+            </div>
+        </ul>
+    </nav>
+</header>
+
+<main th:fragment="bodycontent">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="container">
+
+                <div class="alert alert-success alert-dismissible fade show" th:if="${@inputHandler.areRheinjugUploadsOkForCertification()}">
+                    <strong>Erfolgreich!</strong> Die Rheinjug Quittungen wurden erfolgreich hochgeladen und abgeschickt.
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" th:if="${@inputHandler.isEntwickelbarUploadOkForCertification()}">
+                    <strong>Erfolgreich!</strong> Die Entwickelbar Quittung wurde erfolgreich hochgeladen und abgeschickt.
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" th:if="${@inputHandler.getFirstRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
+                                                                                    ${@inputHandler.getSecondRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
+                                                                                     ${@inputHandler.getThirdRheinjugReceiptUploadMessage().equals('Fehlerhafte Quittung')} OR
+                                                                                      ${@inputHandler.getEntwickelbarReceiptUploadMessage().equals('Fehlerhafte Quittung')}
+                ">
+                    <strong>Error!</strong> Es gab einen Fehler beim hochladen.
+                </div>
+
+                <h3 style="padding-bottom: 10px">Quittungen hochladen</h3>
+
+                <form enctype="multipart/form-data" method="post"
+                      th:action="@{/rheinjug1/}">
+                    <div class="inputForm">
+                        <div class="form-group">
+                            <label for="salutation">Anrede</label>
+                            <select id="salutation" class="custom-select" th:field="${formUserData.salutation}">
+                                <option value="Frau">Frau</option>
+                                <option value="Herr">Herr</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname">Vorname</label>
+                            <input class="mb-4 form-control" id="firstname" placeholder="Vorname eingeben"
+                                   required th:field="${formUserData.firstname}">
+                            <label for="lastname">Nachname</label>
+                            <input class="mb-4 form-control" id="lastname" placeholder="Nachname eingeben"
+                                   required th:field="${formUserData.lastname}">
+                        </div>
+                        <div class="form-group">
+                            <label for="matrikel">Matrikel-Nummer</label>
+                            <input class="form-control" id="matrikel" placeholder="Matrikel-Nummer eingeben"
+                                   required th:field="${formUserData.studentNumber}" type="number">
+                        </div>
+                    </div>                   
+                    <div class="inputForm">
+                        <div class="form-group">
+                            <p>Drei Rheinjug Quittungen:</p>
+                            <div class="input-group input-file">
+                                <label for="input1" th:text="${inputHandler.firstRheinjugReceiptUploadMessage}">Erste Rheinjug Quittung</label>
+                                <input class="form-control" id="input1" th:field="${inputHandler.firstRheinjugReceipt}"
+                                       type="file">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group input-file">
+                                <label for="input2" th:text="${inputHandler.secondRheinjugReceiptUploadMessage}">Zweite Rheinjug Quittung</label>
+                                <input class="form-control" id="input2" th:field="${inputHandler.secondRheinjugReceipt}"
+                                       type="file">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-file">
+                                <label for="input3" th:text="${inputHandler.thirdRheinjugReceiptUploadMessage}">Dritte Rheinjug Quittung</label>
+                                <input class="form-control" id="input3" th:field="${inputHandler.thirdRheinjugReceipt}"
+                                       type="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inputForm">
+                        <div class="form-group">
+                            <p>Entwickelbar Quittung:</p>
+                            <div class="input-group input-file">
+                                <label for="input4" th:text="${inputHandler.entwickelbarReceiptUploadMessage}">Entwickelbar Quittung</label>
+                                <input class="form-control" id="input4" th:field="${inputHandler.entwickelbarReceipt}"
+                                       type="file">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-outline-success" id="button1" type="submit">Einlösen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="container">
+                <img alt="eminem" src=../static/images/eminem.jpg style="width:90%;height:auto;"
+                     th:src="@{/img/eminem.jpg}">
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
