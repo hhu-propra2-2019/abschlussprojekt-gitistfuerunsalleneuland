@@ -9,11 +9,11 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-@Service
 @NoArgsConstructor
-public class KeyService {
+public class KeyConfiguration {
 
   @Value("${keystore.password}")
   private String keyStorePassword;
@@ -27,6 +27,7 @@ public class KeyService {
   @Value("${keystore.receipt.name}")
   private String keyName;
 
+  @Bean
   KeyPair getKeyPairFromKeyStore()
       throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException {
@@ -48,5 +49,10 @@ public class KeyService {
     final PrivateKey privateKey = privateKeyEntry.getPrivateKey();
 
     return new KeyPair(publicKey, privateKey);
+  }
+
+  @Bean
+  Signature getSecuritySignature() throws NoSuchAlgorithmException {
+    return Signature.getInstance("SHA256withRSA");
   }
 }

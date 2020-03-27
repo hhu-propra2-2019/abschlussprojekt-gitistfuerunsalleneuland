@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import mops.hhu.de.rheinjug1.praxis.domain.ByteString;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.VerificationService;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptReader;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.stereotype.Component;
@@ -35,14 +36,14 @@ public class InputHandler {
   private final ReceiptReader fileReaderService;
   private final VerificationService verificationService;
 
-  private List<String> signatures = new ArrayList(3);
+  private List<ByteString> signatures = new ArrayList(3);
 
-  private Receipt firstRheinjugReceipt;
-  private Receipt secondRheinjugReceipt;
-  private Receipt thirdRheinjugReceipt;
-  private Receipt entwickelbarReceipt;
+  private ReceiptDTO firstRheinjugReceipt;
+  private ReceiptDTO secondRheinjugReceipt;
+  private ReceiptDTO thirdRheinjugReceipt;
+  private ReceiptDTO entwickelbarReceipt;
 
-  private Receipt newReceipt;
+  private ReceiptDTO newReceipt;
 
   private String firstRheinjugReceiptUploadMessage = "Erste Rheinjug Quittung";
   private String secondRheinjugReceiptUploadMessage = "Zweite Rheinjug Quittung";
@@ -63,14 +64,14 @@ public class InputHandler {
   public void setFirstRheinjugReceipt(final MultipartFile firstRheinjugFile) {
     firstRheinjugReceiptUploadMessage = getUploadMessage(firstRheinjugFile, MeetupType.RHEINJUG);
     if (firstRheinjugReceiptUploadMessage.equals(VALIDE)) {
-      firstRheinjugReceipt = newReceipt.cloneThisReceipt();
+      firstRheinjugReceipt = newReceipt.clone();
     }
   }
 
   public void setSecondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
     secondRheinjugReceiptUploadMessage = getUploadMessage(seccondRheinjugFile, MeetupType.RHEINJUG);
     if (secondRheinjugReceiptUploadMessage.equals(VALIDE)) {
-      secondRheinjugReceipt = newReceipt.cloneThisReceipt();
+      secondRheinjugReceipt = newReceipt.clone();
     }
   }
 
@@ -85,14 +86,14 @@ public class InputHandler {
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
     thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, MeetupType.RHEINJUG);
     if (thirdRheinjugReceiptUploadMessage.equals(VALIDE)) {
-      thirdRheinjugReceipt = newReceipt.cloneThisReceipt();
+      thirdRheinjugReceipt = newReceipt.clone();
     }
   }
 
   public void setEntwickelbarReceipt(final MultipartFile entwickelbarFile) {
     entwickelbarReceiptUploadMessage = getUploadMessage(entwickelbarFile, MeetupType.ENTWICKELBAR);
     if (entwickelbarReceiptUploadMessage.equals(VALIDE)) {
-      entwickelbarReceipt = newReceipt.cloneThisReceipt();
+      entwickelbarReceipt = newReceipt.clone();
     }
   }
 
@@ -110,7 +111,7 @@ public class InputHandler {
 
   private String getUploadMessage(final MultipartFile uploadedFile, final MeetupType type) {
     if (uploadedFile == null || uploadedFile.isEmpty()) {
-      newReceipt = new Receipt();
+      newReceipt = new ReceiptDTO();
       return KEINE_DATEI;
     }
     try {
@@ -128,8 +129,8 @@ public class InputHandler {
     }
   }
 
-  private boolean isDuplicateSignature(final String newSignature) {
-    for (final String signature : signatures) {
+  private boolean isDuplicateSignature(final ByteString newSignature) {
+    for (final ByteString signature : signatures) {
       if (signature.equals(newSignature)) {
         return true;
       }

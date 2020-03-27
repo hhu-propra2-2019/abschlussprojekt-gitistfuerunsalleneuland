@@ -10,7 +10,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,11 +21,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class VerificationServiceTests {
 
-  @Autowired private KeyService keyService;
+  @Autowired private KeyConfiguration keyService;
   @Autowired private VerificationServiceImpl verificationService;
 
-  static Receipt validReceipt;
-  static Receipt invalidReceipt;
+  static ReceiptDTO validReceipt;
+  static ReceiptDTO invalidReceipt;
 
   @BeforeEach
   public void setUp()
@@ -40,7 +40,7 @@ public class VerificationServiceTests {
     sign.update(hash.getBytes(StandardCharsets.UTF_8));
 
     validReceipt =
-        new Receipt(
+        new ReceiptDTO(
             "name",
             "email",
             (long) 1,
@@ -49,7 +49,7 @@ public class VerificationServiceTests {
             Base64.toBase64String(sign.sign()));
 
     invalidReceipt =
-        new Receipt(
+        new ReceiptDTO(
             "name",
             "falseEmail",
             (long) 1,

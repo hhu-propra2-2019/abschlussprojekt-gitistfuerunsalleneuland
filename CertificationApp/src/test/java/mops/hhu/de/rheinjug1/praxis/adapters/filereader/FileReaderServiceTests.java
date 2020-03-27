@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.io.IOException;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
+
+import mops.hhu.de.rheinjug1.praxis.adapters.encryption.ByteStringImpl;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.bouncycastle.util.encoders.DecoderException;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,18 +31,18 @@ public class FileReaderServiceTests {
           "ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg=="
               .getBytes());
 
-  private final Receipt receipt = new Receipt();
+  private final ReceiptDTO receipt = new ReceiptDTO();
 
   @Autowired private ReceiptReaderImpl receiptReader;
 
   @BeforeEach
-  public void setReceipt() {
+  public void setReceipt() throws IOException {
     receipt.setEmail("TestEmail");
     receipt.setName("TestName");
     receipt.setMeetupId((long) 1);
     receipt.setMeetupTitle("Titel");
     receipt.setMeetupType(MeetupType.ENTWICKELBAR);
-    receipt.setSignature("OEUIc5654eut");
+    receipt.setSignature(new ByteStringImpl("OEUIc5654eut"));
   }
 
   @Test
