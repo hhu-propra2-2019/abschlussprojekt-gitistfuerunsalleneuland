@@ -14,7 +14,6 @@
     			<h3>Java in der Praxis!</h3>
         		<p class="mt-5 mb-4">Über diese Seite besteht die Möglichkeit sich für verschiedene Projekte von Rheinjug und Entwickelbar
             	anzumelden und sich so im Bereich der Informatik weiterzubilden.</p>
-            	<p class="mb-2"><a class="btn btn-primary" href="#allEvents">Kommende Veranstaltungen</a></p>
     		</div>
     		<div class ="col-md">
                 <img src="pictures\code.jpg" class="img-fluid mx-auto" alt="Responsive image">
@@ -73,7 +72,7 @@
     				<p class="text-center">Für Veranstaltung anmelden</p>
     			</div>
     		</div>
-    		<div class="col-sm my-sm-0 my-3">
+    		<div class="col-sm my-3">
     			<div class="d-flex justify-content-center pb-3">
     				<i class="far fa-eye fa-3x"></i>
     			</div>
@@ -81,7 +80,7 @@
     				<p class="text-center">Veranstaltung besuchen und notizen machen</p>
     			</div>
     		</div>
-    		<div class="col-sm my-sm-0 my-3">
+    		<div class="col-sm my-3">
     			<div class="d-flex justify-content-center pb-3">
     				<i class="fas fa-pen fa-3x"></i>
     			</div>
@@ -133,7 +132,7 @@
 										<span><i class="far fa-calendar-alt"></i></span>
 									</div>
 									<div>
-										<span th:text="${event.germanDateTime}" class="ml-2">Datum/Uhrzeit</span>
+										<span th:text="${@timeFormatService.getGermanDateTimeString(event)}" class="ml-2">Datum/Uhrzeit</span>
 									</div>
 									<div class="pl-4">
 										<span><i class="far fa-clock"></i></span>

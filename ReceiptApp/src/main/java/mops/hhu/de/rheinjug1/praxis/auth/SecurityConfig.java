@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.adapters.auth.config;
+package mops.hhu.de.rheinjug1.praxis.auth;
 
 import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;

@@ -18,7 +18,7 @@
             <tbody>
             <tr th:each="event : ${events}">
                 <td scope="row"><a th:href="@{${event.link}}"><span th:text="${event.name}">Titel</span></a></td>
-                <td th:text="${event.germanDateTime}">Date</td>
+                <td th:text="${@timeFormatService.getGermanDateString(event)}">Date</td>
                 <td>
                     <a th:href="@{/admin/submissions/upload/{meetup_id}(meetup_id= ${event.id})}"><span>manuell hochladen</span></a>
                 </td>
