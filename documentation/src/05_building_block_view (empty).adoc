@@ -3,7 +3,8 @@
 
 === Receipt App
 
-image::receiptAppBuildingBlocks.png[]
+image::../images/receiptAppBuildingBlocks.png[]
 
 === Certification App
 
+image::../images/certificationAppBuildingBlocks.png[]
