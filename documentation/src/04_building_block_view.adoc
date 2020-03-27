@@ -1,0 +1,94 @@
+[[section-building-block-view]]
+== Bausteinsicht
+
+=== Receipt App
+
+image::../images/receiptAppBuildingBlocks.png[]
+
+****
+|===
+| **Name** | **Verantwortung**
+| _MeetupClient_ | _Schnittstelle zur Meetup API_
+| _MeetupService_ | _Schnittstelle um Informationen zu der Veranstaltungen zu bekommen_
+| _MinIO Services_ | _Schnittstelle zu MinIO_
+| _Encryption Service_ | _Aus den Informationen der Abgaben werden Hashvalues generiert für die kryptographischen Quittungen_
+| _ChartService_ | _Schnittstelle zur view chart_data_
+| _ReceiptServices_ | _Verwaltung der Quittungen_
+| _SubmissionAccessService_ | _Verwaltung der Abgaben_
+|===
+****
+
+
+==== MeetupClient
+****
+- Es wird ein Get Request an die MeetupAPI-URL geschickt und wenn eine Antwort geschickt wurde, werden DTO's mittels des Spring RestTemplates befüllt und es wird direkt gefiltert, welche Informationen benötigt werden.
+****
+
+==== MeetupService
+****
+- In periodischen Abständen werden Veranstaltungsinformationen über die Schnittstelle zur Meetup API angefragt und über die Schnittstelle zur Datenbank dort eingefügt.
+- Mehrere Funktionen für Filterug der Veranstaltungen
+****
+
+==== MinIO Services
+
+****
+- Der MinIoDownloadService kümmert sich um den download der Abgaben aus MinIO
+- Der MinIoUploadService kümmert sich um den upload der Abgaben und speichern in MinIO.
+****
+
+==== Encryption Services
+
+****
+- EncryptionService erstellt Hashes aus den Abgaben
+- KeyService kümmert sich um vergleichen der Hashes
+****
+
+==== ChartService
+
+****
+- Relevante statistische Informationen werden geladen und in ein Objekt zum Anzeigen im Frotend gepackt.
+****
+
+==== ReceiptService
+
+****
+- Quittungen werden hier erstellt, per E-mail gesendet sowie auch eingelesen.
+****
+
+==== SubmissionAcessService
+
+****
+- Abgaben können hier vom Organisator akzeptiert werden, und für Studenten im Frontend angezeigt werden.
+****
+
+=== Certification App
+
+image::../images/certificationAppBuildingBlocks.png[]
+
+
+|===
+| **Name** | **Verantwortung**
+| _VerificationService_ | _Kryptographiesche hashes entschlüsseln und Vergleichen, ob diese zu den abgegebenen Daten passen_
+| _CertificationService_ | _Fuellt Vorlage einer Bescheinigung ueber CP aus_
+| _Mailservice, CertificationSendService_ | _Wird verwendet, um Bescheinigungen ueber CP zu verschicken_
+| _ReceiptReader_ | _Liest Quittungen ein und entschluesselt Base64_
+
+|===
+
+==== Verification:
+
+****
+- Abgegebene Quittungen werden verifiziert
+- Zur Verifizierung nur Inhalt der Quittung noetig (Vergleich der Informationen mit der Signatur)
+- Keine Quittung zweimal abgeben (bereits abgegebene Signaturen werden in DB gespeichert)
+****
+
+==== Certification:
+
+****
+- Die Bescheinigung wird als Word-Datei ausgestellt
+- Hierfuer wird in eine Vorlage eingetragen, welcher Student wann welche Veranstaltungen besucht hat
+- Fuer jeden halben CP, d.h. fuer je drei Rheinjug- oder eine Entwickelbar-Veranstaltungen wird eine Bescheinigung ausgestellt
+****
+
