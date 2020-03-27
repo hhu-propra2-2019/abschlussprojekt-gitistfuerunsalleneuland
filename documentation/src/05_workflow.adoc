@@ -11,7 +11,7 @@
 
 === _Zur Laufzeit:_
 
-=== Websiteaufruf(Student, Organisator):
+==== Websiteaufruf(Student, Organisator):
 
 ****
 - Student/Organisator ruft Website auf.
@@ -21,7 +21,7 @@
 ****
 
 [[abgabe_student]]
-=== Abgabe(Student):
+==== Abgabe(Student):
 
 ****
 - Student sucht seine Veranstaltung aus und wird auf upload-Formular weitergeleitet
@@ -31,7 +31,7 @@
 - Student wird auf Übersicht zu seinen Abgaben weitergeleitet.
 ****
 
-=== Übersicht(Student):
+==== Übersicht(Student):
 
 ****
 - Student geht auf Übersicht zu Abgaben.
@@ -40,7 +40,7 @@
 ****
 
 
-=== Quittung(Student):
+==== Quittung(Student):
 
 ****
 . Student drückt Button, wenn freigeschaltet
@@ -49,7 +49,7 @@
 . redirect auf Sucess-Page
 ****
 
-=== Zusammenfassungen(Organisator):
+==== Zusammenfassungen(Organisator):
 
 ****
 . Organisator geht auf Seite.
@@ -57,7 +57,7 @@
 . Organisator downloadet sich die Zusammenfassung über den Link aus MinIO.
 ****
 
-=== Statistik(Organisator):
+==== Statistik(Organisator):
 
 ****
 . Stastische Informationen werden aus der Datenbank (view chart_data) geladen.
@@ -66,18 +66,16 @@
 . Frontend wird dem Organisator angezeigt.
 ****
 
-=== Manuell hochladen(Organisator):
+==== Manuell hochladen(Organisator):
 
 ****
 - Workflow wie in <<abgabe_student>>.
 ****
 
-=== Abgabe akzeptieren(Organisator):
+==== Abgabe akzeptieren(Organisator):
 ****
 . Korrektor drückt Button
 . Datenbankzustand wird geändert
-
-
 ****
 
 
