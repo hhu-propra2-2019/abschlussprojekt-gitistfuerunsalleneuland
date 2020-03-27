@@ -25,4 +25,4 @@ da diese wegen der schlanken Geschaeftslogik nicht erforderlich bzw. hilfreich w
 * Frist für Quittungen 1 Woche mit Möglichkeit der unkomplizierten Nachreichung durch Organisatoren
 
 === Organisatorische Entscheidungen
-* Absprache wegen Krypto-Quittung mit benachbarter Gruppe(Klausurzulassungen)
+* Absprache wegen Krypto-Quittung mit benachbarter Gruppe (Klausurzulassungen)
