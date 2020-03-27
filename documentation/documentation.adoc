@@ -55,7 +55,7 @@ include::src/02_architecture_constraints (empty).adoc[]
 
 <<<<
 // 3. Kontextabgrenzung
-include::src/03_system_scope_and_context (empty).adoc[]
+include::src/03_system_scope_and_context.adoc[]
 
 <<<<
 // 4. Lösungsstrategie

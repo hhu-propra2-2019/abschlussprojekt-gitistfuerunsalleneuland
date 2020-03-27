@@ -1,0 +1,4 @@
+[[section-system-scope-and-context]]
+== Kontextdiagramm
+
+image::../images/scopeAndContext.png[]
