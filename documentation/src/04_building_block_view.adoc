@@ -63,7 +63,7 @@ image::../images/receiptAppBuildingBlocks.png[]
 ****
 
 
-== Certification App
+=== Certification App
 
 image::../images/certificationAppBuildingBlocks.png[]
 

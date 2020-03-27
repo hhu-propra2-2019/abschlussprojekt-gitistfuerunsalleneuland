@@ -1,12 +1,8 @@
 [[section-introduction-and-goals]]
 ==	Einführung und Ziele
 
-
-
 === Aufgabenstellung
 
-
-.Aufgaben
 * Information über Veranstaltungen der rheinjug und Entwickelbar
 * Anmeldung bei einer rheinjug- oder Entwickelbarveranstaltung in der Rolle des Studierenden
 * Abgabe von schriftlichen Zusammenfassungen über besuchte Veranstaltungen in der Rolle des Studierenden unter Nutzung eines bereitgestellten Templates
@@ -15,7 +11,8 @@
 * Möglichkeit des Einlösen von drei rheinjug-Quittungen oder einer Entwickelbar-Quittung gegen einen Schein über 0,5 Creditpoints durch Studierende
 
 
-.Motivation
+=== Motivation
+
 * Studierende: verlässliches und flexibles Erlangen von Creditpoints durch Besuch der rheinjug- und Entwickelbarveranstaltungen (r/E-Veranstaltungen)
 * Verbesserter Überblick über noch nicht oder bereits ausgestellte Creditpoints oder zugehörige Abgaben
 * Organisatoren: einfacher Zugriff auf wohlformatierte Abgaben, flexible Möglichkeit der Erteilung von Creditpoints(Ausstellen von Quittungen)
