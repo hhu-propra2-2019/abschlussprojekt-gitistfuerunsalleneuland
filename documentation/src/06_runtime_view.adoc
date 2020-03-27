@@ -1,5 +1,5 @@
 [[section-runtime-view]]
-== Laufzeitsicht
+== Workflow
 
 === _Start der Application:_
 ****
