@@ -65,6 +65,37 @@ image::../images/receiptAppBuildingBlocks.png[]
 
 === Certification App
 
+|===
+| **Name** | **Verantwortung**
+| _Encryption_ | _Kryptographiesche hashes entschlüsseln_
+| _Mail_ | _Schnittstelle für das senden von E-mails_
+| _Filereader_ | _Schnittstelle zu MinIO_
+
+|===
+
+== Encryption:
+
+****
+- Abgegebene Quittungen werden verifiziert
+- Keine Quittung zweimal abgeben
+- Bekommt Signatur aus der anderen Application
+****
+
+== Mail:
+
+****
+- Bei korrekter Abgabe wird die Bestätigungsmail darüber geschickt.
+****
+
+
+== Filereader:
+
+****
+Weiss ich nicht was da gemacht wird
+****
+
+
+
 image::../images/certificationAppBuildingBlocks.png[]
 
 
