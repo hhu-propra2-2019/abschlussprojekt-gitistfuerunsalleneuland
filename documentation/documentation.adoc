@@ -55,7 +55,7 @@ include::src/02_architecture_constraints (empty).adoc[]
 
 <<<<
 // 3. Kontextabgrenzung
-include::src/03_system_scope_and_context (empty).adoc[]
+include::src/03_system_scope_and_context.adoc[]
 
 <<<<
 // 4. Lösungsstrategie
@@ -64,7 +64,7 @@ include::src/04_solution_strategy.adoc[]
 <<<<
 // 5. Bausteinsicht
 
-include::src/05_building_block_view (modified).adoc[]
+include::src/05_building_block_view.adoc[]
 
 // 6. Laufzeitsicht
 include::src/06_runtime_view (modified).adoc[]
