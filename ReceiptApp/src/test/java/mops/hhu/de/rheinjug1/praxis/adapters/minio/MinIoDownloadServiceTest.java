@@ -23,16 +23,19 @@ public class MinIoDownloadServiceTest {
   @Autowired private MinIoDownloadService downloadService;
 
   private static String filename = "downloadTestFile";
+  private static String bucketname = "rheinjug";
 
   @BeforeAll
   static void createMinioClient()
       throws MinioException, InvalidKeyException, NoSuchAlgorithmException, IOException,
           XmlPullParserException {
     minioClient = new MinioClient("http://localhost:9000/", "minio", "minio123");
-    assertThat(minioClient.bucketExists("rheinjug")).isTrue();
+    if (!minioClient.bucketExists(bucketname)) {
+      minioClient.makeBucket(bucketname);
+    }
     minioClient.putObject(
-        "rheinjug", filename, "src/test/resources/test.txt", null, null, null, null);
-    minioClient.statObject("rheinjug", filename);
+        bucketname, filename, "src/test/resources/test.txt", null, null, null, null);
+    minioClient.statObject(bucketname, filename);
   }
 
   @Test
