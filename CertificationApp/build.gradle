@@ -98,6 +98,8 @@ dependencies {
     }
     implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
     implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
+    testCompile 'com.tngtech.archunit:archunit-junit5:0.13.1'
+
 }
 
 test {
