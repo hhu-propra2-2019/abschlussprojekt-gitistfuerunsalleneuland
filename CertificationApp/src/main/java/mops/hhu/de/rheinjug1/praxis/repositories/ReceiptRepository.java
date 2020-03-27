@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ReceiptRepository extends CrudRepository<ReceiptEntity, Long> {
 
-  @Query("SELECT * FROM rheinjug1.receipt WHERE receipt.id=:id")
+  @Query("SELECT * FROM receipt WHERE receipt.id=:id")
   ReceiptEntity findReceiptEntityById(@Param("id") Long id);
 
   @Query("SELECT COUNT(signature) FROM receipts.receipt r WHERE r.meetup_type = :meetup_type;")
