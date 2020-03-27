@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptReader;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.stereotype.Service;
@@ -16,15 +16,15 @@ import org.yaml.snakeyaml.constructor.Constructor;
 public class ReceiptReaderImpl implements ReceiptReader {
 
   @Override
-  public Receipt read(final MultipartFile base64ReceiptFile) throws IOException {
+  public ReceiptDTO read(final MultipartFile base64ReceiptFile) throws IOException {
 
     if (base64ReceiptFile == null) {
       throw new IOException();
     }
     try (InputStream input = deCryptBase64(base64ReceiptFile)) {
-      final Constructor constructor = new Constructor(Receipt.class);
+      final Constructor constructor = new Constructor(ReceiptDTO.class);
       final Yaml yaml = new Yaml(constructor);
-      final Receipt receipt = (Receipt) yaml.load(input);
+      final ReceiptDTO receipt = (ReceiptDTO) yaml.load(input);
       if (receipt == null || "".equals(receipt.getSignature())) {
         throw new IOException();
       } else {

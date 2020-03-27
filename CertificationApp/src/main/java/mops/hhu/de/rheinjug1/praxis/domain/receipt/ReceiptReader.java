@@ -5,6 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ReceiptReader {
 
-  Receipt read(final MultipartFile file)
+  ReceiptDTO read(final MultipartFile file)
       throws IOException, NoSuchFieldException, IllegalAccessException;
 }

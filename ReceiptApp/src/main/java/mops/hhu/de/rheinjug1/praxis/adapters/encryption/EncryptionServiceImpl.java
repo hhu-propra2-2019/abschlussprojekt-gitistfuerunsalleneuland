@@ -31,17 +31,28 @@ public class EncryptionServiceImpl implements EncryptionService {
     final KeyPair pair = keyService.getKeyPairFromKeyStore();
     final PrivateKey privateKey = pair.getPrivate();
 
-    final Signature sign = Signature.getInstance("SHA256withRSA");
-    sign.initSign(privateKey);
+    final Signature signature = Signature.getInstance("SHA256withRSA");
+    signature.initSign(privateKey);
 
     final String hashValue = createHashValue(meetupType, meetupId, name, email);
-    sign.update(hashValue.getBytes(StandardCharsets.UTF_8));
+    signature.update(hashValue.getBytes(StandardCharsets.UTF_8));
 
-    return Base64.toBase64String(sign.sign());
+    return Base64.toBase64String(signature.sign());
   }
 
   private String createHashValue(
       final MeetupType meetupType, final long meetupId, final String name, final String email) {
     return meetupType.getLabel() + meetupId + name + email;
+  }
+
+  private boolean isVerified(
+          final String signaturetoVerify, final PublicKey publicKey, final String hashValue)
+          throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+
+    final Signature sign = Signature.getInstance("SHA256withRSA");
+    sign.initVerify(publicKey);
+    final byte[] hashValueBytes = hashValue.getBytes(StandardCharsets.UTF_8);
+    sign.update(hashValueBytes);
+    return sign.verify(signaturetoVerify.getBytes());
   }
 }
