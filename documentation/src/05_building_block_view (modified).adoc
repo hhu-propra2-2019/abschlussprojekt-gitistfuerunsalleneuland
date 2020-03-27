@@ -252,3 +252,15 @@ _<Whitebox-Template>_
 ****
 
 
+[[section-building-block-view]]
+== Bausteinsicht
+
+=== Receipt App
+
+image::../images/receiptAppBuildingBlocks.png[]
+
+=== Certification App
+
+image::../images/certificationAppBuildingBlocks.png[]
+
+
