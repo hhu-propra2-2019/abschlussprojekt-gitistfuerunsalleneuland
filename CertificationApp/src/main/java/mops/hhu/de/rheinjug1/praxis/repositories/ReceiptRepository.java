@@ -17,7 +17,6 @@ public interface ReceiptRepository extends CrudRepository<ReceiptEntity, Long> {
   @Query("SELECT COUNT(signature) FROM receipts.receipt r WHERE r.meetup_type = :meetup_type;")
   int countSignatureByMeetupType(@Param("meetup_type") String meetupType);
 
-
   @Query("SELECT * FROM receipt WHERE receipt.signature = signature")
   List<ReceiptEntity> findReceiptEntityBySignature(@Param("signature") String signature);
 }
