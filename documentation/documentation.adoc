@@ -63,7 +63,7 @@ include::src/04_solution_strategy.adoc[]
 
 <<<<
 // 5. Bausteinsicht
-include::src/05_building_block_view (empty).adoc[]
+include::src/05_building_block_view.adoc[]
 
 <<<<
 // 6. Laufzeitsicht
