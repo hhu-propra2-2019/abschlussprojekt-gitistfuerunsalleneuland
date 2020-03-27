@@ -1,34 +1,258 @@
-ifdef::basebackend-html[]
-++++
-<style>
-.arc42help {font-size:small; width: 14px; height: 16px; overflow: hidden; position: absolute; right: 0px; padding: 2px 0px 3px 2px;}
-.arc42help::before {content: "?";}
-.arc42help:hover {width:auto; height: auto; z-index: 100; padding: 10px;}
-.arc42help:hover::before {content: "";}
-</style>
-++++
-endif::basebackend-html[]
-
-include::src/config.adoc[]
+:imagesdir: ./images
 
 image::../images/arc42-logo.png[]
+
 = Mops.Java in der Praxis
-
 ***
-
 :numbered:
+==	Einführung und Ziele
 
-<<<<
-include::src/01_introduction_and_goals.adoc[]
+=== Aufgabenstellung
 
-<<<<
-include::src/02_system_scope_and_context.adoc[]
+* Information über Veranstaltungen der rheinjug und Entwickelbar
+* Anmeldung bei einer rheinjug- oder Entwickelbarveranstaltung in der Rolle des Studierenden
+* Abgabe von schriftlichen Zusammenfassungen über besuchte Veranstaltungen in der Rolle des Studierenden unter Nutzung eines bereitgestellten Templates
+* Kontrolle der Zusammenfassungen der Studierenden und evtl. Akzeptanz der Abgabe und Ausstellung einer Kryptoquittung zur Bestätigung des erfolgreichen Bestehens durch eine Organisator
+* Nachträgliches Hinzufügen von verspäteten Abgaben ducrh Organisatoren
+* Möglichkeit des Einlösen von drei rheinjug-Quittungen oder einer Entwickelbar-Quittung gegen einen Schein über 0,5 Creditpoints durch Studierende
 
-<<<<
-include::src/03_solution_strategy.adoc[]
 
-<<<<
-include::src/04_building_block_view.adoc[]
+=== Motivation
 
-<<<<
-include::src/05_workflow.adoc[]
+* Studierende: verlässliches und flexibles Erlangen von Creditpoints durch Besuch der rheinjug- und Entwickelbarveranstaltungen (r/E-Veranstaltungen)
+* Verbesserter Überblick über noch nicht oder bereits ausgestellte Creditpoints oder zugehörige Abgaben
+* Organisatoren: einfacher Zugriff auf wohlformatierte Abgaben, flexible Möglichkeit der Erteilung von Creditpoints(Ausstellen von Quittungen)
+* Vereinfachung der Organisation von r/E-Veranstaltungen und bessere Kommunikation mit Studierenden
+* Steigerung der Anzahl der Besuche der r/E-Veranstaltungen durch Studierende
+
+
+=== Qualitätsziele
+
+- Bereitstellen eines formatierten Templates für Abgaben
+- Modularität
+- Unabhängigkeit der Rollen
+- Datenerhalt und geeignete Speicherung von Daten
+- Verschlüsselung der Metadaten zu Abgaben, um Infomrationen möglichst lange zu erhalten und diese nur einmal einlösbar zu machen
+- Wartbarkeit
+- Sicherheit
+
+=== Stakeholder
+
+* Studierende der Informatik
+* Organisatoren der r/E-Veranstaltungen mit Verbindungen zur Informatik der HHU (v.a. Jens)
+
+[cols="1,1,2" options="header"]
+|===
+|Rolle |grundlegende Funktionen |Erwartungshaltung
+| Studierende | Anmeldung an Veranstaltungen, Abgabe von Zusammenfassungen, Erhalt von Quittungen, Einlösen von Quittungen | Einfachheit, Überblick
+| Organisatoren | Zugriff auf Abgaben, Ausstellen von Quittungen | einfacher Zugriff auf Abgaben
+|===
+
+== Kontextdiagramm
+
+image::../images/scopeAndContext.png[]
+
+== Lösungsstrategie
+
+=== Technologieentscheidungen
+* Set-Up von Docker-Compose und Gradle nach Angaben der Vorlesung(Spring Boot Actuator, SpotBugs, PMD)
+
+=== Top-Level-Zerlegung des Systems / Architekturmuster
+* Wir haben die Anwendung in zwei Teilanwendungen zerlegt:
+- Die ReceiptApp ermoeglicht die Anmeldung an Meetup-Veranstaltungen, das Einreichen von Zusammenfassungen und das Ausstellen
+von Quittungen
+- Die CertificationApp ermoeglicht, Quittungen einzureichen und Bescheinigungen auszustellen
+* Innerhalb der Teilanwendungen haben wir uns fuer eine hexagonale Architektur entschieden, da sich dort die Kommunikation mit externen Systemen besser
+einbinden laesst als in einer Schicht-Architektur
+* Wir haben uns gegen eine differenziertere Onion-Architektur entschieden,
+da diese wegen der schlanken Geschaeftslogik nicht erforderlich bzw. hilfreich wäre.
+
+=== Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen technologisch
+* Verwendung von kryptographsicher Signatur für Quittungen, welche alle relevanten Informationen in sich trägt(Bibliothek JDK Security, tutorials.jenkov.com/java-cryptography).
+* permanente Speicherungen von Zusammenfassungen/Abgaben über MiniIO
+* Formatierungsvorlagen für Abgaben in Asciidoc
+* Speicherung der Evente, Informationen der Abgaben und Quittungen sowie bereitstellung der statistischen Informationen durch eine Datenbank (mySQL)
+
+=== Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen logisch
+* Möglichkeit der Zustimmung zur Veröffentlichung (namentlich oder anonym) von Abgaben
+* Frist für Quittungen 1 Woche mit Möglichkeit der unkomplizierten Nachreichung durch Organisatoren
+
+=== Organisatorische Entscheidungen
+* Absprache wegen Krypto-Quittung mit benachbarter Gruppe (Klausurzulassungen)
+
+[[section-building-block-view]]
+== Bausteinsicht
+
+=== Receipt App
+
+image::../images/receiptAppBuildingBlocks.png[]
+
+****
+|===
+| **Name** | **Verantwortung**
+| _MeetupClient_ | _Schnittstelle zur Meetup API_
+| _MeetupService_ | _Schnittstelle um Informationen zu der Veranstaltungen zu bekommen_
+| _MinIO Services_ | _Schnittstelle zu MinIO_
+| _Encryption Service_ | _Aus den Informationen der Abgaben werden Hashvalues generiert für die kryptographischen Quittungen_
+| _ChartService_ | _Schnittstelle zur view chart_data_
+| _ReceiptServices_ | _Verwaltung der Quittungen_
+| _SubmissionAccessService_ | _Verwaltung der Abgaben_
+|===
+****
+
+
+==== MeetupClient
+****
+- Es wird ein Get Request an die MeetupAPI-URL geschickt und wenn eine Antwort geschickt wurde, werden DTO's mittels des Spring RestTemplates befüllt und es wird direkt gefiltert, welche Informationen benötigt werden.
+****
+
+==== MeetupService
+****
+- In periodischen Abständen werden Veranstaltungsinformationen über die Schnittstelle zur Meetup API angefragt und über die Schnittstelle zur Datenbank dort eingefügt.
+- Mehrere Funktionen für Filterug der Veranstaltungen
+****
+
+==== MinIO Services
+
+****
+- Der MinIoDownloadService kümmert sich um den download der Abgaben aus MinIO
+- Der MinIoUploadService kümmert sich um den upload der Abgaben und speichern in MinIO.
+****
+
+==== Encryption Services
+
+****
+- EncryptionService erstellt Hashes aus den Abgaben
+- KeyService kümmert sich um vergleichen der Hashes
+****
+
+==== ChartService
+
+****
+- Relevante statistische Informationen werden geladen und in ein Objekt zum Anzeigen im Frotend gepackt.
+****
+
+==== ReceiptService
+
+****
+- Quittungen werden hier erstellt, per E-mail gesendet sowie auch eingelesen.
+****
+
+==== SubmissionAcessService
+
+****
+- Abgaben können hier vom Organisator akzeptiert werden, und für Studenten im Frontend angezeigt werden.
+****
+
+=== Certification App
+
+image::../images/certificationAppBuildingBlocks.png[]
+
+
+|===
+| **Name** | **Verantwortung**
+| _VerificationService_ | _Kryptographiesche hashes entschlüsseln und Vergleichen, ob diese zu den abgegebenen Daten passen_
+| _CertificationService_ | _Fuellt Vorlage einer Bescheinigung ueber CP aus_
+| _Mailservice, CertificationSendService_ | _Wird verwendet, um Bescheinigungen ueber CP zu verschicken_
+| _ReceiptReader_ | _Liest Quittungen ein und entschluesselt Base64_
+
+|===
+
+==== Verification:
+
+****
+- Abgegebene Quittungen werden verifiziert
+- Zur Verifizierung nur Inhalt der Quittung noetig (Vergleich der Informationen mit der Signatur)
+- Keine Quittung zweimal abgeben (bereits abgegebene Signaturen werden in DB gespeichert)
+****
+
+==== Certification:
+
+****
+- Die Bescheinigung wird als Word-Datei ausgestellt
+- Hierfuer wird in eine Vorlage eingetragen, welcher Student wann welche Veranstaltungen besucht hat
+- Fuer jeden halben CP, d.h. fuer je drei Rheinjug- oder eine Entwickelbar-Veranstaltungen wird eine Bescheinigung ausgestellt
+****
+
+== Workflow
+
+=== _Start der Application:_
+****
+- Datenbank wird angelegt.
+- Application wird gestartet.
+- Veranstaltungsdaten werden aus der Meetup API angefragt und in die Datenbank gespeichert.
+- Beginn des Periodischen Anfragens der Events.
+****
+
+=== _Zur Laufzeit:_
+
+==== Websiteaufruf(Student, Organisator):
+
+****
+- Student/Organisator ruft Website auf.
+- Getrequest auf "/"
+- Meetupservice holt bevorstehende Events aus der Datenbank und befüllt das Model mit diesen.
+- Indexseite wird angezeigt.
+****
+
+==== Abgabe(Student):
+
+****
+- Student sucht seine Veranstaltung aus und wird auf upload-Formular weitergeleitet
+- Student gibt Abgabe ab.
+- Abgabe wird in MinIO gespeichert
+- Informationen zur Abgabe (für das Frontend) werden in der Datenbank gespeichert.
+- Student wird auf Übersicht zu seinen Abgaben weitergeleitet.
+****
+
+==== Übersicht(Student):
+
+****
+- Student geht auf Übersicht zu Abgaben.
+- Informationen werden aus der Datenbank geladen.
+- Student wird Frontend angezeigt.
+****
+
+
+==== Quittung(Student):
+
+****
+. Student drückt Button, wenn freigeschaltet
+. Quittung wird erstellt und in Signatur in der Datenbank gespeichert
+. Bestätigung wird dem Studenten per E-mail gesendet
+. redirect auf Sucess-Page
+****
+
+==== Zusammenfassungen(Organisator):
+
+****
+. Organisator geht auf Seite.
+. Alle Zusammenfassungsinformationen werden aus der Datenbank angefragt und in das Frontend gepackt.
+. Organisator downloadet sich die Zusammenfassung über den Link aus MinIO.
+****
+
+==== Statistik(Organisator):
+
+****
+. Stastische Informationen werden aus der Datenbank (view chart_data) geladen.
+. Chart-Objekt wird mit diesen Informationen befüllt.
+. Frontend wird mit JSON-Strings zum plotten und mit Zahlen zu Abgaben befüllt.
+. Frontend wird dem Organisator angezeigt.
+****
+
+==== Manuell hochladen(Organisator):
+
+****
+- Workflow wie in <<abgabe_student>>.
+****
+
+==== Abgabe akzeptieren(Organisator):
+****
+. Korrektor drückt Button
+. Datenbankzustand wird geändert
+****
+
+
+
+
+
