@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.io.IOException;
 
-import mops.hhu.de.rheinjug1.praxis.adapters.encryption.ByteStringImpl;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.bouncycastle.util.encoders.DecoderException;
@@ -42,7 +41,7 @@ public class FileReaderServiceTests {
     receipt.setMeetupId((long) 1);
     receipt.setMeetupTitle("Titel");
     receipt.setMeetupType(MeetupType.ENTWICKELBAR);
-    receipt.setSignature(new ByteStringImpl("OEUIc5654eut"));
+    receipt.setSignature("OEUIc5654eut".getBytes());
   }
 
   @Test

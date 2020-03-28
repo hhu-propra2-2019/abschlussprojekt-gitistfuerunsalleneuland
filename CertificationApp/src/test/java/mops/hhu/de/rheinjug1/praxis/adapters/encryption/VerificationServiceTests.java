@@ -10,6 +10,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.bouncycastle.util.encoders.Base64;
@@ -21,11 +22,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class VerificationServiceTests {
 
-  @Autowired private KeyConfiguration keyService;
+  @Autowired private KeyPair keyPair;
   @Autowired private VerificationServiceImpl verificationService;
+  @Autowired private Signature securitySignature;
 
-  static ReceiptDTO validReceipt;
-  static ReceiptDTO invalidReceipt;
+  static Receipt validReceipt;
+  static Receipt invalidReceipt;
 
   @BeforeEach
   public void setUp()
@@ -33,29 +35,27 @@ public class VerificationServiceTests {
           UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException {
 
     final String hash = MeetupType.ENTWICKELBAR.getLabel() + 1 + "name" + "email";
-    final KeyPair pair = keyService.getKeyPairFromKeyStore();
-    final PrivateKey privateKey = pair.getPrivate();
-    final Signature sign = Signature.getInstance("SHA256withRSA");
-    sign.initSign(privateKey);
-    sign.update(hash.getBytes(StandardCharsets.UTF_8));
+    final PrivateKey privateKey = keyPair.getPrivate();
+    securitySignature.initSign(privateKey);
+    securitySignature.update(hash.getBytes(StandardCharsets.UTF_8));
 
     validReceipt =
-        new ReceiptDTO(
+            Receipt.createFromDTO(new ReceiptDTO(
             "name",
             "email",
             (long) 1,
             "meetupTitle",
             MeetupType.ENTWICKELBAR,
-            Base64.toBase64String(sign.sign()));
+            securitySignature.sign()));
 
     invalidReceipt =
-        new ReceiptDTO(
+            Receipt.createFromDTO(new ReceiptDTO(
             "name",
             "falseEmail",
             (long) 1,
             "meetupTitle",
             MeetupType.ENTWICKELBAR,
-            Base64.toBase64String(sign.sign()));
+                    securitySignature.sign()));
   }
 
   @Test

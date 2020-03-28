@@ -13,5 +13,5 @@ public interface ReceiptRepository extends CrudRepository<ReceiptEntity, Long> {
   ReceiptEntity findReceiptEntityById(@Param("id") Long id);
 
   @Query("SELECT * FROM receipt WHERE receipt.signature=:signature")
-  List<ReceiptEntity> findReceiptEntityBySignature(@Param("signature") String signature);
+  List<ReceiptEntity> findReceiptEntityBySignature(@Param("signature") byte[] signature);
 }

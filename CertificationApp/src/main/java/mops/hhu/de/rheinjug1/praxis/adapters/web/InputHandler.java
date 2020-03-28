@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import mops.hhu.de.rheinjug1.praxis.domain.ByteString;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.VerificationService;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptReader;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.stereotype.Component;
@@ -36,14 +36,14 @@ public class InputHandler {
   private final ReceiptReader fileReaderService;
   private final VerificationService verificationService;
 
-  private List<ByteString> signatures = new ArrayList(3);
+  private List<byte[]> signatures = new ArrayList(3);
 
-  private ReceiptDTO firstRheinjugReceipt;
-  private ReceiptDTO secondRheinjugReceipt;
-  private ReceiptDTO thirdRheinjugReceipt;
-  private ReceiptDTO entwickelbarReceipt;
+  private Receipt firstRheinjugReceipt;
+  private Receipt secondRheinjugReceipt;
+  private Receipt thirdRheinjugReceipt;
+  private Receipt entwickelbarReceipt;
 
-  private ReceiptDTO newReceipt;
+  private Receipt newReceipt;
 
   private String firstRheinjugReceiptUploadMessage = "Erste Rheinjug Quittung";
   private String secondRheinjugReceiptUploadMessage = "Zweite Rheinjug Quittung";
@@ -111,7 +111,7 @@ public class InputHandler {
 
   private String getUploadMessage(final MultipartFile uploadedFile, final MeetupType type) {
     if (uploadedFile == null || uploadedFile.isEmpty()) {
-      newReceipt = new ReceiptDTO();
+      newReceipt = new Receipt();
       return KEINE_DATEI;
     }
     try {
@@ -124,14 +124,14 @@ public class InputHandler {
         signatures.add(newReceipt.getSignature());
         return VALIDE;
       }
-    } catch (final IOException | NoSuchFieldException | IllegalAccessException e) {
+    } catch (final IOException e) {
       return FEHLERHAFTE_QUITTUNG;
     }
   }
 
-  private boolean isDuplicateSignature(final ByteString newSignature) {
-    for (final ByteString signature : signatures) {
-      if (signature.equals(newSignature)) {
+  private boolean isDuplicateSignature(final byte[] newSignature) {
+    for (final byte[] signature : signatures) {
+      if (Arrays.equals(signature, newSignature)) {
         return true;
       }
     }

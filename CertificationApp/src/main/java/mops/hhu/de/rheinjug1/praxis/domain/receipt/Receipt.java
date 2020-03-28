@@ -1,0 +1,46 @@
+package mops.hhu.de.rheinjug1.praxis.domain.receipt;
+
+import lombok.*;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+
+import java.io.IOException;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Receipt implements Cloneable {
+
+  private String name;
+  private String email;
+  private Long meetupId;
+  private String meetupTitle;
+  private MeetupType meetupType;
+  private byte[] plainText;
+  private byte[] signature;
+
+  public static Receipt createFromDTO(ReceiptDTO dto) throws IOException {
+    return Receipt.builder()
+            .name(dto.getName())
+            .email(dto.getEmail())
+            .meetupId(dto.getMeetupId())
+            .meetupTitle(dto.getMeetupTitle())
+            .meetupType(dto.getMeetupType())
+            .plainText((dto.getMeetupType().getLabel() + dto.getMeetupId() + dto.getName() + dto.getEmail()).getBytes())
+            .signature(dto.getSignature())
+            .build();
+  }
+
+  @Override
+  public Receipt clone() {
+    return Receipt.builder()
+            .name(name)
+            .email(email)
+            .meetupId(meetupId)
+            .meetupTitle(meetupTitle)
+            .meetupType(meetupType)
+            .plainText(plainText)
+            .signature(signature)
+            .build();
+  }
+}

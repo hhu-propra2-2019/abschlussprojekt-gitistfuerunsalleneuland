@@ -7,11 +7,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
+
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 
 public interface VerificationService {
 
-  boolean isSignatureValid(ReceiptDTO receipt)
+  boolean isSignatureValid(Receipt receipt)
       throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
           UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException,
           DuplicateSignatureException, SignatureDoesntMatchException;

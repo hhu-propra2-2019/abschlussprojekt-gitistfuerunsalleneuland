@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
+
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptReader;
 import org.bouncycastle.util.encoders.Base64;
@@ -16,7 +18,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 public class ReceiptReaderImpl implements ReceiptReader {
 
   @Override
-  public ReceiptDTO read(final MultipartFile base64ReceiptFile) throws IOException {
+  public ReceiptDTO readDTO(final MultipartFile base64ReceiptFile) throws IOException {
 
     if (base64ReceiptFile == null) {
       throw new IOException();
@@ -31,6 +33,11 @@ public class ReceiptReaderImpl implements ReceiptReader {
         return receipt;
       }
     }
+  }
+
+  @Override
+  public Receipt read(MultipartFile file) throws IOException {
+    return Receipt.createFromDTO(readDTO(file));
   }
 
   private InputStream deCryptBase64(final MultipartFile base64ReceiptFile) throws IOException {
