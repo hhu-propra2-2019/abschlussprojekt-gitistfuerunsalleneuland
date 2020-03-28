@@ -91,7 +91,7 @@ dependencies {
     compile 'junit:junit:4.12'
     compile "io.vavr:vavr:0.9.3"
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.8'
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.13'
     compile('org.docx4j:docx4j:6.1.2') {
         exclude group: "org.slf4j", module: "slf4j-log4j12"
         exclude group: "log4j", module: "log4j"

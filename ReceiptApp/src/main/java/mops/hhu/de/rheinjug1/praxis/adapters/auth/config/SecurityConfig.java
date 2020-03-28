@@ -1,6 +1,7 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.auth.config;
 
 import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -24,13 +25,14 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 @SuppressWarnings("PMD.SignatureDeclareThrowsException")
 class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
-  @Autowired public KeycloakClientRequestFactory keycloakClientRequestFactory;
+  public final KeycloakClientRequestFactory keycloakClientRequestFactory;
 
   @Autowired
   public void configureGlobal(final AuthenticationManagerBuilder auth) {

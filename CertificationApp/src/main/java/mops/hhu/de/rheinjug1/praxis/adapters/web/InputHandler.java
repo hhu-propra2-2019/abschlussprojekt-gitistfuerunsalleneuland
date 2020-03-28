@@ -12,7 +12,7 @@ import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureExcep
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.VerificationService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptReader;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptReadService;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +33,7 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String KEINE_DATEI = "Keine Datei";
 
-  private final ReceiptReader fileReaderService;
+  private final ReceiptReadService receiptReadService;
   private final VerificationService verificationService;
 
   private List<byte[]> signatures = new ArrayList(3);
@@ -115,7 +115,7 @@ public class InputHandler {
       return KEINE_DATEI;
     }
     try {
-      newReceipt = fileReaderService.read(uploadedFile);
+      newReceipt = receiptReadService.read(uploadedFile);
       if (!newReceipt.getMeetupType().equals(type)) {
         return FALSCHE_VERANSTALTUNG;
       } else if (isDuplicateSignature(newReceipt.getSignature())) {

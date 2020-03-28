@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.adapters.encryption;
+package mops.hhu.de.rheinjug1.praxis.adapters.auth.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,11 +7,9 @@ import java.security.KeyStore.PasswordProtection;
 import java.security.KeyStore.PrivateKeyEntry;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 
 @Configuration
 public class KeyConfiguration {

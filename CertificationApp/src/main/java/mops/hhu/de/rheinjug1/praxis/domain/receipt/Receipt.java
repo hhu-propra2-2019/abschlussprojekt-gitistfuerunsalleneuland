@@ -1,9 +1,8 @@
 package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
+import java.io.IOException;
 import lombok.*;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-
-import java.io.IOException;
 
 @Data
 @Builder
@@ -19,28 +18,42 @@ public class Receipt implements Cloneable {
   private byte[] plainText;
   private byte[] signature;
 
-  public static Receipt createFromDTO(ReceiptDTO dto) throws IOException {
+  public static Receipt createFromDTO(final ReceiptDTO dto) throws IOException {
     return Receipt.builder()
-            .name(dto.getName())
-            .email(dto.getEmail())
-            .meetupId(dto.getMeetupId())
-            .meetupTitle(dto.getMeetupTitle())
-            .meetupType(dto.getMeetupType())
-            .plainText((dto.getMeetupType().getLabel() + dto.getMeetupId() + dto.getName() + dto.getEmail()).getBytes())
-            .signature(dto.getSignature())
-            .build();
+        .name(dto.getName())
+        .email(dto.getEmail())
+        .meetupId(dto.getMeetupId())
+        .meetupTitle(dto.getMeetupTitle())
+        .meetupType(dto.getMeetupType())
+        .plainText(
+            (dto.getMeetupType().getLabel() + dto.getMeetupId() + dto.getName() + dto.getEmail())
+                .getBytes())
+        .signature(dto.getSignature())
+        .build();
   }
 
   @Override
+  @SuppressWarnings("PMD")
   public Receipt clone() {
     return Receipt.builder()
-            .name(name)
-            .email(email)
-            .meetupId(meetupId)
-            .meetupTitle(meetupTitle)
-            .meetupType(meetupType)
-            .plainText(plainText)
-            .signature(signature)
-            .build();
+        .name(name)
+        .email(email)
+        .meetupId(meetupId)
+        .meetupTitle(meetupTitle)
+        .meetupType(meetupType)
+        .plainText(plainText)
+        .signature(signature)
+        .build();
+  }
+
+  public ReceiptDTO toDTO() {
+    return ReceiptDTO.builder()
+        .email(email)
+        .meetupId(meetupId)
+        .meetupTitle(meetupTitle)
+        .meetupType(meetupType)
+        .name(name)
+        .signature(signature)
+        .build();
   }
 }

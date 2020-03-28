@@ -1,6 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller.submission;
 
-import static mops.hhu.de.rheinjug1.praxis.adapters.auth.config.RolesHelper.ORGA;
+import static mops.hhu.de.rheinjug1.praxis.adapters.auth.RolesHelper.ORGA;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_ATTRIBUTE;
 

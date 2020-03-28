@@ -2,15 +2,12 @@ package mops.hhu.de.rheinjug1.praxis.adapters.encryption;
 
 import java.io.IOException;
 import java.security.*;
-import java.security.cert.CertificateException;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.VerificationService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptEntity;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptRepository;
 import org.springframework.stereotype.Service;
@@ -25,10 +22,8 @@ public class VerificationServiceImpl implements VerificationService {
 
   @Override
   public boolean isSignatureValid(final Receipt receipt)
-      throws NoSuchAlgorithmException,
-          IOException, InvalidKeyException, SignatureException,
+      throws NoSuchAlgorithmException, IOException, InvalidKeyException, SignatureException,
           DuplicateSignatureException, SignatureDoesntMatchException {
-
 
     final List<ReceiptEntity> identicalSignatures =
         receiptRepository.findReceiptEntityBySignature(receipt.getSignature());

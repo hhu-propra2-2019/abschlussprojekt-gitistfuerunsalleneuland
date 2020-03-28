@@ -17,7 +17,7 @@ CREATE TABLE `rheinjug1`.`event` (
 
 CREATE TABLE `rheinjug1`.`signature_record` (
   `meetup_id` INT NOT NULL,
-  `signature` VARCHAR(2000) NOT NULL,
+  `signature` VARBINARY(2000) NOT NULL,
   PRIMARY KEY (`signature`)
   );
 

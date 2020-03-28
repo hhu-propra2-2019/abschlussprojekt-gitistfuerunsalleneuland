@@ -1,12 +1,11 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller.submission;
 
-import static mops.hhu.de.rheinjug1.praxis.adapters.auth.config.RolesHelper.STUDENTIN;
+import static mops.hhu.de.rheinjug1.praxis.adapters.auth.RolesHelper.STUDENTIN;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ALL_SUBMISSIONS_FROM_USER_ATTRIBUTE;
 
 import java.io.IOException;
 import java.security.*;
-import java.security.cert.CertificateException;
 import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
@@ -93,14 +92,10 @@ public class SubmissionUserController {
       final Receipt receipt =
           receiptCreationAndStorageService.createReceiptAndSaveSignatureInDatabase(submission);
       receiptSendService.sendReceipt(receipt, account.getEmail());
-    } catch (final UnrecoverableEntryException
-        | NoSuchAlgorithmException
-        | IOException
-        | KeyStoreException
+    } catch (final IOException
         | SignatureException
         | InvalidKeyException
-        | EventNotFoundException
-        | CertificateException e) {
+        | EventNotFoundException e) {
       throw (HttpServerErrorException)
           new HttpServerErrorException(
                   HttpStatus.INTERNAL_SERVER_ERROR,

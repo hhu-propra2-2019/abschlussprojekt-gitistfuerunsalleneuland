@@ -1,13 +1,12 @@
 package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
+import static mops.hhu.de.rheinjug1.praxis.TestHelper.sampleReceipt;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import mops.hhu.de.rheinjug1.praxis.adapters.mail.MailServiceImpl;
-import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,24 +16,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 class ReceiptSendServiceTest {
 
   @Autowired ReceiptSendService receiptSendService;
-  Receipt receipt;
-
-  @BeforeEach
-  void init() {
-    receipt =
-        Receipt.builder()
-            .name("TestName")
-            .email("TestEmail")
-            .meetupId(1L)
-            .meetupTitle("Titel")
-            .meetupType(MeetupType.ENTWICKELBAR)
-            .signature("OEUIc5654eut")
-            .build();
-  }
+  @Autowired FileHandler fileHandler;
+  @Autowired Encoder encoder;
 
   @Test
   void sendRealMail() throws MessagingException, IOException {
-    receiptSendService.sendReceipt(receipt, "rheinjughhu@gmail.com");
+    receiptSendService.sendReceipt(sampleReceipt(), "rheinjughhu@gmail.com");
   }
 
   @Test
@@ -44,9 +31,9 @@ class ReceiptSendServiceTest {
     when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
     final MailService mailService = new MailServiceImpl(mailSender);
     final ReceiptSendService receiptSendService =
-        new ReceiptSendService(mailService, new ReceiptPrintService());
+        new ReceiptSendService(mailService, new ReceiptPrintService(fileHandler, encoder));
 
-    receiptSendService.sendReceipt(receipt, "rheinjughhu@gmail.com");
+    receiptSendService.sendReceipt(sampleReceipt(), "rheinjughhu@gmail.com");
 
     verify(mailSender).send(mimeMessage);
   }

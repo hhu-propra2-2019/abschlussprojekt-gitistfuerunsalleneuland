@@ -13,7 +13,6 @@ import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchExc
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
-import org.bouncycastle.util.encoders.Base64;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,22 +39,24 @@ public class VerificationServiceTests {
     securitySignature.update(hash.getBytes(StandardCharsets.UTF_8));
 
     validReceipt =
-            Receipt.createFromDTO(new ReceiptDTO(
-            "name",
-            "email",
-            (long) 1,
-            "meetupTitle",
-            MeetupType.ENTWICKELBAR,
-            securitySignature.sign()));
+        Receipt.createFromDTO(
+            new ReceiptDTO(
+                "name",
+                "email",
+                (long) 1,
+                "meetupTitle",
+                MeetupType.ENTWICKELBAR,
+                securitySignature.sign()));
 
     invalidReceipt =
-            Receipt.createFromDTO(new ReceiptDTO(
-            "name",
-            "falseEmail",
-            (long) 1,
-            "meetupTitle",
-            MeetupType.ENTWICKELBAR,
-                    securitySignature.sign()));
+        Receipt.createFromDTO(
+            new ReceiptDTO(
+                "name",
+                "falseEmail",
+                (long) 1,
+                "meetupTitle",
+                MeetupType.ENTWICKELBAR,
+                securitySignature.sign()));
   }
 
   @Test

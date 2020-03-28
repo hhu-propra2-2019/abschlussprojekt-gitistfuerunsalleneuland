@@ -2,7 +2,6 @@ package mops.hhu.de.rheinjug1.praxis.domain.receipt;
 
 import java.io.IOException;
 import java.security.*;
-import java.security.cert.CertificateException;
 import lombok.AllArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
@@ -23,9 +22,7 @@ public class ReceiptCreationAndStorageService {
   private final MeetupService meetupService;
 
   public Receipt createReceiptAndSaveSignatureInDatabase(final Submission submission)
-      throws UnrecoverableEntryException, NoSuchAlgorithmException, IOException,
-          CertificateException, KeyStoreException, InvalidKeyException, EventNotFoundException,
-          SignatureException {
+      throws IOException, InvalidKeyException, EventNotFoundException, SignatureException {
     final Long meetUpId = submission.getMeetupId();
 
     final Event event = meetupService.getEventIfExistent(meetUpId);
@@ -35,23 +32,24 @@ public class ReceiptCreationAndStorageService {
     final String studentName = submission.getName();
     final String studentEmail = submission.getEmail();
 
-    final String signatureString =
-        encryptionService.sign(meetupType, meetUpId, studentName, studentEmail);
+    final Receipt receipt =
+        Receipt.builder()
+            .name(studentName)
+            .email(studentEmail)
+            .meetupId(meetUpId)
+            .meetupTitle(meetUpTitle)
+            .meetupType(meetupType)
+            .build();
 
-    final SignatureRecord signature = new SignatureRecord(signatureString, meetUpId);
+    encryptionService.sign(receipt);
+    final SignatureRecord signature = new SignatureRecord(receipt.getSignature(), meetUpId);
 
     try {
       jdbcAggregateTemplate.insert(signature);
     } catch (final DbActionExecutionException e) {
       signatureRepository.save(signature);
     }
-    return Receipt.builder()
-        .name(studentName)
-        .email(studentEmail)
-        .meetupId(meetUpId)
-        .meetupTitle(meetUpTitle)
-        .meetupType(meetupType)
-        .signature(signatureString)
-        .build();
+
+    return receipt;
   }
 }

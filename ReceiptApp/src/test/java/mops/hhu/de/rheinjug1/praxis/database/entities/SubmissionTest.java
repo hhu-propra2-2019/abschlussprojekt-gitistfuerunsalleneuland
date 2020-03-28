@@ -1,9 +1,9 @@
 package mops.hhu.de.rheinjug1.praxis.database.entities;
 
-import static mops.hhu.de.rheinjug1.praxis.database.entities.Submission.builder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import org.junit.jupiter.api.Test;
 
 class SubmissionTest {
@@ -13,14 +13,14 @@ class SubmissionTest {
     assertThrows(
         NullPointerException.class,
         () -> {
-          builder().build();
+          Submission.builder().build();
         });
   }
 
   @Test
   void canConstructFilledSubmission() {
     final Submission submission =
-        builder()
+        Submission.builder()
             .email("Test@test.de")
             .meetupId(264_559L)
             .minIoLink("minio.com")
@@ -35,7 +35,7 @@ class SubmissionTest {
   @Test
   void acceptedIsDefaultFalse() {
     final Submission submission =
-        builder().email("Test@test.de").meetupId(264_559L).name("Pommes").build();
+        Submission.builder().email("Test@test.de").meetupId(264_559L).name("Pommes").build();
 
     assertThat(submission.isAccepted()).isFalse();
   }

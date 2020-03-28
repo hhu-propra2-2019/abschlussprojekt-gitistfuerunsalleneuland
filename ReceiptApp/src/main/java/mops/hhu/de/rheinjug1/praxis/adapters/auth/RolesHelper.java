@@ -1,4 +1,4 @@
-package mops.hhu.de.rheinjug1.praxis.adapters.auth.config;
+package mops.hhu.de.rheinjug1.praxis.adapters.auth;
 
 public class RolesHelper {
   public static final String ORGA = "ROLE_orga";

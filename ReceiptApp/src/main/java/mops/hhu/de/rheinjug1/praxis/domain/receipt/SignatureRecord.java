@@ -10,6 +10,6 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 public class SignatureRecord {
 
-  @Id private String signature;
+  @Id private byte[] signature;
   private Long meetupId;
 }
