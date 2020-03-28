@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.SignatureException;
-
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptPrintService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

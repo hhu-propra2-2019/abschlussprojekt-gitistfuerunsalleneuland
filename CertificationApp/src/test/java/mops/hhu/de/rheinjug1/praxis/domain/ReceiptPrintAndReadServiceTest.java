@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.InvalidKeyException;
 import java.security.SignatureException;
-
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.entities.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptPrintService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptReadService;

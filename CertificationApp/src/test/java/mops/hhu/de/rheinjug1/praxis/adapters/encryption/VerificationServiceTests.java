@@ -6,12 +6,12 @@ import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
-import java.security.*;
-import java.security.cert.CertificateException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.entities.Receipt;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.interfaces.EncryptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class VerificationServiceTests {
 
   @Autowired private VerificationServiceImpl verificationService;
-  @Autowired private EncryptionService encryptionService;
 
   static Receipt validReceipt;
   static Receipt invalidReceipt;
@@ -36,8 +35,7 @@ public class VerificationServiceTests {
 
   @Test
   public void verifyValidReceipt()
-      throws InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
-          UnrecoverableEntryException, SignatureException, IOException {
+      throws InvalidKeyException, NoSuchAlgorithmException, SignatureException, IOException {
     try {
       assertTrue("Verification worked", verificationService.isSignatureValid(validReceipt));
     } catch (DuplicateSignatureException e) {
