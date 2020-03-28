@@ -1,0 +1,28 @@
+[[section-solution-strategy]]
+== Lösungsstrategie
+
+=== Technologieentscheidungen
+* Set-Up von Docker-Compose und Gradle nach Angaben der Vorlesung(Spring Boot Actuator, SpotBugs, PMD)
+
+=== Top-Level-Zerlegung des Systems / Architekturmuster
+* Wir haben die Anwendung in zwei Teilanwendungen zerlegt:
+- Die ReceiptApp ermoeglicht die Anmeldung an Meetup-Veranstaltungen, das Einreichen von Zusammenfassungen und das Ausstellen
+von Quittungen
+- Die CertificationApp ermoeglicht, Quittungen einzureichen und Bescheinigungen auszustellen
+* Innerhalb der Teilanwendungen haben wir uns fuer eine hexagonale Architektur entschieden, da sich dort die Kommunikation mit externen Systemen besser
+einbinden laesst als in einer Schicht-Architektur
+* Wir haben uns gegen eine differenziertere Onion-Architektur entschieden,
+da diese wegen der schlanken Geschaeftslogik nicht erforderlich bzw. hilfreich wäre.
+
+=== Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen technologisch
+* Verwendung von kryptographsicher Signatur für Quittungen, welche alle relevanten Informationen in sich trägt(Bibliothek JDK Security, tutorials.jenkov.com/java-cryptography).
+* permanente Speicherungen von Zusammenfassungen/Abgaben über MiniIO
+* Formatierungsvorlagen für Abgaben in Asciidoc
+* Speicherung der Evente, Informationen der Abgaben und Quittungen sowie bereitstellung der statistischen Informationen durch eine Datenbank (mySQL)
+
+=== Entscheidungen zur Erreichung der wichtigsten Qualitätsanforderungen logisch
+* Möglichkeit der Zustimmung zur Veröffentlichung (namentlich oder anonym) von Abgaben
+* Frist für Quittungen 1 Woche mit Möglichkeit der unkomplizierten Nachreichung durch Organisatoren
+
+=== Organisatorische Entscheidungen
+* Absprache wegen Krypto-Quittung mit benachbarter Gruppe (Klausurzulassungen)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 .gradle/5.2.1/executionHistory/executionHistory.bin
 .gradle/5.2.1/executionHistory/executionHistory.lock
@@ -185,3 +186,38 @@ build/test-results/test/TEST-mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt
 build/test-results/test/TEST-mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionAccessServiceTest.xml
 build/test-results/test/TEST-mops.hhu.de.rheinjug1.praxis.domain.submission.SubmissionTest.xml
 build/test-results/test/TEST-mops.hhu.de.rheinjug1.praxis.PraxisApplicationTests.xml
+=======
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+/bin
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+>>>>>>> master

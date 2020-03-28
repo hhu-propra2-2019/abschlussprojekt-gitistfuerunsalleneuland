@@ -1,0 +1,44 @@
+[[section-introduction-and-goals]]
+==	Einführung und Ziele
+
+=== Aufgabenstellung
+
+* Information über Veranstaltungen der rheinjug und Entwickelbar
+* Anmeldung bei einer rheinjug- oder Entwickelbarveranstaltung in der Rolle des Studierenden
+* Abgabe von schriftlichen Zusammenfassungen über besuchte Veranstaltungen in der Rolle des Studierenden unter Nutzung eines bereitgestellten Templates
+* Kontrolle der Zusammenfassungen der Studierenden und evtl. Akzeptanz der Abgabe und Ausstellung einer Kryptoquittung zur Bestätigung des erfolgreichen Bestehens durch eine Organisator
+* Nachträgliches Hinzufügen von verspäteten Abgaben ducrh Organisatoren
+* Möglichkeit des Einlösen von drei rheinjug-Quittungen oder einer Entwickelbar-Quittung gegen einen Schein über 0,5 Creditpoints durch Studierende
+
+
+=== Motivation
+
+* Studierende: verlässliches und flexibles Erlangen von Creditpoints durch Besuch der rheinjug- und Entwickelbarveranstaltungen (r/E-Veranstaltungen)
+* Verbesserter Überblick über noch nicht oder bereits ausgestellte Creditpoints oder zugehörige Abgaben
+* Organisatoren: einfacher Zugriff auf wohlformatierte Abgaben, flexible Möglichkeit der Erteilung von Creditpoints(Ausstellen von Quittungen)
+* Vereinfachung der Organisation von r/E-Veranstaltungen und bessere Kommunikation mit Studierenden
+* Steigerung der Anzahl der Besuche der r/E-Veranstaltungen durch Studierende
+
+
+=== Qualitätsziele
+
+- Bereitstellen eines formatierten Templates für Abgaben
+- Modularität
+- Unabhängigkeit der Rollen
+- Datenerhalt und geeignete Speicherung von Daten
+- Verschlüsselung der Metadaten zu Abgaben, um Infomrationen möglichst lange zu erhalten und diese nur einmal einlösbar zu machen
+- Wartbarkeit
+- Sicherheit
+
+=== Stakeholder
+
+* Studierende der Informatik
+* Organisatoren der r/E-Veranstaltungen mit Verbindungen zur Informatik der HHU (v.a. Jens)
+
+[cols="1,1,2" options="header"]
+|===
+|Rolle |grundlegende Funktionen |Erwartungshaltung
+| Studierende | Anmeldung an Veranstaltungen, Abgabe von Zusammenfassungen, Erhalt von Quittungen, Einlösen von Quittungen | Einfachheit, Überblick
+| Organisatoren | Zugriff auf Abgaben, Ausstellen von Quittungen | einfacher Zugriff auf Abgaben
+|===
+

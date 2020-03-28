@@ -1,7 +1,5 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.minio;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.minio.MinioClient;
 import io.minio.errors.MinioException;
 import java.io.File;
@@ -25,12 +23,16 @@ public class MinIoUploadServiceTest {
 
   @Autowired private MinIoUploadService uploadService;
 
+  private static String bucketname = "rheinjug";
+
   @BeforeAll
   static void createMinioClient()
       throws MinioException, InvalidKeyException, NoSuchAlgorithmException, IOException,
           XmlPullParserException {
     minioClient = new MinioClient("http://localhost:9000/", "minio", "minio123");
-    assertThat(minioClient.bucketExists("rheinjug")).isTrue();
+    if (!minioClient.bucketExists(bucketname)) {
+      minioClient.makeBucket(bucketname);
+    }
   }
 
   @Test
@@ -39,13 +41,13 @@ public class MinIoUploadServiceTest {
         new MockMultipartFile(
             "test.txt", new FileInputStream(new File("src/test/resources/test.txt")));
     uploadService.transferMultipartFileToMinIo(testMultipartFile, "testfile");
-    minioClient.statObject("rheinjug", "testfile");
+    minioClient.statObject(bucketname, "testfile");
   }
 
   @AfterAll
   static void deleteTestfile()
       throws MinioException, InvalidKeyException, NoSuchAlgorithmException, IOException,
           XmlPullParserException {
-    minioClient.removeObject("rheinjug", "testfile");
+    minioClient.removeObject(bucketname, "testfile");
   }
 }

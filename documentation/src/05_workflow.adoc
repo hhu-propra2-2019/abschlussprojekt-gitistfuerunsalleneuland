@@ -1,0 +1,84 @@
+[[section-runtime-view]]
+== Workflow
+
+=== _Start der Application:_
+****
+- Datenbank wird angelegt.
+- Application wird gestartet.
+- Veranstaltungsdaten werden aus der Meetup API angefragt und in die Datenbank gespeichert.
+- Beginn des Periodischen Anfragens der Events.
+****
+
+=== _Zur Laufzeit:_
+
+==== Websiteaufruf(Student, Organisator):
+
+****
+- Student/Organisator ruft Website auf.
+- Getrequest auf "/"
+- Meetupservice holt bevorstehende Events aus der Datenbank und befüllt das Model mit diesen.
+- Indexseite wird angezeigt.
+****
+
+[[abgabe_student]]
+==== Abgabe(Student):
+
+****
+- Student sucht seine Veranstaltung aus und wird auf upload-Formular weitergeleitet
+- Student gibt Abgabe ab.
+- Abgabe wird in MinIO gespeichert
+- Informationen zur Abgabe (für das Frontend) werden in der Datenbank gespeichert.
+- Student wird auf Übersicht zu seinen Abgaben weitergeleitet.
+****
+
+==== Übersicht(Student):
+
+****
+- Student geht auf Übersicht zu Abgaben.
+- Informationen werden aus der Datenbank geladen.
+- Student wird Frontend angezeigt.
+****
+
+
+==== Quittung(Student):
+
+****
+. Student drückt Button, wenn freigeschaltet
+. Quittung wird erstellt und in Signatur in der Datenbank gespeichert
+. Bestätigung wird dem Studenten per E-mail gesendet
+. redirect auf Sucess-Page
+****
+
+==== Zusammenfassungen(Organisator):
+
+****
+. Organisator geht auf Seite.
+. Alle Zusammenfassungsinformationen werden aus der Datenbank angefragt und in das Frontend gepackt.
+. Organisator downloadet sich die Zusammenfassung über den Link aus MinIO.
+****
+
+==== Statistik(Organisator):
+
+****
+. Stastische Informationen werden aus der Datenbank (view chart_data) geladen.
+. Chart-Objekt wird mit diesen Informationen befüllt.
+. Frontend wird mit JSON-Strings zum plotten und mit Zahlen zu Abgaben befüllt.
+. Frontend wird dem Organisator angezeigt.
+****
+
+==== Manuell hochladen(Organisator):
+
+****
+- Workflow wie in <<abgabe_student>>.
+****
+
+==== Abgabe akzeptieren(Organisator):
+****
+. Korrektor drückt Button
+. Datenbankzustand wird geändert
+****
+
+
+
+
+
