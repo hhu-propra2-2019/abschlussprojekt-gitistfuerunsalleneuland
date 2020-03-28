@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.InvalidKeyException;
+import java.security.SignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.entities.Receipt;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptPrintService;
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptReadService;
@@ -21,7 +23,7 @@ class ReceiptPrintAndReadServiceTest {
   @Autowired ReceiptReadService receiptReadService;
 
   @Test
-  void givesBackCorrectReceipt() throws IOException {
+  void givesBackCorrectReceipt() throws IOException, SignatureException, InvalidKeyException {
     final Receipt receipt = sampleEntwickelbarReceipt();
     final String path = receiptPrintService.printReceiptAndReturnPath(receipt);
     assertThat(receiptReadService.read(path)).isEqualTo(receipt);

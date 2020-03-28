@@ -1,6 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.encryption;
 
-import static mops.hhu.de.rheinjug1.praxis.TestHelper.invalidEntwickelbarReceipt;
+import static mops.hhu.de.rheinjug1.praxis.TestHelper.sampleEntwickelbarReceipt;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,7 +29,7 @@ public class VerificationServiceTests {
   @BeforeEach
   public void setUp() throws IOException, InvalidKeyException, SignatureException {
 
-    validReceipt = encryptionService.sign(invalidEntwickelbarReceipt());
+    validReceipt = sampleEntwickelbarReceipt();
     invalidReceipt = validReceipt.clone();
     invalidReceipt.setEmail("fakeEmail");
   }

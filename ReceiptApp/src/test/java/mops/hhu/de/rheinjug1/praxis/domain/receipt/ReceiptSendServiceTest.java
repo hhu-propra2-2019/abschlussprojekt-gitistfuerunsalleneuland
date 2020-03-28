@@ -4,6 +4,8 @@ import static mops.hhu.de.rheinjug1.praxis.TestHelper.sampleEntwickelbarReceipt;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.SignatureException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import mops.hhu.de.rheinjug1.praxis.adapters.mail.MailServiceImpl;
@@ -27,12 +29,14 @@ class ReceiptSendServiceTest {
   @Autowired ReceiptStringConverter converter;
 
   @Test
-  void sendRealMail() throws MessagingException, IOException {
+  void sendRealMail()
+      throws MessagingException, IOException, SignatureException, InvalidKeyException {
     receiptSendService.sendReceipt(sampleEntwickelbarReceipt(), "rheinjughhu@gmail.com");
   }
 
   @Test
-  void SendMockMail() throws IOException, MessagingException {
+  void SendMockMail()
+      throws IOException, MessagingException, SignatureException, InvalidKeyException {
     final JavaMailSender mailSender = mock(JavaMailSender.class);
     final MimeMessage mimeMessage = mock(MimeMessage.class);
     when(mailSender.createMimeMessage()).thenReturn(mimeMessage);

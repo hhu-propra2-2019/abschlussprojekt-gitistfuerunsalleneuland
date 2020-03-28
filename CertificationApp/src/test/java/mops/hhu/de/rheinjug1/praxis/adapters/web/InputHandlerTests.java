@@ -1,11 +1,14 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web;
 
-import static mops.hhu.de.rheinjug1.praxis.TestHelper.invalidEntwickelbarReceipt;
+import static mops.hhu.de.rheinjug1.praxis.TestHelper.sampleEntwickelbarReceipt;
 import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.SignatureException;
+
 import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptPrintService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +36,8 @@ public class InputHandlerTests {
   private final MultipartFile invalidFile = new MockMultipartFile("invalidFile", "".getBytes());
 
   @BeforeEach
-  void init() throws IOException {
-    final File file = receiptPrintService.printReceiptAndGetFile(invalidEntwickelbarReceipt());
+  void init() throws IOException, SignatureException, InvalidKeyException {
+    final File file = receiptPrintService.printReceiptAndGetFile(sampleEntwickelbarReceipt());
     validEntwickelbarFile = new MockMultipartFile("validFile", new FileInputStream(file));
   }
 

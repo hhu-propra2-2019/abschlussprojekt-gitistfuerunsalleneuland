@@ -1,6 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.encryption;
 
-import static mops.hhu.de.rheinjug1.praxis.TestHelper.invalidEntwickelbarReceipt;
+import static mops.hhu.de.rheinjug1.praxis.TestHelper.sampleEntwickelbarReceipt;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
@@ -18,9 +18,7 @@ class EncryptionServiceTest {
   @Test
   void encryptedReceiptIsValid()
       throws InvalidKeyException, IOException, SignatureException, NoSuchAlgorithmException {
-    final Receipt receipt = invalidEntwickelbarReceipt();
-
-    encryptionService.sign(receipt);
+    final Receipt receipt = sampleEntwickelbarReceipt();
     assertTrue(encryptionService.isVerified(receipt));
   }
 }
