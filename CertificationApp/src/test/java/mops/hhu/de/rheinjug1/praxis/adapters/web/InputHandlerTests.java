@@ -1,12 +1,12 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web;
 
-import static mops.hhu.de.rheinjug1.praxis.TestHelper.sampleEntwickelbarReceipt;
+import static mops.hhu.de.rheinjug1.praxis.TestHelper.invalidEntwickelbarReceipt;
 import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptPrintService;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptPrintService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ public class InputHandlerTests {
 
   @BeforeEach
   void init() throws IOException {
-    final File file = receiptPrintService.printReceipt(sampleEntwickelbarReceipt());
+    final File file = receiptPrintService.printReceiptAndGetFile(invalidEntwickelbarReceipt());
     validEntwickelbarFile = new MockMultipartFile("validFile", new FileInputStream(file));
   }
 

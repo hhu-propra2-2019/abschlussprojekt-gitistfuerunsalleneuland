@@ -1,10 +1,10 @@
 package mops.hhu.de.rheinjug1.praxis;
 
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.entities.Receipt;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 
 public final class TestHelper {
-  public static Receipt sampleEntwickelbarReceipt() {
+  public static Receipt invalidEntwickelbarReceipt() {
     return Receipt.builder()
         .meetupId(12_345L)
         .name("testName")

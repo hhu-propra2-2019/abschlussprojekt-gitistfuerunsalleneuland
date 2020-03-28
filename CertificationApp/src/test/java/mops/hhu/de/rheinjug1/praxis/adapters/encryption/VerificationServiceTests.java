@@ -1,18 +1,17 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.encryption;
 
+import static mops.hhu.de.rheinjug1.praxis.TestHelper.invalidEntwickelbarReceipt;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.CertificateException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptDTO;
-import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.entities.Receipt;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.interfaces.EncryptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,42 +20,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class VerificationServiceTests {
 
-  @Autowired private KeyPair keyPair;
   @Autowired private VerificationServiceImpl verificationService;
-  @Autowired private Signature securitySignature;
+  @Autowired private EncryptionService encryptionService;
 
   static Receipt validReceipt;
   static Receipt invalidReceipt;
 
   @BeforeEach
-  public void setUp()
-      throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
-          UnrecoverableEntryException, IOException, InvalidKeyException, SignatureException {
+  public void setUp() throws IOException, InvalidKeyException, SignatureException {
 
-    final String hash = MeetupType.ENTWICKELBAR.getLabel() + 1 + "name" + "email";
-    final PrivateKey privateKey = keyPair.getPrivate();
-    securitySignature.initSign(privateKey);
-    securitySignature.update(hash.getBytes(StandardCharsets.UTF_8));
-
-    validReceipt =
-        Receipt.createFromDTO(
-            new ReceiptDTO(
-                "name",
-                "email",
-                (long) 1,
-                "meetupTitle",
-                MeetupType.ENTWICKELBAR,
-                securitySignature.sign()));
-
-    invalidReceipt =
-        Receipt.createFromDTO(
-            new ReceiptDTO(
-                "name",
-                "falseEmail",
-                (long) 1,
-                "meetupTitle",
-                MeetupType.ENTWICKELBAR,
-                securitySignature.sign()));
+    validReceipt = encryptionService.sign(invalidEntwickelbarReceipt());
+    invalidReceipt = validReceipt.clone();
+    invalidReceipt.setEmail("fakeEmail");
   }
 
   @Test

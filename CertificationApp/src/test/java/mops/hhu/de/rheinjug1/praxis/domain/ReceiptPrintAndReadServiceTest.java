@@ -1,6 +1,6 @@
-package mops.hhu.de.rheinjug1.praxis.domain.receipt;
+package mops.hhu.de.rheinjug1.praxis.domain;
 
-import static mops.hhu.de.rheinjug1.praxis.TestHelper.sampleEntwickelbarReceipt;
+import static mops.hhu.de.rheinjug1.praxis.TestHelper.invalidEntwickelbarReceipt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
@@ -22,7 +22,7 @@ class ReceiptPrintAndReadServiceTest {
 
   @Test
   void givesBackCorrectReceipt() throws IOException {
-    final Receipt receipt = sampleEntwickelbarReceipt();
+    final Receipt receipt = invalidEntwickelbarReceipt();
     final String path = receiptPrintService.printReceiptAndReturnPath(receipt);
     assertThat(receiptReadService.read(path)).isEqualTo(receipt);
   }
