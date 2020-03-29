@@ -4,14 +4,15 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.DuplicateSignatureException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.SignatureDoesntMatchException;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.VerificationService;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.Receipt;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.ReceiptReader;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.entities.Receipt;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptReadService;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +33,10 @@ public class InputHandler {
   private static final String VALIDE = "Valide";
   private static final String KEINE_DATEI = "Keine Datei";
 
-  private final ReceiptReader fileReaderService;
+  private final ReceiptReadService receiptReadService;
   private final VerificationService verificationService;
 
-  private List<String> signatures = new ArrayList(3);
+  private List<byte[]> signatures = new ArrayList(3);
 
   private Receipt firstRheinjugReceipt;
   private Receipt secondRheinjugReceipt;
@@ -63,14 +64,14 @@ public class InputHandler {
   public void setFirstRheinjugReceipt(final MultipartFile firstRheinjugFile) {
     firstRheinjugReceiptUploadMessage = getUploadMessage(firstRheinjugFile, MeetupType.RHEINJUG);
     if (firstRheinjugReceiptUploadMessage.equals(VALIDE)) {
-      firstRheinjugReceipt = newReceipt.cloneThisReceipt();
+      firstRheinjugReceipt = newReceipt.clone();
     }
   }
 
   public void setSecondRheinjugReceipt(final MultipartFile seccondRheinjugFile) {
     secondRheinjugReceiptUploadMessage = getUploadMessage(seccondRheinjugFile, MeetupType.RHEINJUG);
     if (secondRheinjugReceiptUploadMessage.equals(VALIDE)) {
-      secondRheinjugReceipt = newReceipt.cloneThisReceipt();
+      secondRheinjugReceipt = newReceipt.clone();
     }
   }
 
@@ -85,14 +86,14 @@ public class InputHandler {
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
     thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, MeetupType.RHEINJUG);
     if (thirdRheinjugReceiptUploadMessage.equals(VALIDE)) {
-      thirdRheinjugReceipt = newReceipt.cloneThisReceipt();
+      thirdRheinjugReceipt = newReceipt.clone();
     }
   }
 
   public void setEntwickelbarReceipt(final MultipartFile entwickelbarFile) {
     entwickelbarReceiptUploadMessage = getUploadMessage(entwickelbarFile, MeetupType.ENTWICKELBAR);
     if (entwickelbarReceiptUploadMessage.equals(VALIDE)) {
-      entwickelbarReceipt = newReceipt.cloneThisReceipt();
+      entwickelbarReceipt = newReceipt.clone();
     }
   }
 
@@ -114,7 +115,7 @@ public class InputHandler {
       return KEINE_DATEI;
     }
     try {
-      newReceipt = fileReaderService.read(uploadedFile);
+      newReceipt = receiptReadService.read(uploadedFile);
       if (!newReceipt.getMeetupType().equals(type)) {
         return FALSCHE_VERANSTALTUNG;
       } else if (isDuplicateSignature(newReceipt.getSignature())) {
@@ -123,14 +124,14 @@ public class InputHandler {
         signatures.add(newReceipt.getSignature());
         return VALIDE;
       }
-    } catch (final IOException | NoSuchFieldException | IllegalAccessException e) {
+    } catch (final IOException e) {
       return FEHLERHAFTE_QUITTUNG;
     }
   }
 
-  private boolean isDuplicateSignature(final String newSignature) {
-    for (final String signature : signatures) {
-      if (signature.equals(newSignature)) {
+  private boolean isDuplicateSignature(final byte[] newSignature) {
+    for (final byte[] signature : signatures) {
+      if (Arrays.equals(signature, newSignature)) {
         return true;
       }
     }

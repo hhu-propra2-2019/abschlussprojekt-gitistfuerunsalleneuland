@@ -1,6 +1,6 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller.submission;
 
-import static mops.hhu.de.rheinjug1.praxis.adapters.auth.config.RolesHelper.STUDENTIN;
+import static mops.hhu.de.rheinjug1.praxis.adapters.auth.RolesHelper.STUDENTIN;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.*;
 
 import io.minio.errors.MinioException;

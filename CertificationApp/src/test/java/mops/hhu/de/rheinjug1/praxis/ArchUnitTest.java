@@ -25,14 +25,14 @@ public class ArchUnitTest {
           .definedBy("..adapters.auth..")
           .layer("encryption")
           .definedBy("..adapters.encryption..")
-          .layer("filereader")
-          .definedBy("..adapters.filereader..")
+          .layer("mail")
+          .definedBy("..adapters.mail..")
           .whereLayer("web")
           .mayNotBeAccessedByAnyLayer()
           .whereLayer("auth")
           .mayNotBeAccessedByAnyLayer()
-          .whereLayer("encryption")
+          .whereLayer("mail")
           .mayNotBeAccessedByAnyLayer()
-          .whereLayer("filereader")
+          .whereLayer("encryption")
           .mayNotBeAccessedByAnyLayer();
 }

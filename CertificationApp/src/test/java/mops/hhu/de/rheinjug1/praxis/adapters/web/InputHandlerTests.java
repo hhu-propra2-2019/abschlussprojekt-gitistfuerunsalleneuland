@@ -1,8 +1,16 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web;
 
+import static mops.hhu.de.rheinjug1.praxis.TestHelper.sampleEntwickelbarReceipt;
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.SignatureException;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptPrintService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,13 +29,16 @@ public class InputHandlerTests {
   private static final String VALID_FILE_WASNT_RECOGNIZED = "valid File wasnt recognized";
 
   @Autowired InputHandler handler;
+  @Autowired ReceiptPrintService receiptPrintService;
 
-  private final MultipartFile validEntwickelbarFile =
-      new MockMultipartFile(
-          "validFile",
-          "ZW1haWw6IFRlc3RFbWFpbAptZWV0dXBJZDogMQptZWV0dXBUaXRsZTogVGl0ZWwKbWVldHVwVHlwZTogRU5UV0lDS0VMQkFSCm5hbWU6IFRlc3ROYW1lCnNpZ25hdHVyZTogT0VVSWM1NjU0ZXV0Cg=="
-              .getBytes());
+  private MultipartFile validEntwickelbarFile;
   private final MultipartFile invalidFile = new MockMultipartFile("invalidFile", "".getBytes());
+
+  @BeforeEach
+  void init() throws IOException, SignatureException, InvalidKeyException {
+    final File file = receiptPrintService.printReceiptAndGetFile(sampleEntwickelbarReceipt());
+    validEntwickelbarFile = new MockMultipartFile("validFile", new FileInputStream(file));
+  }
 
   @AfterEach
   public void resetHandler() {

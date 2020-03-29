@@ -11,6 +11,10 @@ import java.util.Optional;
 import mops.hhu.de.rheinjug1.praxis.domain.event.Event;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventNotFoundException;
 import mops.hhu.de.rheinjug1.praxis.domain.event.EventRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.entities.Receipt;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.interfaces.EncryptionService;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.interfaces.SignatureRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.services.ReceiptCreationAndStorageService;
 import mops.hhu.de.rheinjug1.praxis.domain.submission.Submission;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.junit.jupiter.api.Test;
@@ -47,11 +51,9 @@ class ReceiptCreationAndStorageServiceTest {
     final String name = "testName";
     final String email = "testEmail";
     final String meetupTitle = "testMeetupTitle";
-    final String signature = "testSignature";
     final MeetupType meetupType = MeetupType.ENTWICKELBAR;
 
     when(eventRepository.findById(meetupId)).thenReturn(Optional.of(TEST_EVENT));
-    when(encryptionService.sign(meetupType, meetupId, name, email)).thenReturn(signature);
     when(signatureRepository.save(any())).thenReturn(null);
 
     final Submission submission =
@@ -65,9 +67,9 @@ class ReceiptCreationAndStorageServiceTest {
             .name(name)
             .email(email)
             .meetupTitle(meetupTitle)
-            .signature(signature)
             .meetupType(meetupType)
             .build();
+    encryptionService.sign(receipt);
     assertThat(receipt).isEqualTo(expectedReceipt);
   }
 }

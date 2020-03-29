@@ -1,8 +1,8 @@
 package mops.hhu.de.rheinjug1.praxis.adapters.web.controller;
 
 import static java.util.stream.Collectors.toList;
-import static mops.hhu.de.rheinjug1.praxis.adapters.auth.config.RolesHelper.ORGA;
-import static mops.hhu.de.rheinjug1.praxis.adapters.auth.config.RolesHelper.STUDENTIN;
+import static mops.hhu.de.rheinjug1.praxis.adapters.auth.RolesHelper.ORGA;
+import static mops.hhu.de.rheinjug1.praxis.adapters.auth.RolesHelper.STUDENTIN;
 import static mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE;
 
 import io.micrometer.core.instrument.Counter;

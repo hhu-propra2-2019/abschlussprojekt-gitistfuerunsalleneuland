@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import mops.hhu.de.rheinjug1.praxis.domain.receipt.SignatureRepository;
+import mops.hhu.de.rheinjug1.praxis.domain.receipt.interfaces.SignatureRepository;
 import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
 import org.springframework.stereotype.Component;
 
