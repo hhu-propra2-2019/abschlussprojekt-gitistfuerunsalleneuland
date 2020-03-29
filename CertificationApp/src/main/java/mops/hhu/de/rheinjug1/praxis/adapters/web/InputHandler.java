@@ -75,13 +75,21 @@ public class InputHandler {
     }
   }
 
-  public List<String> getEventTitles() {
+  public List<String> getRheinjugEventTitles() {
     final List<String> eventTitles = new ArrayList<>();
     eventTitles.add(firstRheinjugReceipt.getMeetupTitle());
     eventTitles.add(secondRheinjugReceipt.getMeetupTitle());
     eventTitles.add(thirdRheinjugReceipt.getMeetupTitle());
     return eventTitles;
   }
+  
+  public List<String> getEntwickelbarEventTitles() {
+	    final List<String> eventTitles = new ArrayList<>();
+	    eventTitles.add(entwickelbarReceipt.getMeetupTitle());
+	    eventTitles.add(entwickelbarReceipt.getMeetupTitle());
+	    eventTitles.add(entwickelbarReceipt.getMeetupTitle());
+	    return eventTitles;
+	  }
 
   public void setThirdRheinjugReceipt(final MultipartFile thirdRheinjugFile) {
     thirdRheinjugReceiptUploadMessage = getUploadMessage(thirdRheinjugFile, MeetupType.RHEINJUG);
