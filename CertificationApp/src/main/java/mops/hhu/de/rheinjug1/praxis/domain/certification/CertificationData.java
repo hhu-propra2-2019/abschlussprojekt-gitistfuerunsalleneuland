@@ -1,34 +1,18 @@
 package mops.hhu.de.rheinjug1.praxis.domain.certification;
 
 import java.util.List;
-import lombok.Builder;
-import lombok.Data;
-import mops.hhu.de.rheinjug1.praxis.enums.Sex;
 
-@Data
-@Builder
-public class CertificationData {
+public interface CertificationData {
 
-  private String firstname;
-  private String lastname;
-  private String studentNumber;
-  private Sex sex;
-  private String type;
-  private List<String> eventTitles;
+	  public String getSalutation();
 
-  public String getSalutation() {
+	  public String getPronoun();
 
-    if (sex == Sex.MALE) {
-      return "Herr";
-    }
-    return "Frau";
-  }
+	public String getFirstname();
 
-  public String getPronoun() {
+	public String getLastname();
 
-    if (sex == Sex.MALE) {
-      return "er";
-    }
-    return "sie";
-  }
+	public List<String> getEventTitles();
+
+	public String getStudentNumber();
 }

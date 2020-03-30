@@ -11,8 +11,11 @@ import javax.xml.bind.JAXBException;
 import mops.hhu.de.rheinjug1.praxis.adapters.web.thymeleaf.ThymeleafAttributesHelper;
 import mops.hhu.de.rheinjug1.praxis.domain.Account;
 import mops.hhu.de.rheinjug1.praxis.domain.AccountFactory;
-import mops.hhu.de.rheinjug1.praxis.domain.certification.CertificationData;
 import mops.hhu.de.rheinjug1.praxis.domain.certification.CertificationService;
+import mops.hhu.de.rheinjug1.praxis.domain.certification.EntwickelbarCertificationData;
+import mops.hhu.de.rheinjug1.praxis.domain.certification.RheinjugCertificationData;
+import mops.hhu.de.rheinjug1.praxis.enums.MeetupType;
+
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,14 +82,22 @@ public class CertificationController {
     authenticatedAccess.increment();
     model.addAttribute(ThymeleafAttributesHelper.ACCOUNT_ATTRIBUTE, account);
 
-    final CertificationData rheinjugCertificationData = formUserData.toRheinjugCertificationData();
+    final RheinjugCertificationData rheinjugCertificationData;
+    final EntwickelbarCertificationData entwickelbarCertificationData;
     if (inputHandler.areRheinjugUploadsOkForCertification() && inputHandler.verifyRheinjug()) {
-      rheinjugCertificationData.setEventTitles(inputHandler.getEventTitles());
-      return certificationService.createCertification(rheinjugCertificationData);
+    	rheinjugCertificationData = formUserData.toRheinjugCertificationData();
+    	rheinjugCertificationData.setEventTitles(inputHandler.getRheinjugEventTitles());
+    	rheinjugCertificationData.setType(MeetupType.RHEINJUG);
+      //return certificationService.createCertification(rheinjugCertificationData);
     }
     if (inputHandler.isEntwickelbarUploadOkForCertification()
         && inputHandler.verifyEntwickelbar()) {
-      certificationService.createCertification(rheinjugCertificationData);
+    	entwickelbarCertificationData = formUserData.toEntwickelbarCertificationData();
+    	entwickelbarCertificationData.setEventTitles(inputHandler.getEntwickelbarEventTitles());  
+    	entwickelbarCertificationData.setType(MeetupType.ENTWICKELBAR);
+        System.out.println(entwickelbarCertificationData.toString());
+        System.out.println(inputHandler.toString());
+        return certificationService.createCertification(entwickelbarCertificationData);
       // missing
     }
 
